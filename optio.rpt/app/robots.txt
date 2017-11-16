@@ -1,0 +1,5 @@
+User-agent: *
+Allow: #/pl
+Allow: #/en
+
+Disallow: /api

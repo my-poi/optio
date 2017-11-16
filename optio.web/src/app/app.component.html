@@ -1,0 +1,54 @@
+<table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0">
+
+  <!-- Ribbons -->
+  <tr>
+    <td>
+      <app-structure-ribbon (showTabEvent)="showTab($event)" [hidden]="activeTabId !== 1"></app-structure-ribbon>
+      <app-schedules-ribbon (showTabEvent)="showTab($event)" [hidden]="activeTabId !== 2"></app-schedules-ribbon>
+      <app-time-cards-ribbon [hidden]="activeTabId !== 3"></app-time-cards-ribbon>
+      <app-vacations-ribbon [hidden]="activeTabId !== 4"></app-vacations-ribbon>
+      <app-time-sheets-ribbon [hidden]="activeTabId !== 5"></app-time-sheets-ribbon>
+      <app-company-unit-ribbon (validateDataEvent)="companyUnitTab.validate()" (hideTabEvent)="hideTab($event)" [hidden]="activeTabId !== 6"></app-company-unit-ribbon>
+      <app-employee-ribbon (validateDataEvent)="employeeTab.validate()" (hideTabEvent)="hideTab($event)" [hidden]="activeTabId !== 7"></app-employee-ribbon>
+      <app-schedule-ribbon (validateDataEvent)="scheduleTab.validate()" (employeeScheduleMoveUpEvent)="scheduleTab.employeeScheduleMoveUp()"
+        (employeeScheduleMoveDownEvent)="scheduleTab.employeeScheduleMoveDown()" [hidden]="activeTabId !== 8">
+      </app-schedule-ribbon>
+    </td>
+  </tr>
+
+  <!-- Tabs -->
+  <tr>
+    <td style="padding-top: 5px" [style.height.px]="contentHeight" valign="top">
+      <ngb-tabset (tabChange)="activeTabId = $event.nextId; tabChange()" [activeId]="activeTabId" [destroyOnHide]="false">
+        <ngb-tab *ngFor="let tab of tabs" [id]="tab.id" [disabled]="tab.disabled" [hidden]="tab.hidden">
+          <ng-template ngbTabTitle>{{tab.title}}</ng-template>
+          <ng-template ngbTabContent>
+            <app-structure-tab *ngIf="tab.id === 1"></app-structure-tab>
+            <app-schedules-tab *ngIf="tab.id === 2"></app-schedules-tab>
+            <app-time-cards-tab *ngIf="tab.id === 3"></app-time-cards-tab>
+            <app-vacations-tab *ngIf="tab.id === 4"></app-vacations-tab>
+            <app-time-sheets-tab *ngIf="tab.id === 5"></app-time-sheets-tab>
+            <app-company-unit-tab (hideTabEvent)="hideTab($event)" *ngIf="tab.id === 6"></app-company-unit-tab>
+            <app-employee-tab (hideTabEvent)="hideTab($event)" *ngIf="tab.id === 7"></app-employee-tab>
+            <app-schedule-tab (hideTabEvent)="hideTab($event)" *ngIf="tab.id === 8"></app-schedule-tab>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+    </td>
+  </tr>
+
+  <!-- StatusBar -->
+  <tr>
+    <td height="40" bgcolor="#ab0000" style="color: #fff">
+      <span id="info" style="margin-left: 10px">
+        <a style="color: #fff" href="https://github.com/my-poi/optio">https://github.com/my-poi/optio</a>
+      </span>
+      <span id="info" style="margin-left: 60px">Identyfikator aktywnego taba: {{activeTabId}}</span>
+      <span id="copy" style="float: right; margin-right: 10px">Maciej Tokarz © My-Poi!</span>
+    </td>
+  </tr>
+
+</table>
+
+<!-- Modals -->
+<app-splash-modal [hidden]="true"></app-splash-modal>

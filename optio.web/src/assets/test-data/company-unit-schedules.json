@@ -1,0 +1,22 @@
+[
+  {
+    "companyUnitId": 3,
+    "year": 2017,
+    "month": 4,
+    "path": "Wydział A",
+    "created": "2015-06-07T08:13:00",
+    "lastModified": "2015-06-07T12:02:00",
+    "isLocked": false,
+    "isSelected": true
+  },
+  {
+    "companyUnitId": 3,
+    "year": 2017,
+    "month": 3,
+    "path": "Wydział B/Oddział A",
+    "created": "2015-06-07T09:22:00",
+    "lastModified": "2015-06-07T15:18:00",
+    "isLocked": false,
+    "isSelected": false
+  }
+]

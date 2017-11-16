@@ -1,0 +1,25 @@
+<div style="margin: 20px; background-color: #fff">
+  <div style="color: #ff4400; white-space: pre; font-weight: bold">{{validateMessage}}</div>
+<div style="float: left; margin-right: 40px">
+  <label>Nazwa</label><br>
+  <input type="text" [(ngModel)]="edited.name"><br>
+  <label>Symbol</label><br>
+  <input type="text" [(ngModel)]="edited.sign"><br>
+  <label>Telefon 1</label><br>
+  <input type="text" [(ngModel)]="edited.phone1"><br>
+  <label>Telefon 2</label><br>
+  <input type="text" [(ngModel)]="edited.phone2"><br>
+  <label>Fax</label><br>
+  <input type="text" [(ngModel)]="edited.fax"><br>
+  <label>E-mail</label><br>
+  <input type="text" [(ngModel)]="edited.email"><br>
+</div>
+<div>
+  <input type="checkbox" [(ngModel)]="edited.isClassified" style="width: 20px">
+  <label style="font-weight: normal">Komórce można przyporządkować pracownika</label><br>
+  <input type="checkbox" [(ngModel)]="edited.isScheduled" style="width: 20px">
+  <label style="font-weight: normal">Dla komórki tworzy się grafik</label><br>
+  <input type="checkbox" [(ngModel)]="edited.isPosition" style="width: 20px">
+  <label style="font-weight: normal">Komórka jest stanowiskiem</label><br>
+</div>
+</div>

@@ -1,0 +1,29 @@
+{
+  "name": "optio.web",
+  "version": "1.0.0",
+  "description": "Zarządzanie strukturą organizacyjną i czasem pracy.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/my-poi/optio.git"
+  },
+  "author": "Maciej Tokarz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/my-poi/optio/issues"
+  },
+  "homepage": "https://github.com/my-poi/optio#readme",
+  "devDependencies": {
+    "eslint": "^4.1.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "gulp": "^3.9.1",
+    "gulp-webserver": "^0.9.1"
+  }
+}

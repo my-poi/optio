@@ -1,0 +1,153 @@
+<div class="schedule" ng-controller="ScheduleController as schedule" style="margin: 20px; background-color: #fff">
+  <h4 align="center" style="margin: 20px">{{schedule.title}}</h4>
+  <table>
+    <thead class="schedule-header">
+      <tr>
+        <th style="width: 131px; min-width: 131px; border: none"></th>
+        <th ng-class="{free: schedule.headerData.sd[0].bt === 1}">1</th>
+        <th ng-class="{free: schedule.headerData.sd[1].bt === 1}">2</th>
+        <th ng-class="{free: schedule.headerData.sd[2].bt === 1}">3</th>
+        <th ng-class="{free: schedule.headerData.sd[3].bt === 1}">4</th>
+        <th ng-class="{free: schedule.headerData.sd[4].bt === 1}">5</th>
+        <th ng-class="{free: schedule.headerData.sd[5].bt === 1}">6</th>
+        <th ng-class="{free: schedule.headerData.sd[6].bt === 1}">7</th>
+        <th ng-class="{free: schedule.headerData.sd[7].bt === 1}">8</th>
+        <th ng-class="{free: schedule.headerData.sd[8].bt === 1}">9</th>
+        <th ng-class="{free: schedule.headerData.sd[9].bt === 1}">10</th>
+        <th ng-class="{free: schedule.headerData.sd[10].bt === 1}">11</th>
+        <th ng-class="{free: schedule.headerData.sd[11].bt === 1}">12</th>
+        <th ng-class="{free: schedule.headerData.sd[12].bt === 1}">13</th>
+        <th ng-class="{free: schedule.headerData.sd[13].bt === 1}">14</th>
+        <th ng-class="{free: schedule.headerData.sd[14].bt === 1}">15</th>
+        <th ng-class="{free: schedule.headerData.sd[15].bt === 1}">16</th>
+        <th ng-class="{free: schedule.headerData.sd[16].bt === 1}">17</th>
+        <th ng-class="{free: schedule.headerData.sd[17].bt === 1}">18</th>
+        <th ng-class="{free: schedule.headerData.sd[18].bt === 1}">19</th>
+        <th ng-class="{free: schedule.headerData.sd[19].bt === 1}">20</th>
+        <th ng-class="{free: schedule.headerData.sd[20].bt === 1}">21</th>
+        <th ng-class="{free: schedule.headerData.sd[21].bt === 1}">22</th>
+        <th ng-class="{free: schedule.headerData.sd[22].bt === 1}">23</th>
+        <th ng-class="{free: schedule.headerData.sd[23].bt === 1}">24</th>
+        <th ng-class="{free: schedule.headerData.sd[24].bt === 1}">25</th>
+        <th ng-class="{free: schedule.headerData.sd[25].bt === 1}">26</th>
+        <th ng-class="{free: schedule.headerData.sd[26].bt === 1}">27</th>
+        <th ng-class="{free: schedule.headerData.sd[27].bt === 1}">28</th>
+        <th ng-style="!schedule.headerData.column29 && {'display':'none'}" ng-class="{free: schedule.headerData.sd[28].bt === 1}">29</th>
+        <th ng-style="!schedule.headerData.column30 && {'display':'none'}" ng-class="{free: schedule.headerData.sd[29].bt === 1}">30</th>
+        <th ng-style="!schedule.headerData.column31 && {'display':'none'}" ng-class="{free: schedule.headerData.sd[30].bt === 1}">31</th>
+      </tr>
+    </thead>
+  </table>
+  <table st-table="schedule.scheduleDaysData">
+    <tbody>
+      <tr ng-repeat="d in schedule.scheduleData | orderBy: 's'">
+        <td style="border: none; padding-top: 10px">
+          <table>
+              <tr>
+                <td rowspan="3" style="min-width: 132px; max-width: 132px; padding-right: 15px; text-align: right; border: none"><div>{{d.employeeName}}</div></td>
+                <td ng-class="{free: d.sd[0].bt === 1, comment: d.sd[0].bt === 2}">{{d.sd[0].h}}</td>
+                <td ng-class="{free: d.sd[1].bt === 1, comment: d.sd[1].bt === 2}">{{d.sd[1].h}}</td>
+                <td ng-class="{free: d.sd[2].bt === 1, comment: d.sd[2].bt === 2}">{{d.sd[2].h}}</td>
+                <td ng-class="{free: d.sd[3].bt === 1, comment: d.sd[3].bt === 2}">{{d.sd[3].h}}</td>
+                <td ng-class="{free: d.sd[4].bt === 1, comment: d.sd[4].bt === 2}">{{d.sd[4].h}}</td>
+                <td ng-class="{free: d.sd[5].bt === 1, comment: d.sd[5].bt === 2}">{{d.sd[5].h}}</td>
+                <td ng-class="{free: d.sd[6].bt === 1, comment: d.sd[6].bt === 2}">{{d.sd[6].h}}</td>
+                <td ng-class="{free: d.sd[7].bt === 1, comment: d.sd[7].bt === 2}">{{d.sd[7].h}}</td>
+                <td ng-class="{free: d.sd[8].bt === 1, comment: d.sd[8].bt === 2}">{{d.sd[8].h}}</td>
+                <td ng-class="{free: d.sd[9].bt === 1, comment: d.sd[9].bt === 2}">{{d.sd[9].h}}</td>
+                <td ng-class="{free: d.sd[10].bt === 1, comment: d.sd[10].bt === 2}">{{d.sd[10].h}}</td>
+                <td ng-class="{free: d.sd[11].bt === 1, comment: d.sd[11].bt === 2}">{{d.sd[11].h}}</td>
+                <td ng-class="{free: d.sd[12].bt === 1, comment: d.sd[12].bt === 2}">{{d.sd[12].h}}</td>
+                <td ng-class="{free: d.sd[13].bt === 1, comment: d.sd[13].bt === 2}">{{d.sd[13].h}}</td>
+                <td ng-class="{free: d.sd[14].bt === 1, comment: d.sd[14].bt === 2}">{{d.sd[14].h}}</td>
+                <td ng-class="{free: d.sd[15].bt === 1, comment: d.sd[15].bt === 2}">{{d.sd[15].h}}</td>
+                <td ng-class="{free: d.sd[16].bt === 1, comment: d.sd[16].bt === 2}">{{d.sd[16].h}}</td>
+                <td ng-class="{free: d.sd[17].bt === 1, comment: d.sd[17].bt === 2}">{{d.sd[17].h}}</td>
+                <td ng-class="{free: d.sd[18].bt === 1, comment: d.sd[18].bt === 2}">{{d.sd[18].h}}</td>
+                <td ng-class="{free: d.sd[19].bt === 1, comment: d.sd[19].bt === 2}">{{d.sd[19].h}}</td>
+                <td ng-class="{free: d.sd[20].bt === 1, comment: d.sd[20].bt === 2}">{{d.sd[20].h}}</td>
+                <td ng-class="{free: d.sd[21].bt === 1, comment: d.sd[21].bt === 2}">{{d.sd[21].h}}</td>
+                <td ng-class="{free: d.sd[22].bt === 1, comment: d.sd[22].bt === 2}">{{d.sd[22].h}}</td>
+                <td ng-class="{free: d.sd[23].bt === 1, comment: d.sd[23].bt === 2}">{{d.sd[23].h}}</td>
+                <td ng-class="{free: d.sd[24].bt === 1, comment: d.sd[24].bt === 2}">{{d.sd[24].h}}</td>
+                <td ng-class="{free: d.sd[25].bt === 1, comment: d.sd[25].bt === 2}">{{d.sd[25].h}}</td>
+                <td ng-class="{free: d.sd[26].bt === 1, comment: d.sd[26].bt === 2}">{{d.sd[26].h}}</td>
+                <td ng-class="{free: d.sd[27].bt === 1, comment: d.sd[27].bt === 2}">{{d.sd[27].h}}</td>
+                <td ng-class="{free: d.sd[28].bt === 1, comment: d.sd[28].bt === 2}" ng-style="!d.column29 && {'display':'none'}">{{d.sd[28].h}}</td>
+                <td ng-class="{free: d.sd[29].bt === 1, comment: d.sd[29].bt === 2}" ng-style="!d.column30 && {'display':'none'}">{{d.sd[29].h}}</td>
+                <td ng-class="{free: d.sd[30].bt === 1, comment: d.sd[30].bt === 2}" ng-style="!d.column31 && {'display':'none'}">{{d.sd[30].h}}</td>
+                <td rowspan="3" style="width: 85px; min-width: 85px; text-align: center; border: none; border-left: 1px solid #ddd" ng-class="{size: d.monthlyBackground === 2, error: d.monthlyBackground === 4}">{{d.monthlyHours}}:{{("00" + d.monthlyMinutes).slice(-2)}}/{{d.monthlyDays}}</td>
+                <td rowspan="3" style="width: 85px; min-width: 85px; text-align: center; border: none" ng-class="{size: d.totalBackground === 2, error: d.totalBackground === 4}">{{d.totalHours}}:{{("00" + d.totalMinutes).slice(-2)}}/{{d.totalDays}}</td>
+              </tr>
+              <tr>
+                <td ng-class="{free: d.sd[0].bt === 1, comment: d.sd[0].bt === 2}">{{d.sd[0].m}}</td>
+                <td ng-class="{free: d.sd[1].bt === 1, comment: d.sd[1].bt === 2}">{{d.sd[1].m}}</td>
+                <td ng-class="{free: d.sd[2].bt === 1, comment: d.sd[2].bt === 2}">{{d.sd[2].m}}</td>
+                <td ng-class="{free: d.sd[3].bt === 1, comment: d.sd[3].bt === 2}">{{d.sd[3].m}}</td>
+                <td ng-class="{free: d.sd[4].bt === 1, comment: d.sd[4].bt === 2}">{{d.sd[4].m}}</td>
+                <td ng-class="{free: d.sd[5].bt === 1, comment: d.sd[5].bt === 2}">{{d.sd[5].m}}</td>
+                <td ng-class="{free: d.sd[6].bt === 1, comment: d.sd[6].bt === 2}">{{d.sd[6].m}}</td>
+                <td ng-class="{free: d.sd[7].bt === 1, comment: d.sd[7].bt === 2}">{{d.sd[7].m}}</td>
+                <td ng-class="{free: d.sd[8].bt === 1, comment: d.sd[8].bt === 2}">{{d.sd[8].m}}</td>
+                <td ng-class="{free: d.sd[9].bt === 1, comment: d.sd[9].bt === 2}">{{d.sd[9].m}}</td>
+                <td ng-class="{free: d.sd[10].bt === 1, comment: d.sd[10].bt === 2}">{{d.sd[10].m}}</td>
+                <td ng-class="{free: d.sd[11].bt === 1, comment: d.sd[11].bt === 2}">{{d.sd[11].m}}</td>
+                <td ng-class="{free: d.sd[12].bt === 1, comment: d.sd[12].bt === 2}">{{d.sd[12].m}}</td>
+                <td ng-class="{free: d.sd[13].bt === 1, comment: d.sd[13].bt === 2}">{{d.sd[13].m}}</td>
+                <td ng-class="{free: d.sd[14].bt === 1, comment: d.sd[14].bt === 2}">{{d.sd[14].m}}</td>
+                <td ng-class="{free: d.sd[15].bt === 1, comment: d.sd[15].bt === 2}">{{d.sd[15].m}}</td>
+                <td ng-class="{free: d.sd[16].bt === 1, comment: d.sd[16].bt === 2}">{{d.sd[16].m}}</td>
+                <td ng-class="{free: d.sd[17].bt === 1, comment: d.sd[17].bt === 2}">{{d.sd[17].m}}</td>
+                <td ng-class="{free: d.sd[18].bt === 1, comment: d.sd[18].bt === 2}">{{d.sd[18].m}}</td>
+                <td ng-class="{free: d.sd[19].bt === 1, comment: d.sd[19].bt === 2}">{{d.sd[19].m}}</td>
+                <td ng-class="{free: d.sd[20].bt === 1, comment: d.sd[20].bt === 2}">{{d.sd[20].m}}</td>
+                <td ng-class="{free: d.sd[21].bt === 1, comment: d.sd[21].bt === 2}">{{d.sd[21].m}}</td>
+                <td ng-class="{free: d.sd[22].bt === 1, comment: d.sd[22].bt === 2}">{{d.sd[22].m}}</td>
+                <td ng-class="{free: d.sd[23].bt === 1, comment: d.sd[23].bt === 2}">{{d.sd[23].m}}</td>
+                <td ng-class="{free: d.sd[24].bt === 1, comment: d.sd[24].bt === 2}">{{d.sd[24].m}}</td>
+                <td ng-class="{free: d.sd[25].bt === 1, comment: d.sd[25].bt === 2}">{{d.sd[25].m}}</td>
+                <td ng-class="{free: d.sd[26].bt === 1, comment: d.sd[26].bt === 2}">{{d.sd[26].m}}</td>
+                <td ng-class="{free: d.sd[27].bt === 1, comment: d.sd[27].bt === 2}">{{d.sd[27].m}}</td>
+                <td ng-class="{free: d.sd[28].bt === 1, comment: d.sd[28].bt === 2}" ng-style="!d.column29 && {'display':'none'}" style="border-right-style: solid">{{d.sd[28].m}}</td>
+                <td ng-class="{free: d.sd[29].bt === 1, comment: d.sd[29].bt === 2}" ng-style="!d.column30 && {'display':'none'}" style="border-right-style: solid">{{d.sd[29].m}}</td>
+                <td ng-class="{free: d.sd[30].bt === 1, comment: d.sd[30].bt === 2}" ng-style="!d.column31 && {'display':'none'}" style="border-right-style: solid">{{d.sd[30].m}}</td>
+              </tr>
+              <tr class="bottom">
+                <td ng-class="{free: d.sd[0].bx === 1, vacation: d.sd[0].bx === 2, error: d.sd[0].bx === 3}">{{d.sd[0].x}}</td>
+                <td ng-class="{free: d.sd[1].bx === 1, vacation: d.sd[1].bx === 2, error: d.sd[1].bx === 3}">{{d.sd[1].x}}</td>
+                <td ng-class="{free: d.sd[2].bx === 1, vacation: d.sd[2].bx === 2, error: d.sd[2].bx === 3}">{{d.sd[2].x}}</td>
+                <td ng-class="{free: d.sd[3].bx === 1, vacation: d.sd[3].bx === 2, error: d.sd[3].bx === 3}">{{d.sd[3].x}}</td>
+                <td ng-class="{free: d.sd[4].bx === 1, vacation: d.sd[4].bx === 2, error: d.sd[4].bx === 3}">{{d.sd[4].x}}</td>
+                <td ng-class="{free: d.sd[5].bx === 1, vacation: d.sd[5].bx === 2, error: d.sd[5].bx === 3}">{{d.sd[5].x}}</td>
+                <td ng-class="{free: d.sd[6].bx === 1, vacation: d.sd[6].bx === 2, error: d.sd[6].bx === 3}">{{d.sd[6].x}}</td>
+                <td ng-class="{free: d.sd[7].bx === 1, vacation: d.sd[7].bx === 2, error: d.sd[7].bx === 3}">{{d.sd[7].x}}</td>
+                <td ng-class="{free: d.sd[8].bx === 1, vacation: d.sd[8].bx === 2, error: d.sd[8].bx === 3}">{{d.sd[8].x}}</td>
+                <td ng-class="{free: d.sd[9].bx === 1, vacation: d.sd[9].bx === 2, error: d.sd[9].bx === 3}">{{d.sd[9].x}}</td>
+                <td ng-class="{free: d.sd[10].bx === 1, vacation: d.sd[10].bx === 2, error: d.sd[10].bx === 3}">{{d.sd[10].x}}</td>
+                <td ng-class="{free: d.sd[11].bx === 1, vacation: d.sd[11].bx === 2, error: d.sd[11].bx === 3}">{{d.sd[11].x}}</td>
+                <td ng-class="{free: d.sd[12].bx === 1, vacation: d.sd[12].bx === 2, error: d.sd[12].bx === 3}">{{d.sd[12].x}}</td>
+                <td ng-class="{free: d.sd[13].bx === 1, vacation: d.sd[13].bx === 2, error: d.sd[13].bx === 3}">{{d.sd[13].x}}</td>
+                <td ng-class="{free: d.sd[14].bx === 1, vacation: d.sd[14].bx === 2, error: d.sd[14].bx === 3}">{{d.sd[14].x}}</td>
+                <td ng-class="{free: d.sd[15].bx === 1, vacation: d.sd[15].bx === 2, error: d.sd[15].bx === 3}">{{d.sd[15].x}}</td>
+                <td ng-class="{free: d.sd[16].bx === 1, vacation: d.sd[16].bx === 2, error: d.sd[16].bx === 3}">{{d.sd[16].x}}</td>
+                <td ng-class="{free: d.sd[17].bx === 1, vacation: d.sd[17].bx === 2, error: d.sd[17].bx === 3}">{{d.sd[17].x}}</td>
+                <td ng-class="{free: d.sd[18].bx === 1, vacation: d.sd[18].bx === 2, error: d.sd[18].bx === 3}">{{d.sd[18].x}}</td>
+                <td ng-class="{free: d.sd[19].bx === 1, vacation: d.sd[19].bx === 2, error: d.sd[19].bx === 3}">{{d.sd[19].x}}</td>
+                <td ng-class="{free: d.sd[20].bx === 1, vacation: d.sd[20].bx === 2, error: d.sd[20].bx === 3}">{{d.sd[20].x}}</td>
+                <td ng-class="{free: d.sd[21].bx === 1, vacation: d.sd[21].bx === 2, error: d.sd[21].bx === 3}">{{d.sd[21].x}}</td>
+                <td ng-class="{free: d.sd[22].bx === 1, vacation: d.sd[22].bx === 2, error: d.sd[22].bx === 3}">{{d.sd[22].x}}</td>
+                <td ng-class="{free: d.sd[23].bx === 1, vacation: d.sd[23].bx === 2, error: d.sd[23].bx === 3}">{{d.sd[23].x}}</td>
+                <td ng-class="{free: d.sd[24].bx === 1, vacation: d.sd[24].bx === 2, error: d.sd[24].bx === 3}">{{d.sd[24].x}}</td>
+                <td ng-class="{free: d.sd[25].bx === 1, vacation: d.sd[25].bx === 2, error: d.sd[25].bx === 3}">{{d.sd[25].x}}</td>
+                <td ng-class="{free: d.sd[26].bx === 1, vacation: d.sd[26].bx === 2, error: d.sd[26].bx === 3}">{{d.sd[26].x}}</td>
+                <td ng-class="{free: d.sd[27].bx === 1, vacation: d.sd[27].bx === 2, error: d.sd[27].bx === 3}">{{d.sd[27].x}}</td>
+                <td ng-class="{free: d.sd[28].bx === 1, vacation: d.sd[28].bx === 2, error: d.sd[28].bx === 3}" ng-style="!d.column29 && {'display':'none'}" style="border-right-style: solid">{{d.sd[28].x}}</td>
+                <td ng-class="{free: d.sd[29].bx === 1, vacation: d.sd[29].bx === 2, error: d.sd[29].bx === 3}" ng-style="!d.column30 && {'display':'none'}" style="border-right-style: solid">{{d.sd[29].x}}</td>
+                <td ng-class="{free: d.sd[30].bx === 1, vacation: d.sd[30].bx === 2, error: d.sd[30].bx === 3}" ng-style="!d.column31 && {'display':'none'}" style="border-right-style: solid">{{d.sd[30].x}}</td>
+              </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

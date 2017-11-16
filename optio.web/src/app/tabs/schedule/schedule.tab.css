@@ -1,0 +1,30 @@
+.schedule-header th {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border: 1px solid #d4d5d5;
+}
+
+.schedule-scrollable-tbody {
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.schedule td {
+  padding: 0;
+}
+
+.schedule input[type=text] {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  border: 1px solid #d4d5d5;
+  border-right-style: none;
+  border-bottom-style: none;
+}
+
+.schedule-bottom input[type=text] {
+  border-bottom-style: solid;
+}

@@ -1,0 +1,8 @@
+.st-selected {
+  background:#ab0000 !important;
+  color: #fff !important;
+}
+
+tr {
+  cursor: pointer;
+}

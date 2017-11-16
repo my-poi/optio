@@ -1,0 +1,62 @@
+<div class="ribbon">
+  <button (click)="validateData('schedule')" class="ribbon button" style="background-image: url('assets/icons/disk.png')">
+    <br/>
+    <br/> Zamknij
+  </button>
+  <button ng-click="main.showShifts()" class="ribbon button" style="background-image: url('assets/icons/clock-yellow.png')">
+    <br/>
+    <br/> Zmiany
+  </button>
+  <button ng-click="main.showPeriods()" class="ribbon button" style="background-image: url('assets/icons/barchart.png')">
+    <br/>
+    <br/> Wymiary
+  </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/arrow-maximize.png')">
+    <br/>
+    <br/> Wypełnij
+  </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/arrow-left.png')">
+    <br/>
+    <br/> Poprzedni
+  </button>
+  <p>Grafik</p>
+</div>
+<div class="ribbon">
+  <button (click)="employeeScheduleMoveUp()" [disabled]="disabledButtonsService.employeeScheduleMoveUp" class="ribbon button" style="background-image: url('assets/icons/arrow-up.png')">
+    <br/>
+    <br/> W górę
+  </button>
+  <button (click)="employeeScheduleMoveDown()" [disabled]="disabledButtonsService.employeeScheduleMoveDown" class="ribbon button" style="background-image: url('assets/icons/arrow-down.png')">
+    <br/>
+    <br/> W dół
+  </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/user-add.png')">
+    <br/>
+    <br/> Dodaj
+  </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/user-out.png')">
+    <br/>
+    <br/> Przenieś
+  </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/user-delete.png')">
+    <br/>
+    <br/> Usuń
+  </button>
+  <p>Pracownicy</p>
+</div>
+<div class="ribbon">
+  <button class="ribbon button" style="background-image: url('assets/icons/note-edit.png')">
+    <br/>
+    <br/> Edytuj
+  </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/note-delete.png')">
+    <br/>
+    <br/> Usuń
+  </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/note-info.png')">
+    <br/>
+    <br/> Pokaż
+  </button>
+  <p>Uwagi</p>
+</div>
+<div class="ribbon info">{{ribbonInfosService.scheduleInfo}}</div>

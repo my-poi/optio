@@ -1,0 +1,381 @@
+[
+  {
+    "id": 1,
+    "alias": 76,
+    "sign": "I",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 1,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": "2017-04-03T00:00:00",
+        "start": "06:00:00",
+        "finish": "14:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      },
+      {
+        "shiftId": 1,
+        "validFrom": "2017-04-04T00:00:00",
+        "validTo": null,
+        "start": "06:30:00",
+        "finish": "14:30:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "alias": 77,
+    "sign": "II",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 2,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": "2017-04-10T00:00:00",
+        "start": "14:00:00",
+        "finish": "22:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      },
+      {
+        "shiftId": 2,
+        "validFrom": "2017-04-11T00:00:00",
+        "validTo": null,
+        "start": "14:00:00",
+        "finish": "23:00:00",
+        "createdBy": 1,
+        "created": "2015-03-22T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "alias": 78,
+    "sign": "III",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 3,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "22:00:00",
+        "finish": "06:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "alias": 96,
+    "sign": "IV",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 4,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "07:00:00",
+        "finish": "15:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "alias": 89,
+    "sign": "V",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 5,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "13:00:00",
+        "finish": "21:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "alias": 80,
+    "sign": "VI",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 6,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "07:30:00",
+        "finish": "15:30:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "alias": 81,
+    "sign": "VII",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 7,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "08:00:00",
+        "finish": "20:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "alias": 82,
+    "sign": "VIII",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 8,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "20:00:00",
+        "finish": "08:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "alias": 86,
+    "sign": "IX",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 9,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "10:00:00",
+        "finish": "18:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "alias": 79,
+    "sign": "X",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 10,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "12:00:00",
+        "finish": "20:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "alias": 84,
+    "sign": "XI",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 11,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "08:00:00",
+        "finish": "15:30:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "alias": 104,
+    "sign": "XII",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 12,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "17:00:00",
+        "finish": "05:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "alias": 105,
+    "sign": "XIII",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 13,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "18:00:00",
+        "finish": "02:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "alias": 0,
+    "sign": "XIV",
+    "isValid": true,
+    "durations": [
+      {
+        "shiftId": 14,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "00:00:00",
+        "finish": "08:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "alias": 0,
+    "sign": "XV",
+    "isValid": false,
+    "durations": [
+      {
+        "shiftId": 15,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "00:00:00",
+        "finish": "00:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "alias": 0,
+    "sign": "XVI",
+    "isValid": false,
+    "durations": [
+      {
+        "shiftId": 16,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "00:00:00",
+        "finish": "00:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "alias": 0,
+    "sign": "XVII",
+    "isValid": false,
+    "durations": [
+      {
+        "shiftId": 17,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "00:00:00",
+        "finish": "00:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "alias": 0,
+    "sign": "XVIII",
+    "isValid": false,
+    "durations": [
+      {
+        "shiftId": 18,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "00:00:00",
+        "finish": "00:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "alias": 0,
+    "sign": "XIX",
+    "isValid": false,
+    "durations": [
+      {
+        "shiftId": 19,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "00:00:00",
+        "finish": "00:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "alias": 0,
+    "sign": "XX",
+    "isValid": false,
+    "durations": [
+      {
+        "shiftId": 20,
+        "validFrom": "2013-01-01T00:00:00",
+        "validTo": null,
+        "start": "00:00:00",
+        "finish": "00:00:00",
+        "createdBy": 1,
+        "created": "2015-03-21T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "alias": 102,
+    "sign": "N",
+    "isValid": true,
+    "durations": []
+  },
+  {
+    "id": 41,
+    "alias": 101,
+    "sign": "NS",
+    "isValid": true,
+    "durations": []
+  },
+  {
+    "id": 42,
+    "alias": 103,
+    "sign": "D5",
+    "isValid": true,
+    "durations": []
+  }
+]

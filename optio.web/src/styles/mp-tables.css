@@ -1,0 +1,46 @@
+.mp-table {
+  border-collapse: collapse;
+  float: left;
+}
+
+.mp-table tbody, .mp-table thead {
+  display: block;
+}
+
+.mp-table tbody {
+  overflow: auto;
+}
+
+.mp-table th {
+  text-align: left;
+}
+
+.mp-table th, .mp-table td {
+  padding: 8px;
+  border-right: 1px solid #d4d5d5;
+}
+
+.mp-table tr {
+  display: flex;
+  align-items: stretch;
+  cursor: pointer;
+}
+
+.mp-table th:last-child, .mp-table td:last-child {
+  flex: 1;
+  display: inline-block;
+  border-right: none;
+}
+
+.mp-table tr:last-child {
+  border-bottom: 1px solid #d4d5d5;
+}
+
+.mp-table tbody tr:nth-child(odd) {
+  background-color: #fffacd;
+}
+
+.mp-table input[type=text] {
+  width: 100%;
+  margin-top: 7px;
+}

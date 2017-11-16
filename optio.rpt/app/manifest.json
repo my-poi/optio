@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Optio - Raporty",
+  "version": "1.1.1",
+  "description": "Raporty programu Optio.",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "theme_color": "#ab0000",
+  "background_color": "#ffffff",
+  "start_url": "index.html",
+  "app": {
+    "urls": [
+      "https://optio.xyz/"
+    ],
+    "launch": {
+      "web_url": "https://optio.xyz/"
+    }
+  },
+  "icons": [
+    {
+      "src": "images/logo.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}

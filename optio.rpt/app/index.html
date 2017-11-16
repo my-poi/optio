@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="publisher" content="My-Poi!">
+  <meta name="contact" content="maciej.tokarz@my-poi.pl">
+  <meta name="theme-color" content="#ab0000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, minimal-ui">
+  <meta http-equiv="content-language" content="pl">
+  <meta name="description" content="Raporty programu Optio">
+  <title>Optio - Raporty</title>
+  <!--Links-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="styles/app-colors.css" type="text/css">
+  <link rel="stylesheet" href="styles/app.css" type="text/css">
+  <link rel="stylesheet" href="styles/schedules.css" type="text/css">
+  <link rel="stylesheet" href="styles/smart-tables.css" type="text/css">
+  <link rel="stylesheet" href="styles/time-sheets.css" type="text/css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+</head>
+
+<body ng-controller="MainController as main">
+
+  <div ng-switch on="main.report">
+      <div ng-switch-when="schedule">
+        <ng-include src="'views/schedule.html'"></ng-include>
+      </div>
+      <div ng-switch-when="timeCard">
+        <ng-include src="'views/time-card.html'"></ng-include>
+      </div>
+      <div ng-switch-when="timeSheet">
+        <ng-include src="'views/time-sheet.html'"></ng-include>
+      </div>
+  </div>
+  
+  <!--Components-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.8/smart-table.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  
+  <!--App-->
+  <script src="config.js"></script>
+  <script src="modal-service.js"></script>
+  <script src="time-span.js"></script>
+  <script src="tools.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Models -->
+  <script src="models/time-sheet-day.js"></script>
+  <script src="models/time-sheet-page.js"></script>
+
+  <!--Controllers-->
+  <script src="controllers/data-loader.js"></script>
+  <script src="controllers/schedule.js"></script>
+  <script src="controllers/time-sheet.js"></script>
+  <script src="controllers/url.js"></script>
+
+</body>
+
+</html>

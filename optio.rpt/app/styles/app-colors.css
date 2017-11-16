@@ -1,0 +1,29 @@
+.free {
+  -webkit-print-color-adjust: exact;
+  background-image: url(../images/free.png) !important;
+  /* background: #ffe678; */
+}
+
+.vacation {
+  -webkit-print-color-adjust: exact;
+  background-image: url(../images/vacation.png) !important;
+  /* background: #a7da4e; */
+}
+
+.comment {
+  -webkit-print-color-adjust: exact;
+  background-image: url(../images/comment.png) !important;
+  /* background: orange; */
+}
+
+.size {
+  -webkit-print-color-adjust: exact;
+  background-image: url(../images/size.png) !important;
+  /* background: #a7da4e; */
+}
+
+.error {
+  -webkit-print-color-adjust: exact;
+  background-image: url(../images/error.png) !important;
+  /* background: #ff4400; */
+}

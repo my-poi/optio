@@ -1,0 +1,89 @@
+sudo apt-get install nginx
+sudo /etc/init.d/nginx start
+
+sudo mkdir /apps
+sudo mkdir /keys
+sudo mkdir /logs
+
+sudo nano /etc/nginx/sites-available/default
+
+server {
+    listen 80;
+    server_name optio.xyz;
+    return 301 https://optio.xyz$request_uri;
+}
+
+server {
+    listen 80;
+    server_name www.optio.xyz;
+    return 301 https://optio.xyz$request_uri;
+}
+
+server {
+    listen 443;
+    ssl on;
+    ssl_certificate /keys/optio_xyz.crt;
+    ssl_certificate_key /keys/optio_xyz.key;
+    server_name www.optio.xyz;
+    return 301 https://optio.xyz$request_uri;
+}
+
+server {
+    listen 443;
+    ssl on;
+    ssl_certificate /keys/optio_xyz.crt;
+    ssl_certificate_key /keys/optio_xyz.key;
+    server_name optio.xyz;
+    client_body_timeout 12;
+    client_header_timeout 12;
+    keepalive_timeout 15;
+    send_timeout 10;
+
+	location /raporty/ {
+        root /apps/optio.rpt/;
+        index index.html;
+	error_log /logs/optio_rpt.errors;
+    }
+	
+    location / {
+        root /apps/optio.web/;
+        index index.html;
+	error_log /logs/optio_web.errors;
+    }
+	
+	location /api/ {
+        
+        if ( $request_method !~ ^(POST|GET|PUT|DELETE|OPTIONS)$ ) {
+		return 405;
+        }
+
+        proxy_pass http://127.0.0.1:8001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_cache_bypass $http_upgrade;
+        proxy_redirect off;
+	error_log /logs/optio_api.errors;
+    }
+	
+    	# access_log /logs/optio_web.access;
+	# access_log /logs/optio_api.access;
+}
+
+Restart
+sudo service nginx restart
+
+Ustawienie kompresji
+sudo nano /etc/nginx/nginx.conf
+gzip_vary on;
+gzip_proxied any;
+gzip_comp_level 6;
+gzip_buffers 16 8k;
+gzip_http_version 1.1;
+gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+Diagnostyka
+sudo service nginx configtest
+sudo service nginx status

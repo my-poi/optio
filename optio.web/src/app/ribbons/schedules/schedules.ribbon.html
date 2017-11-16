@@ -1,0 +1,28 @@
+<div class="ribbon">
+  <button class="ribbon button" style="background-image: url('assets/icons/add.png')">
+      <br/>
+      <br/> Dodaj
+    </button>
+  <button (click)="showTab('schedule', false)" [disabled]="disabledButtonsService.scheduleEdit" class="ribbon button" style="background-image: url('assets/icons/pencil.png')">
+      <br/>
+      <br/> Edytuj
+    </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/clock-yellow.png')" ng-click="main.showShifts()">
+      <br/>
+      <br/> Zmiany
+    </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/barchart.png')" ng-click="main.showPeriods()">
+      <br/>
+      <br/> Wymiary
+    </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/unlocked.png')">
+      <br/>
+      <br/> Zablokuj
+    </button>
+  <button class="ribbon button" style="background-image: url('assets/icons/book.png')">
+      <br/>
+      <br/> Raporty
+    </button>
+  <p>Grafiki</p>
+</div>
+<div class="ribbon info">{{ribbonInfosService.schedulesInfo}}</div>

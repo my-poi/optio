@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="256"
+   width="256"
+   viewBox="0 0 256 256"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="close.svg"
+   inkscape:export-filename="D:\Projekty\Optio\optio.web\app\images\close.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <metadata
+     id="metadata13">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs11" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview9"
+     showgrid="false"
+     inkscape:zoom="2.6074563"
+     inkscape:cx="-243.81987"
+     inkscape:cy="88.467953"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <circle
+     style="fill:#ffffff;fill-opacity:1"
+     r="128"
+     id="ellipse6"
+     cx="128"
+     cy="128" />
+  <path
+     style="fill:#82ba00;fill-opacity:1"
+     inkscape:connector-curvature="0"
+     d="M 83.802386,51.835179 52.602186,83.035155 96.8003,128.00006 51.932203,173.00341 83.132403,204.20337 128,159.20014 170.69861,203.5254 201.89831,172.32544 159.2002,128.00006 201.67199,84.185702 170.47229,52.985726 128,96.79998 Z M 128,0 C 198.3999,0 256,57.600004 256,128.00006 256,198.40012 198.3999,256 128,256 57.6001,256 0,198.40012 0,128.00006 0,57.600004 57.6001,0 128,0 Z"
+     id="path1"
+     sodipodi:nodetypes="cccccccccccccsssss" />
+</svg>

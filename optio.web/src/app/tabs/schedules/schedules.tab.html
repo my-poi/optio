@@ -1,0 +1,31 @@
+<div style="margin: 5px">
+  <div [style.height.px]="calendarHeight" style="width: 200px; float:left">
+    <tree-root #tree [nodes]="calendarService.items" (initialized)="onInitialized(tree)" (activate)="onActivate($event.node)" [options]="calendarOptions"></tree-root>
+  </div>
+  <div style="float:right; border: 1px solid #d4d5d5">
+      <table class="mp-table" [style.width.px]="schedulesTableWidth">
+          <thead>
+            <tr>
+              <th width="440">
+                Grafik komórki organizacyjnej
+                <br>
+                <input type="text" [(ngModel)]="schedulesFilter" (ngModelChange)="filterSchedules()">
+              </th>
+              <th width="135">
+                Utworzony
+              </th>
+              <th>
+                Ostatnio modyfikowany
+              </th>
+            </tr>
+          </thead>
+          <tbody [style.height.px]="schedulesTableBodyHeight">
+            <tr *ngFor="let schedule of foundSchedules" (mousedown)="selectSchedule(schedule)" [class.selected]="schedule.isSelected">
+              <td width="440">{{schedule.path}}</td>
+              <td width="135">{{schedule.created | date: 'yyyy-MM-dd HH:mm'}}</td>
+              <td>{{schedule.lastModified | date: 'yyyy-MM-dd HH:mm'}}</td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
+</div>

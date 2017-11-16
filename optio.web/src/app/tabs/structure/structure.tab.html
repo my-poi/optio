@@ -1,0 +1,75 @@
+<div style="margin: 5px">
+  <div [style.height.px]="companyUnitsHeight" style="width: 320px; float:left">
+    <tree-root #tree [nodes]="companyUnits" (initialized)="onInitialized(tree)" (activate)="onActivate($event)" [options]="companyUnitsOptions">
+      <ng-template #treeNodeTemplate let-node let-index="index">
+        <div droppable (dropped)="droppedEmployee($event.id, node.id)">
+          <img [hidden]="!node.data.isClassified" src="assets/icons/user-add.png" width="24">
+          <span [class.is-scheduled]="node.data.isScheduled" [class.is-scheduled-and-active]="node.data.isScheduled && node.isActive">{{node.data.name}}</span>
+        </div>
+      </ng-template>
+    </tree-root>
+  </div>
+  <div style="border: 1px solid #d4d5d5; overflow: hidden">
+    <table class="mp-table" [style.width.px]="employeesTableWidth">
+      <thead>
+        <tr>
+          <th width="180">
+            Nazwisko
+            <br>
+            <input type="text" [(ngModel)]="employeesFilter.lastName" (ngModelChange)="filterEmployees()">
+          </th>
+          <th width="140">
+            Imię
+            <br>
+            <input type="text" [(ngModel)]="employeesFilter.firstName" (ngModelChange)="filterEmployees()">
+          </th>
+          <th width="110">
+            Telefon 1
+            <br>
+            <input type="text" [(ngModel)]="employeesFilter.phone1" (ngModelChange)="filterEmployees()">
+          </th>
+          <th width="110">
+            Telefon 2
+            <br>
+            <input type="text" [(ngModel)]="employeesFilter.phone2" (ngModelChange)="filterEmployees()">
+          </th>
+          <th>
+            E-mail
+            <br>
+            <input type="text" [(ngModel)]="employeesFilter.email" (ngModelChange)="filterEmployees()">
+          </th>
+        </tr>
+      </thead>
+      <tbody [style.height.px]="employeesTableBodyHeight">
+        <tr *ngFor="let employee of foundEmployees"
+          (mousedown)="selectEmployee(employee)"
+          [class.selected]="employee.isSelected"
+          [draggable]="employee">
+          <td width="180">{{employee.lastName}}</td>
+          <td width="140">{{employee.firstName}}</td>
+          <td width="110">{{employee.phone1}}</td>
+          <td width="110">{{employee.phone2}}</td>
+          <td>{{employee.email}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div [style.height.px]="employeesInfoHeight" style="float: right; width: 220px; border-left: 1px solid #d4d5d5; padding: 5px">
+      <div>
+        <img src="{{selectedEmployee?.photo}}" width=209 style="margin-bottom: 5px">
+        <br>
+        <b>Nazwisko i imię</b>
+        <br> {{selectedEmployee?.fullName}}
+        <br>
+        <b>Telefon 1</b>
+        <br> {{selectedEmployee?.phone1}}
+        <br>
+        <b>Telefon 2</b>
+        <br> {{selectedEmployee?.phone2}}
+        <br>
+        <b>E-mail</b>
+        <br> {{selectedEmployee?.email}}
+        <br>
+      </div>
+    </div>
+  </div>
+</div>

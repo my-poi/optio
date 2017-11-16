@@ -1,0 +1,49 @@
+<div>
+  <div id="timeSheets" style="width: 400px; float:left; margin-top: 20px; margin-left: 10px; overflow-y: auto">
+    <input type="text" placeholder="Znajdź" style="margin-bottom: 10px">
+    <div *ngFor="let timeSheet of timeSheets" (mousedown)="selectTimeSheet(timeSheet)" class="list-item" [ngClass]="{'list-selected': selectedTimeSheet === timeSheet}">
+        {{timeSheet.name}}
+    </div>
+  </div>
+  <div [style.width.px]="timeSheetEmployeesWidth" [style.height.px]="timeSheetEmployeesHeight" style="float:right; margin: 5px; padding: 10px; border: 1px solid #d4d5d5">
+    <div style="width: 49%; float: left; margin-top: 10px; margin-right: 10px">
+      <b>Pracownicy listy obecności</b>
+      <div id="timeSheetEmployees"
+        ngxDroppable
+        [model]="timeSheetEmployees"
+        dropZone="employees"
+        (drop)="dropTimeSheetEmployees($event.source.id, $event.value.id)"
+        [style.height.px]="employeesHeight"
+        style="overflow-y: auto; overflow-x: hidden; margin-top: 10px">
+        <div *ngFor="let employee of timeSheetEmployees"
+          ngxDraggable
+          [model]="employee"
+          (mousedown)="selectEmployee(employee)"
+          class="list-item"
+          [ngClass]="{'list-selected': selectedEmployee === employee}">
+          {{employee.fullName}}
+        </div>
+      </div>
+    </div>
+    <div style="width: 49%; float: left">
+      <input type="text" placeholder="Znajdź" ng-model="timeSheets.searchEmployee.fullName">
+      <div id="otherEmployees"
+        ngxDroppable
+        [model]="otherEmployees"
+        dropZone="employees"
+        (drop)="dropOtherEmployees($event.source.id, $event.value.id)"
+        [style.height.px]="employeesHeight"
+        style="overflow-y: auto; overflow-x: hidden; margin-top: 10px">
+        <div *ngFor="let employee of otherEmployees"
+          ngxDraggable
+          [model]="employee"
+          (mousedown)="selectEmployee(employee)"
+          class="list-item"
+          [ngClass]="{'list-selected': selectedEmployee === employee}">
+          {{employee.fullName}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

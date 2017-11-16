@@ -1,0 +1,44 @@
+[
+  {
+    "employeeId": 1,
+    "validFrom": "2013-01-01",
+    "companyUnitId": 3,
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00"
+  },
+  {
+    "employeeId": 2,
+    "validFrom": "2013-01-01",
+    "companyUnitId": 3,
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00"
+  },
+  {
+    "employeeId": 3,
+    "validFrom": "2013-01-01",
+    "companyUnitId": 3,
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00"
+  },
+  {
+    "employeeId": 4,
+    "validFrom": "2013-01-01",
+    "companyUnitId": 3,
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00"
+  },
+  {
+    "employeeId": 5,
+    "validFrom": "2013-01-01",
+    "companyUnitId": 4,
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00"
+  },
+  {
+    "employeeId": 6,
+    "validFrom": "2013-01-01",
+    "companyUnitId": 4,
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "księgowy",
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00",
+    "updatedBy": 1,
+    "updated": "2015-06-07T00:00:00"
+  },
+  {
+    "id": 2,
+    "name": "kierownik",
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00",
+    "updatedBy": 1,
+    "updated": "2015-06-07T00:00:00"
+  },
+  {
+    "id": 3,
+    "name": "programista .net",
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00",
+    "updatedBy": 1,
+    "updated": "2015-06-07T00:00:00"
+  },
+  {
+    "id": 4,
+    "name": "administrator sieci",
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00",
+    "updatedBy": 1,
+    "updated": "2015-06-07T00:00:00"
+  },
+  {
+    "id": 5,
+    "name": "administrator baz danych",
+    "createdBy": 1,
+    "created": "2015-06-07T00:00:00",
+    "updatedBy": 1,
+    "updated": "2015-06-07T00:00:00"
+  }
+]

@@ -1,0 +1,21 @@
+.time-sheet-header th {
+  height: 180px;
+  border: 1px solid #d3d3d3;
+  border-right-style: none;
+  border-bottom-style: none;
+}
+
+.vertically-text {
+  width: 70px;
+  white-space: pre;
+  transform:  translateX(0px) translateY(40px) rotate(-90deg); 
+}
+
+.time-sheet td {
+  height: 29px;
+  max-height: 29px;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+  border-right-style: none;
+  border-bottom-style: none;
+}
