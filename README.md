@@ -22,13 +22,15 @@ Opis podstawowych funkcjonalności:
 
 [Wersja demonstracyjna](https://optio.xyz/)
 
+["Kanciasty Nowicjusz" blog omawiający proces tworzenia Optio](http://blog.my-poi.pl/)
+
+[Strona na Facebook-u](https://www.facebook.com/optio.xyz)
+
 Przykłady raportów:
 
 - [grafik](https://optio.xyz/raporty/?nazwa=grafik&id=1&rok=2017&miesiac=4)
 
 - [lista obecności](https://optio.xyz/raporty/?nazwa=lista-obecnosci&id=3&rok=2017&miesiac=4)
-
-[Strona na Facebook-u](https://www.facebook.com/optio.xyz)
 
 1. Struktura
 
