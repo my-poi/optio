@@ -36,10 +36,10 @@ export class AppComponent implements OnInit {
   tabs;
   activeTabId = 1;
 
-  constructor(public http: Http,
-    public browserService: BrowserService,
-    public dataService: DataService,
-    public globalService: GlobalService) {
+  constructor(private http: Http,
+    private browserService: BrowserService,
+    private dataService: DataService,
+    private globalService: GlobalService) {
   }
 
   ngOnInit() {

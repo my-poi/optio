@@ -10,7 +10,7 @@ export class SplashModal {
   modalOption: NgbModalOptions = {};
   closeResult: string;
 
-  constructor(public modalService: NgbModal) {
+  constructor(private modalService: NgbModal) {
     // this.open('A to splash...');
    }
 

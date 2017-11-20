@@ -1,13 +1,12 @@
 import { Directive, OnInit, Output, ElementRef, EventEmitter } from '@angular/core';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
   selector: '[droppable]'
 })
 export class DroppableDirective implements OnInit {
   @Output() dropped = new EventEmitter();
 
-  constructor(public elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef) { }
 
   ngOnInit() {
     const element = this.elementRef.nativeElement;

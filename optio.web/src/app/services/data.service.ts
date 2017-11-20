@@ -20,7 +20,7 @@ export class DataService {
   shifts: Shift[];
   timeSheets: TimeSheet[];
 
-  constructor(public http: Http) {
+  constructor(private http: Http) {
     this.http.get('assets/test-data/company-units.json').subscribe(res => this.companyUnits = res.json());
     this.http.get('assets/test-data/employees.json').subscribe(res => this.employees = res.json());
     this.http.get('assets/test-data/company-unit-schedules.json').subscribe(res => this.companyUnitSchedules = res.json());

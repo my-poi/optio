@@ -19,8 +19,8 @@ export class TimeSheetsTab {
   selectedTimeSheet: TimeSheet;
   selectedEmployee: TimeSheetEmployee;
 
-  constructor(public http: Http,
-    public dataService: DataService) {
+  constructor(private http: Http,
+    private dataService: DataService) {
     this.timeSheets = dataService.timeSheets;
     this.selectedTimeSheet = this.timeSheets[0];
     this.loadEmployees();

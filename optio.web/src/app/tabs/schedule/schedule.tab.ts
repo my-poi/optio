@@ -28,11 +28,11 @@ export class ScheduleTab {
   selected: Schedule;
   original: Schedule;
 
-  constructor(public http: Http,
-    public dataService: DataService,
-    public disabledButtonsService: DisabledButtonsService,
-    public globalService: GlobalService,
-    public ribbonInfosService: RibbonInfosService) { }
+  constructor(private http: Http,
+    private dataService: DataService,
+    private disabledButtonsService: DisabledButtonsService,
+    private globalService: GlobalService,
+    private ribbonInfosService: RibbonInfosService) { }
 
   load() {
     this.http.get('assets/test-data/schedules.json').subscribe(res => {

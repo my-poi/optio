@@ -14,7 +14,7 @@ export class EmployeeTab {
   isNew: boolean;
   validateMessage: string;
 
-  constructor(public globalService: GlobalService) {}
+  constructor(private globalService: GlobalService) {}
 
   load(employee: Employee, isNew: boolean) {
     this.original = employee;

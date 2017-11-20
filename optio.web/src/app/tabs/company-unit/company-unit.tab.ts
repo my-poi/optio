@@ -14,7 +14,7 @@ export class CompanyUnitTab {
   isNew: boolean;
   validateMessage: string;
 
-  constructor(public globalService: GlobalService) {}
+  constructor(private globalService: GlobalService) {}
 
   load(companyUnit: CompanyUnit, isNew: boolean) {
     this.original = companyUnit;

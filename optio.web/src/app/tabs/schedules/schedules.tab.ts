@@ -23,9 +23,9 @@ export class SchedulesTab {
   selectedSchedule: CompanyUnitSchedule;
 
   constructor(public calendarService: CalendarService,
-    public dataService: DataService,
-    public disabledButtonsService: DisabledButtonsService,
-    public ribbonInfosService: RibbonInfosService) {}
+    private dataService: DataService,
+    private disabledButtonsService: DisabledButtonsService,
+    private ribbonInfosService: RibbonInfosService) {}
 
   onInitialized(tree) {
     const currentYear = new Date().getFullYear();

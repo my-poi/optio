@@ -1,13 +1,12 @@
 import { Directive, OnInit, Input, ElementRef } from '@angular/core';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
   selector: '[draggable]'
 })
 export class DraggableDirective implements OnInit {
   @Input('draggable') draggable: any;
 
-  constructor(public elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef) { }
 
   ngOnInit() {
     const element = this.elementRef.nativeElement;

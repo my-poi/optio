@@ -24,9 +24,9 @@ export class StructureTab {
   selectedCompanyUnit: CompanyUnit;
   selectedEmployee: Employee;
 
-  constructor(public dataService: DataService,
-    public disabledButtonsService: DisabledButtonsService,
-    public ribbonInfosService: RibbonInfosService) {
+  constructor(private dataService: DataService,
+    private disabledButtonsService: DisabledButtonsService,
+    private ribbonInfosService: RibbonInfosService) {
     this.selectedEmployee = this.dataService.employees[0];
     this.selectAllClassifiedEmployees();
   }
