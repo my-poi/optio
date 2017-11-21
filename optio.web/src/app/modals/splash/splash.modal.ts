@@ -20,7 +20,7 @@ export class SplashModal implements OnInit {
   ngOnInit() {
     if (window.location.host !== 'localhost:4200') {
       setTimeout(() => this.open());
-      // setTimeout(() => this.close(), 3000);
+      setTimeout(() => this.close(), 3000);
     }
   }
 
