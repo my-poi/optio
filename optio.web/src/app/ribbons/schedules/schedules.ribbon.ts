@@ -9,11 +9,16 @@ import { RibbonInfosService } from '../../services/ribbon-infos.service';
 })
 export class SchedulesRibbon {
   @Output() showTabEvent = new EventEmitter<any>();
+  @Output() showShiftsEvent = new EventEmitter();
 
   constructor(public disabledButtonsService: DisabledButtonsService,
     public ribbonInfosService: RibbonInfosService) { }
 
   showTab(tabName: string, isNew: boolean) {
     this.showTabEvent.emit({tabName, isNew});
+  }
+
+  showShifts() {
+    this.showShiftsEvent.emit();
   }
 }

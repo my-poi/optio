@@ -4,7 +4,7 @@ import { CompanyUnitTab } from './tabs/company-unit/company-unit.tab';
 import { EmployeeTab } from './tabs/employee/employee.tab';
 import { SchedulesTab } from './tabs/schedules/schedules.tab';
 import { ScheduleTab } from './tabs/schedule/schedule.tab';
-import { SplashModal } from './modals/splash/splash.modal';
+import { ShiftsModal } from './modals/shifts/shifts.modal';
 import { BrowserService } from './services/browser.service';
 import { DataService } from './services/data.service';
 import { DisabledButtonsService } from './services/disabled-buttons.service';
@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
   @ViewChild(EmployeeTab) employeeTab: EmployeeTab;
   @ViewChild(SchedulesTab) schedulesTab: SchedulesTab;
   @ViewChild(ScheduleTab) scheduleTab: ScheduleTab;
+  @ViewChild(ShiftsModal) shiftsModal: ShiftsModal;
   contentHeight = window.innerHeight - 151;
   tabs;
   activeTabId = 1;
@@ -92,5 +93,9 @@ export class AppComponent implements OnInit {
     const parent = this.tabs.filter(x => x.name === tab.parent)[0];
     tab.hidden = true;
     this.activeTabId = parent.id;
+  }
+
+  showShifts() {
+    this.shiftsModal.open();
   }
 }

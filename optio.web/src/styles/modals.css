@@ -1,0 +1,46 @@
+.splash {
+  top: calc((100% - 650px) / 2);
+}
+
+.modal-dialog {
+  top: 120px;
+}
+
+.modal-header {
+  background-color: #ab0000;
+  color: #fff;
+}
+
+.btn-outline-dark {
+  color: #fff;
+  background-color: #ab0000;
+  background-image: none;
+  border-color: #ab0000;
+}
+
+.btn-outline-dark:hover {
+  color: #fff;
+  background-color: #ab0000;
+  background-image: none;
+  border-color: #ab0000;
+  box-shadow: 0 0 0 0.2rem rgba(171, 0, 0, 0.5);
+  cursor: pointer; 
+}
+
+.btn-outline-dark.disabled, .btn-outline-dark:disabled {
+  color: #ab0000;
+  background-color: transparent;
+  cursor: not-allowed;
+}
+
+.btn-outline-dark:not([disabled]):not(.disabled):active, .btn-outline-dark:not([disabled]):not(.disabled).active,
+.show > .btn-outline-dark.dropdown-toggle {
+  color: #fff;
+  background-color: #ab0000;
+  border-color: #ab0000;
+  box-shadow: 0 0 0 0.2rem rgba(171, 0, 0, 0.5);
+}
+
+.modal-footer {
+  border-top: none;
+}

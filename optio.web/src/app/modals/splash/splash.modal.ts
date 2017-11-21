@@ -4,22 +4,24 @@ import { NgbModal, NgbModalRef, NgbModalOptions } from '../../modules/modal/moda
 @Component({
   selector: 'app-splash-modal',
   templateUrl: './splash.modal.html',
-  styleUrls: ['./splash.modal.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./splash.modal.css']
 })
 export class SplashModal implements OnInit {
   @ViewChild('content') content;
   modalReference: NgbModalRef;
   modalOption: NgbModalOptions = {
     backdrop: 'static',
-    keyboard: false
+    keyboard: false,
+    windowClass: 'splash'
   };
 
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
-    setTimeout(() => this.open());
-    setTimeout(() => this.close(), 3000);
+    if (window.location.host !== 'localhost:4200') {
+      setTimeout(() => this.open());
+      // setTimeout(() => this.close(), 3000);
+    }
   }
 
   open() {

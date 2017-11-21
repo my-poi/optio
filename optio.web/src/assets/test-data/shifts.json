@@ -9,8 +9,9 @@
         "shiftId": 1,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": "2017-04-03T00:00:00",
-        "start": "06:00:00",
-        "finish": "14:00:00",
+        "start": "06:00",
+        "finish": "14:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       },
@@ -18,12 +19,23 @@
         "shiftId": 1,
         "validFrom": "2017-04-04T00:00:00",
         "validTo": null,
-        "start": "06:30:00",
-        "finish": "14:30:00",
+        "start": "06:30",
+        "finish": "14:30",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 1,
+      "validFrom": "2017-04-04T00:00:00",
+      "validTo": null,
+      "start": "06:30",
+      "finish": "14:30",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 2,
@@ -35,8 +47,9 @@
         "shiftId": 2,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": "2017-04-10T00:00:00",
-        "start": "14:00:00",
-        "finish": "22:00:00",
+        "start": "14:00",
+        "finish": "22:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       },
@@ -44,12 +57,23 @@
         "shiftId": 2,
         "validFrom": "2017-04-11T00:00:00",
         "validTo": null,
-        "start": "14:00:00",
-        "finish": "23:00:00",
+        "start": "14:00",
+        "finish": "23:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-22T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 2,
+      "validFrom": "2017-04-11T00:00:00",
+      "validTo": null,
+      "start": "14:00",
+      "finish": "23:00",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-22T00:00:00"
+    }
   },
   {
     "id": 3,
@@ -61,12 +85,23 @@
         "shiftId": 3,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "22:00:00",
-        "finish": "06:00:00",
+        "start": "22:00",
+        "finish": "06:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 3,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "22:00",
+      "finish": "06:00",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 4,
@@ -78,12 +113,23 @@
         "shiftId": 4,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "07:00:00",
-        "finish": "15:00:00",
+        "start": "07:00",
+        "finish": "15:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 4,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "07:00",
+      "finish": "15:00",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 5,
@@ -95,12 +141,23 @@
         "shiftId": 5,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "13:00:00",
-        "finish": "21:00:00",
+        "start": "13:00",
+        "finish": "21:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 5,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "13:00",
+      "finish": "21:00",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 6,
@@ -112,12 +169,23 @@
         "shiftId": 6,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "07:30:00",
-        "finish": "15:30:00",
+        "start": "07:30",
+        "finish": "15:30",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 6,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "07:30",
+      "finish": "15:30",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 7,
@@ -129,12 +197,23 @@
         "shiftId": 7,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "08:00:00",
-        "finish": "20:00:00",
+        "start": "08:00",
+        "finish": "20:00",
+        "duration": "12:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 7,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "08:00",
+      "finish": "20:00",
+      "duration": "12:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 8,
@@ -146,12 +225,23 @@
         "shiftId": 8,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "20:00:00",
-        "finish": "08:00:00",
+        "start": "20:00",
+        "finish": "08:00",
+        "duration": "12:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 8,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "20:00",
+      "finish": "08:00",
+      "duration": "12:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 9,
@@ -163,12 +253,23 @@
         "shiftId": 9,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "10:00:00",
-        "finish": "18:00:00",
+        "start": "10:00",
+        "finish": "18:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 9,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "10:00",
+      "finish": "18:00",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 10,
@@ -180,12 +281,23 @@
         "shiftId": 10,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "12:00:00",
-        "finish": "20:00:00",
+        "start": "12:00",
+        "finish": "20:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 10,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "12:00",
+      "finish": "20:00",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 11,
@@ -197,12 +309,23 @@
         "shiftId": 11,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "08:00:00",
-        "finish": "15:30:00",
+        "start": "08:00",
+        "finish": "15:30",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 11,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "08:00",
+      "finish": "15:30",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 12,
@@ -214,12 +337,23 @@
         "shiftId": 12,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "17:00:00",
-        "finish": "05:00:00",
+        "start": "17:00",
+        "finish": "05:00",
+        "duration": "11:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 12,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "17:00",
+      "finish": "05:00",
+      "duration": "11:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 13,
@@ -231,12 +365,23 @@
         "shiftId": 13,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "18:00:00",
-        "finish": "02:00:00",
+        "start": "18:00",
+        "finish": "02:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 13,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "18:00",
+      "finish": "02:00",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 14,
@@ -248,12 +393,23 @@
         "shiftId": 14,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "00:00:00",
-        "finish": "08:00:00",
+        "start": "00:00",
+        "finish": "08:00",
+        "duration": "08:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 14,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "00:00",
+      "finish": "08:00",
+      "duration": "08:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 15,
@@ -265,12 +421,23 @@
         "shiftId": 15,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "00:00:00",
-        "finish": "00:00:00",
+        "start": "00:00",
+        "finish": "00:00",
+        "duration": "00:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 15,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "00:00",
+      "finish": "00:00",
+      "duration": "00:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 16,
@@ -282,12 +449,23 @@
         "shiftId": 16,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "00:00:00",
-        "finish": "00:00:00",
+        "start": "00:00",
+        "finish": "00:00",
+        "duration": "00:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 16,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "00:00",
+      "finish": "00:00",
+      "duration": "00:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 17,
@@ -299,12 +477,23 @@
         "shiftId": 17,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "00:00:00",
-        "finish": "00:00:00",
+        "start": "00:00",
+        "finish": "00:00",
+        "duration": "00:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 17,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "00:00",
+      "finish": "00:00",
+      "duration": "00:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 18,
@@ -316,12 +505,23 @@
         "shiftId": 18,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "00:00:00",
-        "finish": "00:00:00",
+        "start": "00:00",
+        "finish": "00:00",
+        "duration": "00:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 18,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "00:00",
+      "finish": "00:00",
+      "duration": "00:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 19,
@@ -333,12 +533,23 @@
         "shiftId": 19,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "00:00:00",
-        "finish": "00:00:00",
+        "start": "00:00",
+        "finish": "00:00",
+        "duration": "00:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 19,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "00:00",
+      "finish": "00:00",
+      "duration": "00:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 20,
@@ -350,12 +561,23 @@
         "shiftId": 20,
         "validFrom": "2013-01-01T00:00:00",
         "validTo": null,
-        "start": "00:00:00",
-        "finish": "00:00:00",
+        "start": "00:00",
+        "finish": "00:00",
+        "duration": "00:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
-    ]
+    ],
+    "current": {
+      "shiftId": 20,
+      "validFrom": "2013-01-01T00:00:00",
+      "validTo": null,
+      "start": "00:00",
+      "finish": "00:00",
+      "duration": "00:00",
+      "createdBy": 1,
+      "created": "2015-03-21T00:00:00"
+    }
   },
   {
     "id": 40,

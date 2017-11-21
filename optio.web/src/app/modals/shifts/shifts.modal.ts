@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal, NgbModalOptions, ModalDismissReasons } from '../../modules/modal/modal.module';
+import { Component, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
+import { NgbModal, NgbModalRef, NgbModalOptions } from '../../modules/modal/modal.module';
+import { DataService } from '../../services/data.service';
+import { Shift } from '../../objects/shift';
 
 @Component({
   selector: 'app-shifts-modal',
@@ -7,32 +9,42 @@ import { NgbModal, NgbModalOptions, ModalDismissReasons } from '../../modules/mo
   styleUrls: ['./shifts.modal.css']
 })
 export class ShiftsModal implements OnInit {
+  @ViewChild('content') content;
+  modalReference: NgbModalRef;
   modalOption: NgbModalOptions = {
     backdrop: 'static',
-    keyboard: false
+    keyboard: false,
+    size: 'lg'
   };
-  closeResult: string;
+  shifts;
+  selectedShift: Shift;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal,
+    private dataService: DataService) { }
 
   ngOnInit() {
   }
 
-  open(content) {
-    this.modalService.open(content, this.modalOption).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  open() {
+    this.shifts = this.dataService.shifts.filter(x =>
+      x.isValid && x.id !== 40 && x.id !== 41 && x.id !== 42 );
+    this.selectShift(this.shifts[0]);
+    this.modalReference = this.modalService.open(this.content, this.modalOption);
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
+  selectShift(shift) {
+    if (!this.selectedShift) this.selectedShift = new Shift();
+    this.deselectShift();
+    this.selectedShift = shift;
+    this.selectedShift.isSelected = true;
+  }
+
+  deselectShift() {
+    if (this.selectedShift) this.selectedShift.isSelected = false;
+  }
+
+  close() {
+    this.modalReference.close();
+    this.modalReference = null;
   }
 }

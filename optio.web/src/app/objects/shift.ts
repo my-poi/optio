@@ -5,5 +5,7 @@ export class Shift {
   alias: number;
   sign: string;
   isValid: boolean;
+  isSelected?: boolean;
   durations: ShiftDuration[];
+  current: ShiftDuration;
 }

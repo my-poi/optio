@@ -1,21 +1,39 @@
-<ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Modal title</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p>One fine body&hellip;</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
-    </div>
-  </ng-template>
-  
-  <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>
-  
-  <hr>
-  
-  <pre>{{closeResult}}</pre>
-  
+<ng-template #content>
+  <div class="modal-header">
+    <h4 class="modal-title">Zmiany</h4>
+  </div>
+  <div class="modal-body">
+    <table class="mp-table" style="width: 770px; border: 1px solid #d4d5d5">
+      <thead>
+        <tr>
+          <th width="110">
+            Zmiana
+          </th>
+          <th width="110">
+            Od
+          </th>
+          <th width="110">
+            Do
+          </th>
+          <th>
+            Czas trwania
+          </th>
+        </tr>
+      </thead>
+      <tbody style="height: 400px">
+        <tr *ngFor="let shift of shifts"
+          [class.selected]="shift.isSelected"
+          (mousedown)="selectShift(shift)"
+          [class.selected]="shift.isSelected">
+          <td width="110">{{shift.sign}}</td>
+          <td width="110">{{shift.current?.start}}</td>
+          <td width="110">{{shift.current?.finish}}</td>
+          <td>{{shift.current?.duration}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="close()">Zamknij</button>
+  </div>
+</ng-template>

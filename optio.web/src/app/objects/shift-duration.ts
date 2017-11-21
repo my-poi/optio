@@ -4,6 +4,7 @@ export class ShiftDuration {
   validTo?: Date;
   start: string;
   finish: string;
+  duration: string;
   createdBy: number;
   created: Date;
 }

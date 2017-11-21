@@ -23,6 +23,7 @@
         "styles/angular-tree-component.css",
         "styles/app-colors.css",
         "styles/app.css",
+        "styles/modals.css",
         "styles/dnd.css",
         "styles/mp-tables.css",
         "styles/ribbons.css"

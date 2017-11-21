@@ -4,7 +4,7 @@
   <tr>
     <td>
       <app-structure-ribbon (showTabEvent)="showTab($event)" [hidden]="activeTabId !== 1"></app-structure-ribbon>
-      <app-schedules-ribbon (showTabEvent)="showTab($event)" [hidden]="activeTabId !== 2"></app-schedules-ribbon>
+      <app-schedules-ribbon (showTabEvent)="showTab($event)" (showShiftsEvent)="showShifts()" [hidden]="activeTabId !== 2"></app-schedules-ribbon>
       <app-time-cards-ribbon [hidden]="activeTabId !== 3"></app-time-cards-ribbon>
       <app-vacations-ribbon [hidden]="activeTabId !== 4"></app-vacations-ribbon>
       <app-time-sheets-ribbon [hidden]="activeTabId !== 5"></app-time-sheets-ribbon>
@@ -52,3 +52,4 @@
 
 <!-- Modals -->
 <app-splash-modal></app-splash-modal>
+<app-shifts-modal></app-shifts-modal>
