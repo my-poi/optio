@@ -1,37 +1,33 @@
-import { Component } from '@angular/core';
-import {NgbModal, ModalDismissReasons, NgbModalOptions} from '../../modules/modal/modal.module';
+import { Component, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
+import { NgbModal, NgbModalRef, NgbModalOptions } from '../../modules/modal/modal.module';
 
 @Component({
   selector: 'app-splash-modal',
   templateUrl: './splash.modal.html',
-  styleUrls: ['./splash.modal.css']
+  styleUrls: ['./splash.modal.css'],
+  encapsulation: ViewEncapsulation.None
 })
-export class SplashModal {
-  modalOption: NgbModalOptions = {};
-  closeResult: string;
+export class SplashModal implements OnInit {
+  @ViewChild('content') content;
+  modalReference: NgbModalRef;
+  modalOption: NgbModalOptions = {
+    backdrop: 'static',
+    keyboard: false
+  };
 
-  constructor(private modalService: NgbModal) {
-    // this.open('A to splash...');
-   }
+  constructor(private modalService: NgbModal) { }
 
-  open(content) {
-    this.modalOption.backdrop = 'static';
-    this.modalOption.keyboard = false;
-    this.modalService.open(content, this.modalOption).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  ngOnInit() {
+    setTimeout(() => this.open());
+    setTimeout(() => this.close(), 3000);
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
+  open() {
+    this.modalReference = this.modalService.open(this.content, this.modalOption);
   }
 
+  close() {
+    this.modalReference.close();
+    this.modalReference = null;
+  }
 }
