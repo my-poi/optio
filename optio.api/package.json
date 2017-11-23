@@ -5,7 +5,7 @@
   "license": "© My-Poi!",
   "description": "usługi sieciowe Optio",
   "scripts": {
-    "lint": "lint",
+    "build": "tsc",
     "start": "npm run build:live",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
   },
@@ -16,6 +16,7 @@
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
+    "@types/express": "^4.0.39",
     "@types/node": "^8.0.53",
     "codelyzer": "~3.2.0",
     "nodemon": "^1.12.1",

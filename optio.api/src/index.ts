@@ -1,6 +1,18 @@
-import { Queries } from './queries';
-export {}
+export {};
 
-const queries = new Queries().generate();
-const test = queries.getSql('select-shifts');
-console.log(test);
+import * as express from 'express';
+import { Queries } from './queries';
+
+const app = express();
+const queries = new Queries();
+queries.generate();
+console.log(queries.getSql('select-shifts'));
+
+app.get('/api', (req: express.Request, res: express.Response) => {
+  res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+  res.end('Usługi sieciowe Optio');
+});
+
+app.listen(8000, () => {
+  console.log('Optio API uruchomione!');
+});
