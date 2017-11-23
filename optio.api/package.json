@@ -4,8 +4,14 @@
   "author": "Maciej Tokarz",
   "license": "© My-Poi!",
   "description": "usługi sieciowe Optio",
-  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.53",
+    "nodemon": "^1.12.1",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.6.1"
   }
 }
