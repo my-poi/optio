@@ -12,7 +12,7 @@ CREATE TABLE Holidays (
   dayOff DATE NOT NULL,
   typeId INT NOT NULL,
   PRIMARY KEY (dayOff),
-  CONSTRAINT fkHolidayTypesHolidaysTypeId
+  CONSTRAINT HolidayTypesHolidays
     FOREIGN KEY (typeId)
     REFERENCES HolidayTypes (id)
     ON DELETE CASCADE
@@ -38,12 +38,12 @@ CREATE TABLE ShiftDurations (
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
   PRIMARY KEY (shiftId, validFrom),
-  CONSTRAINT Shifts_ShiftDurations_shiftId
+  CONSTRAINT ShiftsShiftDurations
     FOREIGN KEY (shiftId)
     REFERENCES Shifts (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT Users_ShiftDurations_createdBy
+  CONSTRAINT UsersShiftDurations
     FOREIGN KEY (createdBy)
     REFERENCES OptioSystem.Users (id)
     ON DELETE CASCADE
