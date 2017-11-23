@@ -1,7 +1,9 @@
 {
   "name": "optio.web",
   "version": "1.0.0",
-  "license": "Maciej Tokarz © My-Poi!",
+  "author": "Maciej Tokarz",
+  "license": "© My-Poi!",
+  "description": "zarządzanie strukturą organizacyjną i czasem pracy",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
