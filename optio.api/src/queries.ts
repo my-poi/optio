@@ -17,7 +17,7 @@ export class Queries {
     });
   }
 
-  getSql(name: string) {
-    return this.list.filter(query => query.name === name)[0].sql;
+  getSql(queryName: string) {
+    return this.list.filter(query => query.name === queryName)[0].sql;
   }
 }
