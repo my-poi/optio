@@ -9,8 +9,8 @@ export class Queries {
     const queries = [
       'select-shifts',
       'select-shift-durations'
-    ]
-    
+    ];
+
     queries.forEach(queryName => {
       const sql = fs.readFileSync(path.join(__dirname, 'sql/', queryName + '.sql'), 'utf8');
       this.list.push(new Query(queryName, sql));

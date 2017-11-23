@@ -5,13 +5,22 @@
   "license": "© My-Poi!",
   "description": "usługi sieciowe Optio",
   "scripts": {
+    "lint": "lint",
     "start": "npm run build:live",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
   },
+  "dependencies": {
+    "@angular/compiler": "^5.0.0",
+    "@angular/core": "^5.0.0",
+    "rxjs": "^5.5.2",
+    "zone.js": "^0.8.14"
+  },
   "devDependencies": {
     "@types/node": "^8.0.53",
+    "codelyzer": "~3.2.0",
     "nodemon": "^1.12.1",
     "ts-node": "^3.3.0",
+    "tslint": "~5.8.0",
     "typescript": "^2.6.1"
   }
 }
