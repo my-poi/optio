@@ -4,21 +4,30 @@ USE OptioSystem;
 
 CREATE TABLE Users (
   id INT NOT NULL AUTO_INCREMENT,
-  userName VARCHAR(20) NOT NULL,
-  passwordHash VARCHAR(44) NOT NULL,
+  name VARCHAR(20) NOT NULL,
+  fullName VARCHAR(70) NOT NULL,
   email VARCHAR(320) NOT NULL,
+  passwordHash VARCHAR(44) NOT NULL,
   lastActivity DATETIME,
   previousActivity DATETIME,
+  recoveryId VARCHAR(36),
   isLocked BOOL NOT NULL,
+  createdBy INT NOT NULL,
   created DATETIME NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY uxUserName (userName),
-  UNIQUE KEY uxEmail (email)
+  UNIQUE KEY uxName (name),
+  UNIQUE KEY uxEmail (email),
+  CONSTRAINT fkUsersUsersCreatedBy
+    FOREIGN KEY (createdBy)
+    REFERENCES Users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE Roles (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(20) NOT NULL,
+  fullName VARCHAR(70) NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY uxName (name)
 );
@@ -29,14 +38,14 @@ CREATE TABLE UsersInRoles (
   PRIMARY KEY (userId, roleId),
   CONSTRAINT fkUsersUsersInRolesUserId
     FOREIGN KEY (userId)
-    REFERENCES users (id)
+    REFERENCES Users (id)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION,
+    ON UPDATE CASCADE,
   CONSTRAINT fkRolesUsersInRolesRoleId
     FOREIGN KEY (roleId)
-    REFERENCES roles (id)
+    REFERENCES Roles (id)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE Tokens (
@@ -48,20 +57,19 @@ CREATE TABLE Tokens (
   PRIMARY KEY (id),
   CONSTRAINT fkUsersTokensUserId
     FOREIGN KEY (userId)
-    REFERENCES users (id)
+    REFERENCES Users (id)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE UserActivities (
-  id INT NOT NULL AUTO_INCREMENT,
-  activity DATETIME NOT NULL,
   userId INT NOT NULL,
   userIp VARCHAR(39) NOT NULL,
-  PRIMARY KEY (id),
+  activity DATETIME NOT NULL,
+  PRIMARY KEY (userId, activity),
   CONSTRAINT fkUsersUserActivitiesUserId
     FOREIGN KEY (userId)
-    REFERENCES users (id)
+    REFERENCES Users (id)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION
+    ON UPDATE CASCADE
 );
