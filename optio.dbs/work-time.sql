@@ -24,7 +24,7 @@ CREATE TABLE Shifts (
   sign VARCHAR(5) NOT NULL,
   isValid BOOL NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY uxSign (sign)
+  UNIQUE KEY Sign (sign)
 );
 
 CREATE TABLE ShiftDurations (
@@ -38,12 +38,12 @@ CREATE TABLE ShiftDurations (
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
   PRIMARY KEY (shiftId, validFrom),
-  CONSTRAINT fkShiftsShiftDurationsShiftId
+  CONSTRAINT Shifts_ShiftDurations_shiftId
     FOREIGN KEY (shiftId)
     REFERENCES Shifts (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fkUsersShiftDurationsCreatedBy
+  CONSTRAINT Users_ShiftDurations_createdBy
     FOREIGN KEY (createdBy)
     REFERENCES OptioSystem.Users (id)
     ON DELETE CASCADE

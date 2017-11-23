@@ -15,9 +15,9 @@ CREATE TABLE Users (
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY uxName (name),
-  UNIQUE KEY uxEmail (email),
-  CONSTRAINT fkUsersUsersCreatedBy
+  UNIQUE KEY Name (name),
+  UNIQUE KEY Email (email),
+  CONSTRAINT Users_Users_createdBy
     FOREIGN KEY (createdBy)
     REFERENCES Users (id)
     ON DELETE CASCADE
@@ -29,19 +29,19 @@ CREATE TABLE Roles (
   name VARCHAR(20) NOT NULL,
   fullName VARCHAR(70) NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY uxName (name)
+  UNIQUE KEY Name (name)
 );
 
 CREATE TABLE UsersInRoles (
   userId INT NOT NULL,
   roleId INT NOT NULL,
   PRIMARY KEY (userId, roleId),
-  CONSTRAINT fkUsersUsersInRolesUserId
+  CONSTRAINT Users_UsersInRoles_userId
     FOREIGN KEY (userId)
     REFERENCES Users (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT fkRolesUsersInRolesRoleId
+  CONSTRAINT Roles_UsersInRoles_roleId
     FOREIGN KEY (roleId)
     REFERENCES Roles (id)
     ON DELETE CASCADE
@@ -55,7 +55,7 @@ CREATE TABLE Tokens (
   tokenIat DATETIME NOT NULL,
   tokenExp DATETIME NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT fkUsersTokensUserId
+  CONSTRAINT Users_Tokens_userId
     FOREIGN KEY (userId)
     REFERENCES Users (id)
     ON DELETE CASCADE
@@ -67,7 +67,7 @@ CREATE TABLE UserActivities (
   userIp VARCHAR(39) NOT NULL,
   activity DATETIME NOT NULL,
   PRIMARY KEY (userId, activity),
-  CONSTRAINT fkUsersUserActivitiesUserId
+  CONSTRAINT Users_UserActivities_userId
     FOREIGN KEY (userId)
     REFERENCES Users (id)
     ON DELETE CASCADE
