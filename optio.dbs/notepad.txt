@@ -1,0 +1,5 @@
+  CONSTRAINT UsersShiftDurations
+    FOREIGN KEY (createdBy)
+    REFERENCES OptioSystem.Users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE

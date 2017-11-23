@@ -24,4 +24,21 @@ INSERT INTO Shifts VALUES (40, 'N', 1);
 INSERT INTO Shifts VALUES (41, 'NS', 1);
 INSERT INTO Shifts VALUES (42, 'D5', 1);
 
-INSERT INTO ShiftDurations VALUES (1, );
+INSERT INTO ShiftDurations VALUES (1, '2017-01-01', '2017-04-03', '06:00', '14:00', 8, 0);
+INSERT INTO ShiftDurations VALUES (1, '2017-04-04', NULL, '06:30', '14:30', 8, 0);
+INSERT INTO ShiftDurations VALUES (2, '2017-01-01', '2017-04-10', '14:00', '22:00', 8, 0);
+INSERT INTO ShiftDurations VALUES (2, '2017-04-11', NULL, '14:00', '23:00', 9, 0);
+INSERT INTO ShiftDurations VALUES (3, '2017-01-01', NULL, '22:00', '06:00', 8, 0);
+INSERT INTO ShiftDurations VALUES (4, '2017-01-01', NULL, '07:00', '15:00', 8, 0);
+INSERT INTO ShiftDurations VALUES (5, '2017-01-01', NULL, '13:00', '21:00', 8, 0);
+INSERT INTO ShiftDurations VALUES (6, '2017-01-01', NULL, '07:30', '15:30', 8, 0);
+INSERT INTO ShiftDurations VALUES (7, '2017-01-01', NULL, '08:00', '20:00', 12, 0);
+INSERT INTO ShiftDurations VALUES (8, '2017-01-01', NULL, '20:00', '08:00', 12, 0);
+INSERT INTO ShiftDurations VALUES (9, '2017-01-01', NULL, '10:00', '18:00', 8, 0);
+INSERT INTO ShiftDurations VALUES (10, '2017-01-01', NULL, '12:00', '20:00', 8, 0);
+INSERT INTO ShiftDurations VALUES (11, '2017-01-01', NULL, '08:00', '15:30', 7, 30);
+INSERT INTO ShiftDurations VALUES (12, '2017-01-01', NULL, '17:00', '05:00', 12, 0);
+INSERT INTO ShiftDurations VALUES (13, '2017-01-01', NULL, '18:00', '02:00', 8, 0);
+INSERT INTO ShiftDurations VALUES (14, '2017-01-01', NULL, '00:00', '08:00', 8, 0);
+
+

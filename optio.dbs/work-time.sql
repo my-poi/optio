@@ -29,23 +29,16 @@ CREATE TABLE Shifts (
 
 CREATE TABLE ShiftDurations (
   shiftId INT NOT NULL,
-  validFrom DATETIME NOT NULL,
-  validTo DATETIME,
+  validFrom DATE NOT NULL,
+  validTo DATE,
   start TIME NOT NULL,
   finish TIME NOT NULL,
   hours TINYINT NOT NULL,
   minutes TINYINT NOT NULL,
-  createdBy INT NOT NULL,
-  created DATETIME NOT NULL,
   PRIMARY KEY (shiftId, validFrom),
   CONSTRAINT ShiftsShiftDurations
     FOREIGN KEY (shiftId)
     REFERENCES Shifts (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT UsersShiftDurations
-    FOREIGN KEY (createdBy)
-    REFERENCES OptioSystem.Users (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );

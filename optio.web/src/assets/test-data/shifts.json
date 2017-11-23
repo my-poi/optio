@@ -300,7 +300,7 @@
         "validTo": null,
         "start": "08:00",
         "finish": "15:30",
-        "duration": "08:00",
+        "duration": "07:30",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
@@ -327,7 +327,7 @@
         "validTo": null,
         "start": "17:00",
         "finish": "05:00",
-        "duration": "11:00",
+        "duration": "12:00",
         "createdBy": 1,
         "created": "2015-03-21T00:00:00"
       }
