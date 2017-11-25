@@ -3,21 +3,17 @@ import * as path from 'path';
 import { Query } from './objects/query';
 
 export class Queries {
-  list: Query[] = [];
+  dictionary: { [key: string]: string } = {};
 
-  generate() {
-    const queries = [
+  load() {
+    const queryNames = [
       'select-shifts',
       'select-shift-durations'
     ];
 
-    queries.forEach(queryName => {
+    queryNames.forEach(queryName => {
       const sql = fs.readFileSync(path.join(__dirname, 'sql/', queryName + '.sql'), 'utf8');
-      this.list.push(new Query(queryName, sql));
+      this.dictionary[queryName] = sql;
     });
-  }
-
-  getSql(queryName: string) {
-    return this.list.filter(query => query.name === queryName)[0].sql;
   }
 }

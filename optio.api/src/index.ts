@@ -1,18 +1,29 @@
-export {};
-
 import * as express from 'express';
+import { Request, Response } from 'express';
 import { Queries } from './queries';
+import { ShiftsRouter } from './routes/shifts';
+import { ShiftsMethods } from './methods/shifts';
+import { WorkTime } from './databases/work-time';
 
 const app = express();
 const queries = new Queries();
-queries.generate();
-console.log(queries.getSql('select-shifts'));
+queries.load();
+const workTime = new WorkTime();
+const shiftsMethods = new ShiftsMethods(queries, workTime);
 
-app.get('/api', (req: express.Request, res: express.Response) => {
+app.use('/api/data/shifts', ShiftsRouter);
+
+app.get('/api', (req: Request, res: Response) => {
   res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
   res.end('Usługi sieciowe Optio');
 });
 
 app.listen(8000, () => {
-  console.log('Optio API uruchomione!');
+  console.log('Usługi sieciowe Optio zostały uruchomione!');
 });
+
+export {
+  queries,
+  workTime,
+  shiftsMethods
+};
