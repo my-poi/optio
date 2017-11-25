@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Query } from './objects/query';
 
 export class Queries {
   dictionary: { [key: string]: string } = {};
