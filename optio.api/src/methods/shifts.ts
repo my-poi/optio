@@ -5,6 +5,7 @@ export class ShiftsMethods {
   constructor(private queries: Queries, private workTime: WorkTime) { }
 
   getShifts(callback: any) {
-    this.workTime.query(this.queries.dictionary['select-shifts'], null, (results: any) => callback(results));
+    const sql = this.queries.dictionary['select-shifts'];
+    this.workTime.query(sql, null, (results: any) => callback(results));
   }
 }

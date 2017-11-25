@@ -19,9 +19,9 @@ const shiftsMethods = new ShiftsMethods(queries, workTime);
 
 app.use('/api/data/shifts', ShiftsRouter);
 
-app.get('/api', (req: Request, res: Response) => {
-  res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
-  res.end('Usługi sieciowe Optio');
+app.get('/api', (request: Request, response: Response) => {
+  response.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+  response.end('Usługi sieciowe Optio');
 });
 
 app.listen(8000, () => {
