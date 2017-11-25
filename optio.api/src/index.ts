@@ -1,13 +1,13 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
 import { Queries } from './queries';
-// Routers
-import { ShiftsRouter } from './routers/shifts';
-// Methods
-import { ShiftsMethods } from './methods/shifts';
 // Databases
 import { System } from './databases/system';
 import { WorkTime } from './databases/work-time';
+// Methods
+import { ShiftsMethods } from './methods/shifts';
+// Routers
+import { ShiftsRouter } from './routers/shifts';
 
 const app: express.Application = express();
 const queries = new Queries();
