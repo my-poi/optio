@@ -1,8 +1,7 @@
 import * as mysql from 'mysql';
 
-export class System {
+export class SystemDatabase {
   private pool: mysql.Pool;
-  private counter = 0;
 
   constructor() {
     this.pool = mysql.createPool({
@@ -18,8 +17,6 @@ export class System {
     this.pool.query(sql, values, (error: any, results: any, fields: any) => {
       if (error) throw error;
       callback(results);
-      this.counter += 1;
-      console.log(this.counter);
     });
   }
 }

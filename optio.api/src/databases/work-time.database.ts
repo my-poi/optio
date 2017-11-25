@@ -1,6 +1,6 @@
 import * as mysql from 'mysql';
 
-export class WorkTime {
+export class WorkTimeDatabase {
   private pool: mysql.Pool;
   private counter = 0;
 
@@ -22,15 +22,4 @@ export class WorkTime {
       console.log(this.counter);
     });
   }
-
-  // foo(sql: string, values: any, callback: any) {
-  //   this.pool.getConnection((err, connection) => {
-  //     if (err) throw err;
-  //     connection.query(sql, values, (error, result) => {
-  //       connection.release();
-  //       if (error) throw error;
-  //       callback(result);
-  //     });
-  //   });
-  // }
 }

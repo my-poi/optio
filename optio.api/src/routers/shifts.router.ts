@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { ShiftsMethods } from '../methods/shifts';
+import { ShiftsMethods } from '../methods/shifts.methods';
 
 export class ShiftsRouter {
   router = Router();

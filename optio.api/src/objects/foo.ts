@@ -1,4 +1,4 @@
-export class Query {
+export class Foo {
   name: string;
   sql: string;
 

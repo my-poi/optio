@@ -3,18 +3,18 @@ import { Request, Response } from 'express';
 // Optio
 import { Queries } from './queries';
 // Databases
-import { System } from './databases/system';
-import { WorkTime } from './databases/work-time';
+import { SystemDatabase } from './databases/system.database';
+import { WorkTimeDatabase } from './databases/work-time.database';
 // Methods
-import { ShiftsMethods } from './methods/shifts';
+import { ShiftsMethods } from './methods/shifts.methods';
 // Routers
-import { ShiftsRouter } from './routers/shifts';
+import { ShiftsRouter } from './routers/shifts.router';
 
 const app = express();
 const queries = new Queries();
 // Databases
-const system = new System();
-const workTime = new WorkTime();
+const system = new SystemDatabase();
+const workTime = new WorkTimeDatabase();
 // Methods
 const shiftsMethods = new ShiftsMethods(queries, workTime);
 // Routers
