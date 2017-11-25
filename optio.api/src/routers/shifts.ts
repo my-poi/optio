@@ -1,12 +1,14 @@
 import { Router, Request, Response } from 'express';
-import * as index from '../index';
+import { ShiftsMethods } from '../methods/shifts';
 
-const router = Router();
+export class ShiftsRouter {
+  router = Router();
 
-router.get('/get-shifts', (request: Request, response: Response) => {
-  index.shiftsMethods.getShifts((results: any) => {
-    response.json(results);
-  });
-});
-
-export const ShiftsRouter: Router = router;
+  constructor(private shiftsMethods: ShiftsMethods) {
+    this.router.get('/get-shifts', (request: Request, response: Response) => {
+      this.shiftsMethods.getShifts((results: any) => {
+        response.json(results);
+      });
+    });
+  }
+}
