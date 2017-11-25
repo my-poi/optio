@@ -13,10 +13,10 @@ import { ShiftsRouter } from './routers/shifts.router';
 const app = express();
 const queries = new Queries();
 // Databases
-const system = new SystemDatabase();
-const workTime = new WorkTimeDatabase();
+const systemDatabase = new SystemDatabase();
+const workTimeDatabase = new WorkTimeDatabase();
 // Methods
-const shiftsMethods = new ShiftsMethods(queries, workTime);
+const shiftsMethods = new ShiftsMethods(queries, workTimeDatabase);
 // Routers
 const shiftsRouter = new ShiftsRouter(shiftsMethods);
 
