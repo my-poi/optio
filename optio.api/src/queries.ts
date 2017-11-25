@@ -5,9 +5,7 @@ import { Query } from './objects/query';
 export class Queries {
   dictionary: { [key: string]: string } = {};
 
-  constructor() { this.load(); }
-
-  load() {
+  constructor()  {
     const queryNames = [
       'select-shifts',
       'select-shift-durations'
