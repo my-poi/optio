@@ -1,13 +1,18 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
 import { Queries } from './queries';
-import { ShiftsRouter } from './routes/shifts';
+// Routers
+import { ShiftsRouter } from './routers/shifts';
+// Methods
 import { ShiftsMethods } from './methods/shifts';
+// Databases
+import { System } from './databases/system';
 import { WorkTime } from './databases/work-time';
 
-const app = express();
+const app: express.Application = express();
 const queries = new Queries();
 queries.load();
+const system = new System();
 const workTime = new WorkTime();
 const shiftsMethods = new ShiftsMethods(queries, workTime);
 
@@ -24,6 +29,7 @@ app.listen(8000, () => {
 
 export {
   queries,
+  system,
   workTime,
   shiftsMethods
 };
