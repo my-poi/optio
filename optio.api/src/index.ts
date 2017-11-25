@@ -12,7 +12,6 @@ import { ShiftsRouter } from './routers/shifts';
 
 const app: express.Application = express();
 const queries = new Queries();
-queries.load();
 const system = new System();
 const workTime = new WorkTime();
 const shiftsMethods = new ShiftsMethods(queries, workTime);
