@@ -12,9 +12,12 @@ import { ShiftsRouter } from './routers/shifts';
 
 const app = express();
 const queries = new Queries();
+// Databases
 const system = new System();
 const workTime = new WorkTime();
+// Methods
 const shiftsMethods = new ShiftsMethods(queries, workTime);
+// Routers
 const shiftsRouter = new ShiftsRouter(shiftsMethods);
 
 app.use('/api/data/shifts', shiftsRouter.router);
