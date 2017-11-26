@@ -13,8 +13,8 @@ export class WorkTimeDatabase {
     });
   }
 
-  query(sql: string, values: any, callback: any) {
-    this.pool.query(sql, values, (error: any, results: any, fields: any) => {
+  query(sql: string, parameters: any, callback: any) {
+    this.pool.query(sql, parameters, (error: any, results: any, fields: any) => {
       if (error) throw error;
       callback(results);
     });
