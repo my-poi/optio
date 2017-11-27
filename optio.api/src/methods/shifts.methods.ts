@@ -13,7 +13,7 @@ export class ShiftsMethods {
     const result: Shift[] = [];
 
     shiftDurationsData.forEach(row => {
-      const shiftDuration = new ShiftDuration(row.shiftId, row.validFrom, row.start, row.finish, row.hours, row.minutes, row.validTo);
+      const shiftDuration = new ShiftDuration(row.shiftId, row.validFrom, row.validTo, row.start, row.finish, row.hours, row.minutes);
       shiftDurations.push(shiftDuration);
     });
 
