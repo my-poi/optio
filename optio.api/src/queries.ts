@@ -4,7 +4,7 @@ import * as path from 'path';
 export class Queries {
   dictionary: { [key: string]: string } = {};
 
-  constructor()  {
+  constructor() {
     const queryNames = [
       'select-shift-durations',
       'select-shifts'
