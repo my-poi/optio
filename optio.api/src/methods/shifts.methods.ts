@@ -1,3 +1,4 @@
+import { RowDataPacket } from 'mysql2/promise';
 import { Queries } from '../queries';
 import { WorkTimeDatabase } from '../databases/work-time.database';
 import { Shift } from '../objects/shift';
@@ -7,8 +8,8 @@ export class ShiftsMethods {
   constructor(private queries: Queries, private workTimeDatabase: WorkTimeDatabase) { }
 
   async getShifts() {
-    const shiftRows = await this.workTimeDatabase.execute(this.queries.dictionary['select-shifts'], []);
-    const shiftDurationRows = await this.workTimeDatabase.execute(this.queries.dictionary['select-shift-durations'], []);
+    const shiftRows: RowDataPacket[] = await this.workTimeDatabase.execute(this.queries.dictionary['select-shifts'], []);
+    const shiftDurationRows: RowDataPacket[] = await this.workTimeDatabase.execute(this.queries.dictionary['select-shift-durations'], []);
 
     const shiftDurations: ShiftDuration[] = shiftDurationRows.map(row => {
       return new ShiftDuration(row.shiftId, row.validFrom, row.validTo, row.start, row.finish, row.hours, row.minutes);
