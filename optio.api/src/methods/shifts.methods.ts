@@ -10,7 +10,7 @@ export class ShiftsMethods {
     const shiftsData = await this.workTimeDatabase.execute(this.queries.dictionary['select-shifts'], []);
     const shiftDurationsData = await this.workTimeDatabase.execute(this.queries.dictionary['select-shift-durations'], []);
     const shiftDurations: ShiftDuration[] = [];
-    const result: Shift[] = [];
+    const shifts: Shift[] = [];
 
     shiftDurationsData.forEach(row => {
       const shiftDuration = new ShiftDuration(row.shiftId, row.validFrom, row.validTo, row.start, row.finish, row.hours, row.minutes);
@@ -21,9 +21,9 @@ export class ShiftsMethods {
       const durations = shiftDurations.filter(x => x.shiftId === row.id);
       const current = durations.filter(x => !x.validTo)[0] || null;
       const shift = new Shift(row.id, row.sign, row.isValid, durations, current);
-      result.push(shift);
+      shifts.push(shift);
     });
 
-    return result;
+    return shifts;
   }
 }
