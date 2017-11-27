@@ -8,6 +8,7 @@ import { PeriodDefinition } from '../../objects/period-definition';
 import { ScheduleDay } from '../../objects/schedule-day';
 import { Schedule } from '../../objects/schedule';
 import { TimeSpan } from '../../objects/time-span';
+import { ShiftDuration } from '../../objects/shift-duration';
 
 @Component({
   selector: 'app-schedule-tab',
@@ -128,7 +129,7 @@ export class ScheduleTab {
     });
   }
 
-  setMinute(scheduleDay) {
+  setMinute(scheduleDay: ScheduleDay) {
     setTimeout(() => {
       scheduleDay.m = scheduleDay.m.replace(/\D/g, '');
 
@@ -166,35 +167,18 @@ export class ScheduleTab {
       if (shift.id === 42) scheduleDay.x = 'D5';
 
       if (shift.id <= 20) {
-        const shiftDuration = this.getShiftDuration(shift, scheduleDay.d);
+        const shiftDuration: ShiftDuration = this.getShiftDuration(shift.durations, scheduleDay.d);
         scheduleDay.t = null;
         scheduleDay.s = null;
-        scheduleDay.h = shiftDuration.hours() > 0 ? shiftDuration.hours() : null;
-        scheduleDay.m = shiftDuration.minutes() > 0 ? shiftDuration.minutes() : null;
+        scheduleDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : null;
+        scheduleDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : null;
       }
 
       scheduleDay.s = shift.id;
     });
   }
 
-  getShiftDuration(shift, day) {
-    const shiftValue = this.getShiftValue(shift.durations, day);
-    const splitStart = shiftValue.start.split(':');
-    const splitFinish = shiftValue.finish.split(':');
-    const start = new TimeSpan(0, splitStart[0], splitStart[1]);
-    const finish = new TimeSpan(0, splitFinish[0], splitFinish[1]);
-    const midnight = new TimeSpan(1);
-    if (finish.totalMinutes() > start.totalMinutes()) {
-      finish.subtract(start);
-      return finish;
-    } else {
-      midnight.subtract(start);
-      midnight.add(finish);
-      return midnight;
-    }
-  }
-
-  getShiftValue(durations, day) {
+  getShiftDuration(durations, day): ShiftDuration {
     const dayTime = new Date(day).getTime();
     return durations.filter(x =>
       dayTime >= new Date(x.validFrom).getTime() &&
@@ -210,7 +194,7 @@ export class ScheduleTab {
     if (planned.totalMinutes() <= 0 || planned.totalMinutes() > 720) this.clearDay(scheduleDay);
   }
 
-  clearDay(scheduleDay) {
+  clearDay(scheduleDay: ScheduleDay) {
     scheduleDay.t = null;
     scheduleDay.s = null;
     scheduleDay.h = null;
@@ -218,7 +202,7 @@ export class ScheduleTab {
     scheduleDay.x = null;
   }
 
-  setSummaryData(employeeId) {
+  setSummaryData(employeeId: number) {
     setTimeout(() => {
       const schedule = this.schedule.filter(x => x.employeeId === employeeId)[0];
       this.calculateMonth(schedule);
@@ -228,7 +212,7 @@ export class ScheduleTab {
     });
   }
 
-  calculateMonth(schedule) {
+  calculateMonth(schedule: Schedule) {
     let hours = 0;
     let minutes = 0;
     let days = 0;
@@ -246,7 +230,7 @@ export class ScheduleTab {
     schedule.monthlyDays = days;
   }
 
-  calculateTotal(schedule) {
+  calculateTotal(schedule: Schedule) {
     let hours = 0;
     let minutes = 0;
     let days = 0;
@@ -271,14 +255,14 @@ export class ScheduleTab {
     schedule.totalDays = days;
   }
 
-  setMonthlyBackground(schedule) {
+  setMonthlyBackground(schedule: Schedule) {
     const planned = new TimeSpan(0, schedule.monthlyHours, schedule.monthlyMinutes);
     schedule.monthlyBackground = 1;
     if (planned.totalMinutes() === this.monthlyLimit * 60) schedule.monthlyBackground = 2;
     if (planned.totalMinutes() > this.monthlyLimit * 60) schedule.monthlyBackground = 4;
   }
 
-  setTotalBackground(schedule) {
+  setTotalBackground(schedule: Schedule) {
     const total = new TimeSpan(0, schedule.totalHours, schedule.totalMinutes);
     schedule.totalBackground = 1;
     if (total.totalMinutes() === this.periodLimit * 60) schedule.totalBackground = 2;

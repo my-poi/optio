@@ -33,7 +33,7 @@ export class ShiftsModal implements OnInit {
   }
 
   selectShift(shift) {
-    if (!this.selectedShift) this.selectedShift = new Shift();
+    if (!this.selectedShift) this.selectedShift = null;
     this.deselectShift();
     this.selectedShift = shift;
     this.selectedShift.isSelected = true;
