@@ -4,10 +4,10 @@ export class CalendarItem {
   name: string;
   value: number;
   isExpanded: boolean;
-  parent?: CalendarItem;
-  children?: CalendarItem[];
+  parent: CalendarItem;
+  children: CalendarItem[];
 
-  constructor(name: string, value: number, isExpanded: boolean, parent?: CalendarItem, children?: CalendarItem[]) {
+  constructor(name: string, value: number, isExpanded: boolean, parent: CalendarItem, children: CalendarItem[]) {
     this.name = name;
     this.value = value;
     this.isExpanded = isExpanded;
