@@ -5,10 +5,9 @@ export class ShiftsRouter {
   router = Router();
 
   constructor(private shiftsMethods: ShiftsMethods) {
-    this.router.get('/get-shifts', (request: Request, response: Response) => {
-      this.shiftsMethods.getShifts((results: any) => {
-        response.json(results);
-      });
+    this.router.get('/get-shifts', async (request: Request, response: Response) => {
+      const results = await this.shiftsMethods.getShifts();
+      response.json(results);
     });
   }
 }

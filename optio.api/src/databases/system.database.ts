@@ -1,4 +1,4 @@
-import * as mysql from 'mysql';
+import * as mysql from 'mysql2/promise';
 
 export class SystemDatabase {
   private pool: mysql.Pool;
@@ -13,10 +13,8 @@ export class SystemDatabase {
     });
   }
 
-  query(sql: string, parameters: any, callback: any) {
-    this.pool.query(sql, parameters, (error: any, results: any, fields: any) => {
-      if (error) throw error;
-      callback(results);
-    });
+  async execute(sql: string, values: any) {
+    const [rows, fields] = await this.pool.execute<mysql.RowDataPacket[]>(sql, values);
+    return rows;
   }
 }
