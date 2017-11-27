@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as cors from 'cors';
 import { Request, Response } from 'express';
 // Optio
 import { Queries } from './queries';
@@ -20,6 +21,7 @@ const shiftsMethods = new ShiftsMethods(queries, workTimeDatabase);
 // Routers
 const shiftsRouter = new ShiftsRouter(shiftsMethods);
 
+app.use(cors());
 app.use('/api/data/shifts', shiftsRouter.router);
 
 app.get('/api', (request: Request, response: Response) => {
