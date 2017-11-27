@@ -6,8 +6,8 @@ export class Queries {
 
   constructor()  {
     const queryNames = [
-      'select-shifts',
-      'select-shift-durations'
+      'select-shift-durations',
+      'select-shifts'
     ];
 
     queryNames.forEach(queryName => {
