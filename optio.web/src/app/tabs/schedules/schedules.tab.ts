@@ -30,8 +30,8 @@ export class SchedulesTab {
   onInitialized(tree) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
-    const currentRoot = tree.treeModel.roots.filter(x => x.data.value === currentYear)[0];
-    const currentChild = currentRoot.children.filter(x => x.data.value === currentMonth)[0];
+    const currentRoot = tree.treeModel.roots.find(x => x.data.value === currentYear);
+    const currentChild = currentRoot.children.find(x => x.data.value === currentMonth);
     currentChild.toggleActivated();
   }
 

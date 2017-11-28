@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
 
   showTab(event) {
     this.tabs.forEach(x => { if (x.main) x.disabled = true; });
-    const tab = this.tabs.filter(x => x.name === event.tabName)[0];
+    const tab = this.tabs.find(x => x.name === event.tabName);
     tab.hidden = false;
     this.activeTabId = this.tabs.indexOf(tab) + 1;
 
@@ -89,8 +89,8 @@ export class AppComponent implements OnInit {
 
   hideTab(event) {
     this.tabs.forEach(x => { if (x.main) x.disabled = false; });
-    const tab = this.tabs.filter(x => x.name === event.tabName)[0];
-    const parent = this.tabs.filter(x => x.name === tab.parent)[0];
+    const tab = this.tabs.find(x => x.name === event.tabName);
+    const parent = this.tabs.find(x => x.name === tab.parent);
     tab.hidden = true;
     this.activeTabId = parent.id;
   }

@@ -1,9 +1,9 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { Http } from '@angular/http';
 import { DataService } from '../../services/data.service';
 import { DisabledButtonsService } from '../../services/disabled-buttons.service';
 import { GlobalService } from '../../services/global.service';
 import { RibbonInfosService } from '../../services/ribbon-infos.service';
-import { Http } from '@angular/http';
 import { PeriodDefinition } from '../../objects/period-definition';
 import { ScheduleDay } from '../../objects/schedule-day';
 import { Schedule } from '../../objects/schedule';
@@ -74,15 +74,15 @@ export class ScheduleTab {
 
   setPeriodData() {
     let limit = 0;
-    const monthDefinition = this.dataService.periodDefinitions.filter(x => x.month === this.month)[0];
+    const monthDefinition = this.dataService.periodDefinitions.find(x => x.month === this.month);
     const periodMonths = this.dataService.periodDefinitions.filter(x => x.period === monthDefinition.period);
 
-    this.monthlyLimit = this.dataService.periods.filter(x =>
-      x.year === this.year && x.month === this.month)[0].hours;
+    this.monthlyLimit = this.dataService.periods.find(x =>
+      x.year === this.year && x.month === this.month).hours;
 
     periodMonths.forEach(x => {
-      const periodMonth = this.dataService.periods.filter(y =>
-        y.year === this.year && y.month === x.month)[0];
+      const periodMonth = this.dataService.periods.find(y =>
+        y.year === this.year && y.month === x.month);
       limit += periodMonth.hours;
     });
 
@@ -151,7 +151,7 @@ export class ScheduleTab {
         return;
       }
 
-      const shift = this.dataService.shifts.filter(x => x.isValid && x.sign.startsWith(scheduleDay.x.toUpperCase()))[0];
+      const shift = this.dataService.shifts.find(x => x.isValid && x.sign.startsWith(scheduleDay.x.toUpperCase()));
 
       if (!shift) {
         this.clearDay(scheduleDay);
@@ -202,7 +202,7 @@ export class ScheduleTab {
 
   setSummaryData(employeeId: number) {
     setTimeout(() => {
-      const schedule = this.schedule.filter(x => x.employeeId === employeeId)[0];
+      const schedule = this.schedule.find(x => x.employeeId === employeeId);
       this.calculateMonth(schedule);
       this.calculateTotal(schedule);
       this.setMonthlyBackground(schedule);
@@ -234,10 +234,10 @@ export class ScheduleTab {
     let days = 0;
 
     this.currentPeriodMonths.forEach(x => {
-      const periodMonthSchedule = this.schedules.filter(y =>
+      const periodMonthSchedule = this.schedules.find(y =>
         y.employeeId === schedule.employeeId &&
         y.year === this.year &&
-        y.month === x.month)[0];
+        y.month === x.month);
 
       periodMonthSchedule.sd.forEach(z => {
         hours += Number(z.h);
