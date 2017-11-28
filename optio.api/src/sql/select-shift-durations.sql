@@ -5,5 +5,5 @@ SELECT
   TIME_FORMAT(start, '%H:%i') as start, 
   TIME_FORMAT(finish, '%H:%i') as finish, 
   hours, 
-  minutes  
+  minutes 
 FROM ShiftDurations;
