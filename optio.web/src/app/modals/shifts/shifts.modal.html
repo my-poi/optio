@@ -28,7 +28,7 @@
           <td width="110">{{shift.sign}}</td>
           <td width="110">{{shift.current?.start}}</td>
           <td width="110">{{shift.current?.finish}}</td>
-          <td>{{shift.current?.duration}}</td>
+          <td>{{shift.current?.hours | number:'2.0-0'}}:{{shift.current?.minutes | number:'2.0-0'}}</td>
         </tr>
       </tbody>
     </table>
