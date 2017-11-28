@@ -180,7 +180,7 @@ export class ScheduleTab {
 
   getShiftDuration(durations: ShiftDuration[], day: Date): ShiftDuration {
     const dayTime = new Date(day).getTime();
-    return durations.filter(x => dayTime >= new Date(x.validFrom).getTime() && dayTime <= this.getShiftValidToDate(x.validTo).getTime())[0];
+    return durations.find(x => dayTime >= new Date(x.validFrom).getTime() && dayTime <= this.getShiftValidToDate(x.validTo).getTime());
   }
 
   getShiftValidToDate(validTo): Date {

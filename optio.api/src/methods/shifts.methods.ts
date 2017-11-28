@@ -17,7 +17,7 @@ export class ShiftsMethods {
 
     const shifts: Shift[] = shiftRows.map(row => {
       const durations = shiftDurations.filter(x => x.shiftId === row.id);
-      const current = durations.filter(x => !x.validTo)[0] || null;
+      const current = durations.find(x => !x.validTo);
       return new Shift(row.id, row.sign, row.isValid, durations, current);
     });
 
