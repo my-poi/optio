@@ -178,15 +178,19 @@ export class ScheduleTab {
     });
   }
 
-  getShiftDuration(durations, day): ShiftDuration {
+  getShiftDuration(durations: ShiftDuration[], day: Date): ShiftDuration {
     const dayTime = new Date(day).getTime();
-    return durations.filter(x =>
-      dayTime >= new Date(x.validFrom).getTime() &&
-      dayTime <= this.getShiftValidToDate(x.validTo))[0];
+    return durations.filter(x => {
+      const validFrom = new Date(x.validFrom);
+      validFrom.setHours(0, 0, 0, 0);
+      const validTo: Date = this.getShiftValidToDate(x.validTo);
+      validTo.setHours(0, 0, 0, 0);
+      return dayTime >= validFrom.getTime() && dayTime <= validTo.getTime();
+    })[0];
   }
 
-  getShiftValidToDate(validTo) {
-    return validTo === null ? new Date(9999, 12, 31).getTime() : new Date(validTo).getTime();
+  getShiftValidToDate(validTo): Date {
+    return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
   validateDailyLimit(scheduleDay) {
@@ -282,7 +286,7 @@ export class ScheduleTab {
   move(array: any[], element: any, delta: number) {
     const index = array.indexOf(element);
     const newIndex = index + delta;
-    if (newIndex < 0  || newIndex === array.length) return;
+    if (newIndex < 0 || newIndex === array.length) return;
     const indexes = [index, newIndex].sort();
     array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]);
   }
