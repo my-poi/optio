@@ -27,12 +27,7 @@ export class DataService {
     this.http.get('assets/test-data/holidays.json').subscribe(res => this.holidays = res.json());
     this.http.get('assets/test-data/period-definitions.json').subscribe(res => this.periodDefinitions = res.json());
     this.http.get('assets/test-data/periods.json').subscribe(res => this.periods = res.json());
-    this.http.get('https://optio.xyz/api/data/shifts/get-shifts').subscribe(res => {
-      this.shifts = res.json();
-      this.shifts.push(new Shift(40, 'N', true));
-      this.shifts.push(new Shift(41, 'NS', true));
-      this.shifts.push(new Shift(42, 'D5', true));
-    });
+    this.http.get('https://optio.xyz/api/data/shifts/get-shifts').subscribe(res => this.shifts = res.json());
     this.http.get('assets/test-data/time-sheets.json').subscribe(res => this.timeSheets = res.json());
   }
 }

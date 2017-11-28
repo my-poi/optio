@@ -4,7 +4,7 @@ export class Shift {
   id: number;
   sign: string;
   isValid: boolean;
-  isSelected?: boolean;
+  isSelected: boolean;
   durations?: ShiftDuration[];
   current?: ShiftDuration;
 
