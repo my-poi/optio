@@ -19,6 +19,21 @@ CREATE TABLE Holidays (
     ON UPDATE CASCADE
 );
 
+CREATE TABLE PeriodDefinitions (
+  period TINYINT NOT NULL,
+  month TINYINT NOT NULL,
+  sortOrder TINYINT NOT NULL,
+  PRIMARY KEY (period, month)
+);
+
+CREATE TABLE Periods (
+  year SMALLINT NOT NULL,
+  month TINYINT NOT NULL,
+  hours SMALLINT NOT NULL,
+  days TINYINT NOT NULL,
+  PRIMARY KEY (year, month)
+);
+
 CREATE TABLE Shifts (
   id INT NOT NULL AUTO_INCREMENT,
   sign VARCHAR(5) NOT NULL,

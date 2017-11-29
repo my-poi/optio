@@ -8,6 +8,8 @@ export class Queries {
     const queryNames = [
       'select-holiday-types',
       'select-holidays',
+      'select-period-definitions',
+      'select-periods',
       'select-shift-durations',
       'select-shifts'
     ];
