@@ -10,6 +10,10 @@ import { WorkTimeDatabase } from './databases/work-time.database';
 import { ShiftsMethods } from './methods/shifts.methods';
 // Routers
 import { ShiftsRouter } from './routers/shifts.router';
+import { HolidayTypesMethods } from './methods/holiday-types.methods';
+import { HolidaysMethods } from './methods/holidays.methods';
+import { HolidayTypesRouter } from './routers/holiday-types.router';
+import { HolidaysRouter } from './routers/holidays.router';
 
 const app = express();
 const queries = new Queries();
@@ -17,11 +21,17 @@ const queries = new Queries();
 const systemDatabase = new SystemDatabase();
 const workTimeDatabase = new WorkTimeDatabase();
 // Methods
+const holidayTypesMethods = new HolidayTypesMethods(queries, workTimeDatabase);
+const holidaysMethods = new HolidaysMethods(queries, workTimeDatabase);
 const shiftsMethods = new ShiftsMethods(queries, workTimeDatabase);
 // Routers
+const holidayTypesRouter = new HolidayTypesRouter(holidayTypesMethods);
+const holidaysRouter = new HolidaysRouter(holidaysMethods);
 const shiftsRouter = new ShiftsRouter(shiftsMethods);
 
 app.use(cors());
+app.use('/api/data/holiday-types', holidayTypesRouter.router);
+app.use('/api/data/holidays', holidaysRouter.router);
 app.use('/api/data/shifts', shiftsRouter.router);
 
 app.get('/api', (request: Request, response: Response) => {
