@@ -6,6 +6,8 @@ export class Queries {
 
   constructor() {
     const queryNames = [
+      'select-holiday-types',
+      'select-holidays',
       'select-shift-durations',
       'select-shifts'
     ];
