@@ -12,6 +12,7 @@ import { TimeSheet } from '../objects/time-sheet';
 
 @Injectable()
 export class DataService {
+  apiBaseUrl = 'https://optio.xyz/api/';
   companyUnits: CompanyUnit[];
   employees: Employee[];
   companyUnitSchedules: CompanyUnitSchedule[];
@@ -23,14 +24,23 @@ export class DataService {
   timeSheets: TimeSheet[];
 
   constructor(private http: Http) {
-    this.http.get('assets/test-data/company-units.json').subscribe(res => this.companyUnits = res.json());
-    this.http.get('assets/test-data/employees.json').subscribe(res => this.employees = res.json());
-    this.http.get('assets/test-data/company-unit-schedules.json').subscribe(res => this.companyUnitSchedules = res.json());
-    this.http.get('https://optio.xyz/api/data/holiday-types/get-holiday-types').subscribe(res => this.holidayTypes = res.json());
-    this.http.get('https://optio.xyz/api/data/holidays/get-holidays').subscribe(res => this.holidays = res.json());
-    this.http.get('https://optio.xyz/api/data/period-definitions/get-period-definitions').subscribe(res => this.periodDefinitions = res.json());
-    this.http.get('https://optio.xyz/api/data/periods/get-periods').subscribe(res => this.periods = res.json());
-    this.http.get('https://optio.xyz/api/data/shifts/get-shifts').subscribe(res => this.shifts = res.json());
-    this.http.get('assets/test-data/time-sheets.json').subscribe(res => this.timeSheets = res.json());
+    this.http.get('assets/test-data/company-units.json').subscribe(response =>
+      this.companyUnits = response.json());
+    this.http.get('assets/test-data/employees.json').subscribe(response =>
+      this.employees = response.json());
+    this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response =>
+      this.companyUnitSchedules = response.json());
+    this.http.get(this.apiBaseUrl + 'data/holiday-types/get-holiday-types').subscribe(response =>
+      this.holidayTypes = response.json());
+    this.http.get(this.apiBaseUrl + 'data/holidays/get-holidays').subscribe(response =>
+      this.holidays = response.json());
+    this.http.get(this.apiBaseUrl + 'data/period-definitions/get-period-definitions').subscribe(response =>
+      this.periodDefinitions = response.json());
+    this.http.get(this.apiBaseUrl + 'data/periods/get-periods').subscribe(response =>
+      this.periods = response.json());
+    this.http.get(this.apiBaseUrl + 'data/shifts/get-shifts').subscribe(response =>
+      this.shifts = response.json());
+    this.http.get('assets/test-data/time-sheets.json').subscribe(response =>
+      this.timeSheets = response.json());
   }
 }
