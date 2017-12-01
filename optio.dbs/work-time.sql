@@ -35,7 +35,7 @@ CREATE TABLE Periods (
 );
 
 CREATE TABLE Shifts (
-  id INT NOT NULL AUTO_INCREMENT,
+  id TINYINT NOT NULL AUTO_INCREMENT,
   sign VARCHAR(5) NOT NULL,
   isValid BOOL NOT NULL,
   PRIMARY KEY (id),
@@ -43,7 +43,7 @@ CREATE TABLE Shifts (
 );
 
 CREATE TABLE ShiftDurations (
-  shiftId INT NOT NULL,
+  shiftId TINYINT NOT NULL,
   validFrom DATE NOT NULL,
   validTo DATE,
   start TIME NOT NULL,
@@ -54,6 +54,132 @@ CREATE TABLE ShiftDurations (
   CONSTRAINT ShiftsShiftDurations
     FOREIGN KEY (shiftId)
     REFERENCES Shifts (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Schedules (
+  companyUnitId INT NOT NULL,
+  employeeId INT NOT NULL,
+  year SMALLINT NOT NULL,
+  month TINYINT NOT NULL,
+  sortOrder TINYINT NOT NULL,
+  scheduleIsLocked BOOL NOT NULL,
+  timeCardIsLocked BOOL NOT NULL,
+  comments VARCHAR(100) NOT NULL,
+  createdBy INT NOT NULL,
+  created DATETIME NOT NULL,
+  PRIMARY KEY (employeeId, year, month),
+  CONSTRAINT CompanyUnitsCompanyUnitSchedules
+    FOREIGN KEY (companyUnitId)
+    REFERENCES OptioOrganization.CompanyUnits (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT EmployeesCompanyUnitSchedules
+    FOREIGN KEY (employeeId)
+    REFERENCES OptioOrganization.Employees (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT UsersCompanyUnitSchedules
+    FOREIGN KEY (createdBy)
+    REFERENCES OptioSystem.Users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE ScheduleDays (
+  employeeId INT NOT NULL,
+  day DATE NOT NULL,
+  planned TIME NOT NULL,
+  shiftId TINYINT NOT NULL,
+  comments VARCHAR(100) NOT NULL,
+  updatedBy INT NOT NULL,
+  updated DATETIME NOT NULL,
+  PRIMARY KEY (employeeId, day),
+  CONSTRAINT EmployeesScheduleDays
+    FOREIGN KEY (employeeId)
+    REFERENCES OptioOrganization.Employees (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT UsersScheduleDays
+    FOREIGN KEY (updatedBy)
+    REFERENCES OptioSystem.Users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE AbsenceTypes (
+  id TINYINT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  sign VARCHAR(5) NOT NULL,
+  isValid BOOL NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY Name (name),
+  UNIQUE KEY Sign (sign)
+);
+
+CREATE TABLE WorkedDays (
+  employeeId INT NOT NULL,
+  day DATE NOT NULL,
+  worked TIME NOT NULL,
+  night TIME NOT NULL,
+  shiftId TINYINT NOT NULL,
+  absenceTypeId TINYINT NOT NULL,
+  overtimeSurcharge TIME NOT NULL,
+  overtimeSundayHoliday TIME NOT NULL,
+  overtimeSundayHolidayFreeDay TIME NOT NULL,
+  overtimeNight TIME NOT NULL,
+  overtimeFree TIME NOT NULL,
+  comments VARCHAR(100) NOT NULL,
+  updatedBy INT NOT NULL,
+  updated DATETIME NOT NULL,
+  PRIMARY KEY (employeeId, day),
+  CONSTRAINT EmployeesWorkedDays
+    FOREIGN KEY (employeeId)
+    REFERENCES OptioOrganization.Employees (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT ShiftsWorkedDays
+    FOREIGN KEY (shiftId)
+    REFERENCES Shifts (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT AbsenceTypesWorkedDays
+    FOREIGN KEY (absenceTypeId)
+    REFERENCES AbsenceTypes (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT UsersWorkedDays
+    FOREIGN KEY (updatedBy)
+    REFERENCES OptioSystem.Users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Vacations (
+  employeeId INT NOT NULL,
+  start DATE NOT NULL,
+  finish DATE NOT NULL,
+  comments VARCHAR(100) NOT NULL,
+  isLocked BOOL NOT NULL,
+  createdBy INT NOT NULL,
+  created DATETIME NOT NULL,
+  updatedBy INT NOT NULL,
+  updated DATETIME NOT NULL,
+  PRIMARY KEY (employeeId, start),
+  CONSTRAINT EmployeesVacations
+    FOREIGN KEY (employeeId)
+    REFERENCES OptioOrganization.Employees (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT UsersVacations1
+    FOREIGN KEY (createdBy)
+    REFERENCES OptioSystem.Users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT UsersVacations2
+    FOREIGN KEY (updatedBy)
+    REFERENCES OptioSystem.Users (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );

@@ -24,12 +24,21 @@ export class DataService {
   timeSheets: TimeSheet[];
 
   constructor(private http: Http) {
+    this.load();
+  }
+
+  load() {
     this.http.get('assets/test-data/company-units.json').subscribe(response =>
       this.companyUnits = response.json());
     this.http.get('assets/test-data/employees.json').subscribe(response =>
       this.employees = response.json());
-    this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response =>
-      this.companyUnitSchedules = response.json());
+    this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response => {
+        this.companyUnitSchedules = response.json();
+        let result = '';
+        this.companyUnitSchedules.forEach(x => {
+          result += x.companyUnitId;
+        });
+      });
     this.http.get(this.apiBaseUrl + 'data/holiday-types/get-holiday-types').subscribe(response =>
       this.holidayTypes = response.json());
     this.http.get(this.apiBaseUrl + 'data/holidays/get-holidays').subscribe(response =>
