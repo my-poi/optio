@@ -64,8 +64,8 @@ CREATE TABLE Schedules (
   year SMALLINT NOT NULL,
   month TINYINT NOT NULL,
   sortOrder TINYINT NOT NULL,
-  scheduleIsLocked BOOL NOT NULL,
-  timeCardIsLocked BOOL NOT NULL,
+  plannedIsLocked BOOL NOT NULL,
+  workedIsLocked BOOL NOT NULL,
   comments VARCHAR(100) NOT NULL,
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE Schedules (
     ON UPDATE CASCADE
 );
 
-CREATE TABLE ScheduleDays (
+CREATE TABLE PlannedDays (
   employeeId INT NOT NULL,
   day DATE NOT NULL,
   planned TIME NOT NULL,
@@ -96,12 +96,12 @@ CREATE TABLE ScheduleDays (
   updatedBy INT NOT NULL,
   updated DATETIME NOT NULL,
   PRIMARY KEY (employeeId, day),
-  CONSTRAINT EmployeesScheduleDays
+  CONSTRAINT EmployeesPlannedDays
     FOREIGN KEY (employeeId)
     REFERENCES OptioOrganization.Employees (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT UsersScheduleDays
+  CONSTRAINT UsersPlannedDays
     FOREIGN KEY (updatedBy)
     REFERENCES OptioSystem.Users (id)
     ON DELETE CASCADE
