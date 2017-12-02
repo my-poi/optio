@@ -16,7 +16,7 @@ export class StructureTab {
   employeesTableWidth = window.innerWidth - 552;
   employeesTableBodyHeight = window.innerHeight - 280;
   employeesInfoHeight = window.innerHeight - 203;
-  companyUnits = this.dataService.companyUnits;
+  companyUnits = this.dataService.hierarchicalCompanyUnits;
   allEmployees: Employee[];
   foundEmployees: Employee[];
   employeesFilter = new EmployeesFilter();
@@ -27,8 +27,6 @@ export class StructureTab {
   constructor(private dataService: DataService,
     private disabledButtonsService: DisabledButtonsService,
     private ribbonInfosService: RibbonInfosService) {
-    this.selectedEmployee = this.dataService.employees[0];
-    this.selectAllClassifiedEmployees();
   }
 
   filterEmployees() {

@@ -4,7 +4,7 @@ import { EmployeeTab } from './employee.tab';
 
 describe('EmployeeTab', () => {
   let component: EmployeeTab;
-  let fixture: ComponentFixture<TabEmployeeComponent>;
+  let fixture: ComponentFixture<EmployeeTab>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -4,7 +4,6 @@ export class Employee {
   id: number;
   firstName: string;
   lastName: string;
-  fullName: string;
   phone1: string;
   phone2: string;
   fax: string;
@@ -14,8 +13,9 @@ export class Employee {
   created: Date;
   updatedBy: number;
   updated: Date;
-  classifications: Classification[];
+  classifications?: Classification[];
   companyUnitId: number;
+  fullName: string;
   path: string;
   info?: string;
   isSelected: boolean;

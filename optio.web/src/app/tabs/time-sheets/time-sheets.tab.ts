@@ -21,7 +21,11 @@ export class TimeSheetsTab {
 
   constructor(private http: Http,
     private dataService: DataService) {
-    this.timeSheets = dataService.timeSheets;
+      this.load();
+  }
+
+  load() {
+    this.timeSheets = this.dataService.timeSheets;
     this.selectedTimeSheet = this.timeSheets[0];
     this.loadEmployees();
   }

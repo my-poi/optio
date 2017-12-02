@@ -43,8 +43,9 @@ export class AppComponent implements OnInit {
     private globalService: GlobalService) {
   }
 
-  ngOnInit() {
-    this.http.get('assets/tabs.json').subscribe(res => this.tabs = res.json());
+  async ngOnInit() {
+    await this.dataService.load();
+    await this.http.get('assets/tabs.json').subscribe(res => this.tabs = res.json());
     this.browserService.detect();
   }
 

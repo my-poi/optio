@@ -15,7 +15,7 @@ import { Classification } from '../objects/classification';
 export class DataService {
   apiBaseUrl = 'https://optio.xyz/api/';
   companyUnits: CompanyUnit[];
-  hierarchicalCompanyUnits: CompanyUnit[];
+  hierarchicalCompanyUnits: CompanyUnit[] = [];
   employees: Employee[];
   companyUnitSchedules: CompanyUnitSchedule[];
   holidayTypes: HolidayType[];
@@ -25,57 +25,57 @@ export class DataService {
   shifts: Shift[];
   timeSheets: TimeSheet[];
 
-  constructor(private http: Http) {
-    this.load();
-  }
+  constructor(private http: Http) { }
 
-  load() {
-    this.http.get('assets/test-data/company-units.json').subscribe(response =>
-      this.companyUnits = response.json());
-    this.http.get('assets/test-data/employees.json').subscribe(response =>
-      this.employees = response.json());
-    this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response =>
+  async load() {
+    await this.http.get(this.apiBaseUrl + 'data/company-units/get-company-units').subscribe(response => {
+      this.companyUnits = response.json();
+      this.setHierarchicalCompanyUnits();
+    });
+    await this.http.get(this.apiBaseUrl + 'data/employees/get-employees').subscribe(response => {
+      this.employees = response.json();
+      this.setAdditionalEmployeeData();
+    });
+    await this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response =>
       this.companyUnitSchedules = response.json());
-    this.http.get(this.apiBaseUrl + 'data/holiday-types/get-holiday-types').subscribe(response =>
+    await this.http.get(this.apiBaseUrl + 'data/holiday-types/get-holiday-types').subscribe(response =>
       this.holidayTypes = response.json());
-    this.http.get(this.apiBaseUrl + 'data/holidays/get-holidays').subscribe(response =>
+    await this.http.get(this.apiBaseUrl + 'data/holidays/get-holidays').subscribe(response =>
       this.holidays = response.json());
-    this.http.get(this.apiBaseUrl + 'data/period-definitions/get-period-definitions').subscribe(response =>
+    await this.http.get(this.apiBaseUrl + 'data/period-definitions/get-period-definitions').subscribe(response =>
       this.periodDefinitions = response.json());
-    this.http.get(this.apiBaseUrl + 'data/periods/get-periods').subscribe(response =>
+    await this.http.get(this.apiBaseUrl + 'data/periods/get-periods').subscribe(response =>
       this.periods = response.json());
-    this.http.get(this.apiBaseUrl + 'data/shifts/get-shifts').subscribe(response =>
+    await this.http.get(this.apiBaseUrl + 'data/shifts/get-shifts').subscribe(response =>
       this.shifts = response.json());
-    this.http.get('assets/test-data/time-sheets.json').subscribe(response =>
+    await this.http.get('assets/test-data/time-sheets.json').subscribe(response =>
       this.timeSheets = response.json());
   }
 
-  // const companyUnitRows: RowDataPacket[] = await this.organizationDatabase.execute(this.queries.dictionary['select-company-units'], []);
-  
-  //     const companyUnits: CompanyUnit[] = companyUnitRows.map(row => {
-  //       return new CompanyUnit(
-  //         row.id,
-  //         row.parentId,
-  //         row.sortOrder,
-  //         row.name,
-  //         row.sign,
-  //         row.phone1,
-  //         row.phone2,
-  //         row.fax,
-  //         row.email,
-  //         row.isExpanded,
-  //         row.isClassified,
-  //         row.isScheduled,
-  //         row.isPosition,
-  //         row.isHidden,
-  //         row.createdBy,
-  //         row.created,
-  //         row.updatedBy,
-  //         row.updated,
-  //         []);
-  //     });
-  
-  getHierarchicalCompanyUnits(companyUnits: CompanyUnit[]) {
-    
+  setHierarchicalCompanyUnits() {
+    const companyUnits = this.companyUnits.filter(x => !x.isHidden);
+    const root = companyUnits[0];
+    const allEmployees = new CompanyUnit();
+
+    this.setChildren(root, companyUnits);
+    allEmployees.id = 0;
+    allEmployees.name = 'Wszyscy pracownicy';
+    this.hierarchicalCompanyUnits.push(root);
+    this.hierarchicalCompanyUnits.push(allEmployees);
+  }
+
+  setChildren(parent: CompanyUnit, companyUnits: CompanyUnit[]) {
+    const children = companyUnits.filter(x => parent !== null && x.parentId === parent.id);
+    parent.children = children;
+    children.forEach(x => this.setChildren(x, companyUnits));
+  }
+
+  setAdditionalEmployeeData() {
+    this.employees.forEach(employee => {
+      if (employee.classifications.length > 0)
+        employee.companyUnitId = employee.classifications.find(x => !x.validTo).companyUnitId;
+      else employee.companyUnitId = 0;
+      employee.fullName = String.format('{0} {1}', employee.lastName, employee.firstName);
+    });
   }
 }
