@@ -5,7 +5,7 @@ import { WorkTimeDatabase } from '../databases/work-time.database';
 export class HolidaysMethods {
   constructor(private queries: Queries, private workTimeDatabase: WorkTimeDatabase) { }
 
-  async getHolidays() {
+  getHolidays() {
     return this.workTimeDatabase.execute(this.queries.dictionary['select-holidays'], []);
   }
 }

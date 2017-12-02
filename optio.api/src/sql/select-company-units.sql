@@ -1,1 +1,1 @@
-SELECT * FROM CompanyUnits;
+SELECT * FROM CompanyUnits ORDER BY sortOrder;

@@ -15,6 +15,7 @@ import { Classification } from '../objects/classification';
 export class DataService {
   apiBaseUrl = 'https://optio.xyz/api/';
   companyUnits: CompanyUnit[];
+  hierarchicalCompanyUnits: CompanyUnit[];
   employees: Employee[];
   companyUnitSchedules: CompanyUnitSchedule[];
   holidayTypes: HolidayType[];
@@ -47,5 +48,34 @@ export class DataService {
       this.shifts = response.json());
     this.http.get('assets/test-data/time-sheets.json').subscribe(response =>
       this.timeSheets = response.json());
+  }
+
+  // const companyUnitRows: RowDataPacket[] = await this.organizationDatabase.execute(this.queries.dictionary['select-company-units'], []);
+  
+  //     const companyUnits: CompanyUnit[] = companyUnitRows.map(row => {
+  //       return new CompanyUnit(
+  //         row.id,
+  //         row.parentId,
+  //         row.sortOrder,
+  //         row.name,
+  //         row.sign,
+  //         row.phone1,
+  //         row.phone2,
+  //         row.fax,
+  //         row.email,
+  //         row.isExpanded,
+  //         row.isClassified,
+  //         row.isScheduled,
+  //         row.isPosition,
+  //         row.isHidden,
+  //         row.createdBy,
+  //         row.created,
+  //         row.updatedBy,
+  //         row.updated,
+  //         []);
+  //     });
+  
+  getHierarchicalCompanyUnits(companyUnits: CompanyUnit[]) {
+    
   }
 }

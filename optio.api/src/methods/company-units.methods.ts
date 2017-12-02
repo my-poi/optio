@@ -5,7 +5,7 @@ import { OrganizationDatabase } from '../databases/organization.database';
 export class CompanyUnitsMethods {
   constructor(private queries: Queries, private organizationDatabase: OrganizationDatabase) { }
 
-  async getCompanyUnits() {
+  getCompanyUnits() {
     return this.organizationDatabase.execute(this.queries.dictionary['select-company-units'], []);
   }
 }

@@ -2,7 +2,6 @@ export class CompanyUnit {
   id: number;
   parentId: number;
   sortOrder: number;
-  path: string;
   name: string;
   sign: string;
   phone1: string;
@@ -18,7 +17,5 @@ export class CompanyUnit {
   created: Date;
   updatedBy: number;
   updated: Date;
-  children: any[];
-  info: string;
-  icon: string;
+  children: CompanyUnit[];
 }
