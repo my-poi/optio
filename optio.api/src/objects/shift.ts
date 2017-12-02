@@ -1,4 +1,4 @@
-import { ShiftDuration } from '../objects/shift-duration';
+import { ShiftDuration } from './shift-duration';
 
 export class Shift {
   id: number;

@@ -1,6 +1,6 @@
 import * as mysql from 'mysql2/promise';
 
-export class SystemDatabase {
+export class OrganizationDatabase {
   private pool: mysql.Pool;
 
   constructor() {
@@ -9,7 +9,7 @@ export class SystemDatabase {
       host: '192.168.1.18', // 192.168.1.18 127.0.0.1
       user: 'sa',
       password: 'ahoj',
-      database: 'OptioSystem'
+      database: 'OptioOrganization'
     });
   }
 
