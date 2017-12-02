@@ -9,6 +9,7 @@ import { PeriodDefinition } from '../objects/period-definition';
 import { Period } from '../objects/period';
 import { Shift } from '../objects/shift';
 import { TimeSheet } from '../objects/time-sheet';
+import { Classification } from '../objects/classification';
 
 @Injectable()
 export class DataService {
@@ -32,13 +33,8 @@ export class DataService {
       this.companyUnits = response.json());
     this.http.get('assets/test-data/employees.json').subscribe(response =>
       this.employees = response.json());
-    this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response => {
-        this.companyUnitSchedules = response.json();
-        let result = '';
-        this.companyUnitSchedules.forEach(x => {
-          result += x.companyUnitId;
-        });
-      });
+    this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response =>
+      this.companyUnitSchedules = response.json());
     this.http.get(this.apiBaseUrl + 'data/holiday-types/get-holiday-types').subscribe(response =>
       this.holidayTypes = response.json());
     this.http.get(this.apiBaseUrl + 'data/holidays/get-holidays').subscribe(response =>
