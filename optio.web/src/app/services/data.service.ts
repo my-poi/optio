@@ -14,16 +14,16 @@ import { Classification } from '../objects/classification';
 @Injectable()
 export class DataService {
   apiBaseUrl = 'https://optio.xyz/api/';
-  companyUnits: CompanyUnit[];
+  companyUnits: CompanyUnit[] = [];
   hierarchicalCompanyUnits: CompanyUnit[] = [];
-  employees: Employee[];
-  companyUnitSchedules: CompanyUnitSchedule[];
-  holidayTypes: HolidayType[];
-  holidays: Holiday[];
-  periodDefinitions: PeriodDefinition[];
-  periods: Period[];
-  shifts: Shift[];
-  timeSheets: TimeSheet[];
+  employees: Employee[] = [];
+  companyUnitSchedules: CompanyUnitSchedule[] = [];
+  holidayTypes: HolidayType[] = [];
+  holidays: Holiday[] = [];
+  periodDefinitions: PeriodDefinition[] = [];
+  periods: Period[] = [];
+  shifts: Shift[] = [];
+  timeSheets: TimeSheet[] = [];
 
   constructor(private http: Http) { }
 
@@ -34,7 +34,7 @@ export class DataService {
     });
     await this.http.get(this.apiBaseUrl + 'data/employees/get-employees').subscribe(response => {
       this.employees = response.json();
-      this.setAdditionalEmployeeData();
+      this.setAdditionalEmployeesData();
     });
     await this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response =>
       this.companyUnitSchedules = response.json());
@@ -70,7 +70,7 @@ export class DataService {
     children.forEach(x => this.setChildren(x, companyUnits));
   }
 
-  setAdditionalEmployeeData() {
+  setAdditionalEmployeesData() {
     this.employees.forEach(employee => {
       if (employee.classifications.length > 0)
         employee.companyUnitId = employee.classifications.find(x => !x.validTo).companyUnitId;

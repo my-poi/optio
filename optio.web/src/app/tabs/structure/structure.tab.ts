@@ -26,8 +26,7 @@ export class StructureTab {
 
   constructor(private dataService: DataService,
     private disabledButtonsService: DisabledButtonsService,
-    private ribbonInfosService: RibbonInfosService) {
-  }
+    private ribbonInfosService: RibbonInfosService) { }
 
   filterEmployees() {
     const result = this.allEmployees.filter(x => {
@@ -48,6 +47,7 @@ export class StructureTab {
 
   onInitialized(tree) {
     tree.treeModel.roots[0].toggleActivated();
+    this.selectAllClassifiedEmployees();
   }
 
   onActivate(event) {

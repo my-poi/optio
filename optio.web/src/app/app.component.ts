@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Output, ViewChild, AfterViewInit } from '@angular/core';
 import { StructureTab } from './tabs/structure/structure.tab';
 import { CompanyUnitTab } from './tabs/company-unit/company-unit.tab';
 import { EmployeeTab } from './tabs/employee/employee.tab';
@@ -26,7 +26,7 @@ import { Employee } from './objects/employee';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
   @ViewChild(StructureTab) structureTab: StructureTab;
   @ViewChild(CompanyUnitTab) companyUnitTab: CompanyUnitTab;
   @ViewChild(EmployeeTab) employeeTab: EmployeeTab;
@@ -40,13 +40,12 @@ export class AppComponent implements OnInit {
   constructor(private http: Http,
     private browserService: BrowserService,
     private dataService: DataService,
-    private globalService: GlobalService) {
-  }
+    private globalService: GlobalService) { }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
+    // this.browserService.detect();
     await this.dataService.load();
     await this.http.get('assets/tabs.json').subscribe(res => this.tabs = res.json());
-    this.browserService.detect();
   }
 
   tabChange() {
