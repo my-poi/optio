@@ -42,10 +42,9 @@ export class AppComponent implements AfterViewInit {
     private dataService: DataService,
     private globalService: GlobalService) { }
 
-  async ngAfterViewInit() {
+  ngAfterViewInit() {
     this.browserService.detect();
-    await this.dataService.load();
-    await this.http.get('assets/tabs.json').subscribe(res => this.tabs = res.json());
+    this.http.get('assets/tabs.json').subscribe(res => this.tabs = res.json());
   }
 
   tabChange() {

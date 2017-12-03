@@ -25,30 +25,32 @@ export class DataService {
   shifts: Shift[] = [];
   timeSheets: TimeSheet[] = [];
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) { 
+    this.load();
+  }
 
-  async load() {
-    await this.http.get(this.apiBaseUrl + 'data/company-units/get-company-units').subscribe(response => {
+  load() {
+    this.http.get(this.apiBaseUrl + 'data/company-units/get-company-units').subscribe(response => {
       this.companyUnits = response.json();
       this.setHierarchicalCompanyUnits();
     });
-    await this.http.get(this.apiBaseUrl + 'data/employees/get-employees').subscribe(response => {
+    this.http.get(this.apiBaseUrl + 'data/employees/get-employees').subscribe(response => {
       this.employees = response.json();
       this.setAdditionalEmployeesData();
     });
-    await this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response =>
+    this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response =>
       this.companyUnitSchedules = response.json());
-    await this.http.get(this.apiBaseUrl + 'data/holiday-types/get-holiday-types').subscribe(response =>
+    this.http.get(this.apiBaseUrl + 'data/holiday-types/get-holiday-types').subscribe(response =>
       this.holidayTypes = response.json());
-    await this.http.get(this.apiBaseUrl + 'data/holidays/get-holidays').subscribe(response =>
+    this.http.get(this.apiBaseUrl + 'data/holidays/get-holidays').subscribe(response =>
       this.holidays = response.json());
-    await this.http.get(this.apiBaseUrl + 'data/period-definitions/get-period-definitions').subscribe(response =>
+    this.http.get(this.apiBaseUrl + 'data/period-definitions/get-period-definitions').subscribe(response =>
       this.periodDefinitions = response.json());
-    await this.http.get(this.apiBaseUrl + 'data/periods/get-periods').subscribe(response =>
+    this.http.get(this.apiBaseUrl + 'data/periods/get-periods').subscribe(response =>
       this.periods = response.json());
-    await this.http.get(this.apiBaseUrl + 'data/shifts/get-shifts').subscribe(response =>
+    this.http.get(this.apiBaseUrl + 'data/shifts/get-shifts').subscribe(response =>
       this.shifts = response.json());
-    await this.http.get('assets/test-data/time-sheets.json').subscribe(response =>
+    this.http.get('assets/test-data/time-sheets.json').subscribe(response =>
       this.timeSheets = response.json());
   }
 
