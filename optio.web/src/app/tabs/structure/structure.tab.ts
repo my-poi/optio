@@ -33,7 +33,7 @@ export class StructureTab {
       if (x.lastName.toLowerCase().indexOf(this.employeesFilter.lastName.toLocaleLowerCase()) >= 0 &&
         x.firstName.toLowerCase().indexOf(this.employeesFilter.firstName.toLocaleLowerCase()) >= 0 &&
         x.phone1.toLowerCase().indexOf(this.employeesFilter.phone1.toLocaleLowerCase()) >= 0 &&
-        x.phone1.toLowerCase().indexOf(this.employeesFilter.phone1.toLocaleLowerCase()) >= 0 &&
+        x.phone2.toLowerCase().indexOf(this.employeesFilter.phone2.toLocaleLowerCase()) >= 0 &&
         x.email.toLowerCase().indexOf(this.employeesFilter.email.toLocaleLowerCase()) >= 0) return true;
       return false;
     });
@@ -47,7 +47,6 @@ export class StructureTab {
 
   onInitialized(tree) {
     tree.treeModel.roots[0].toggleActivated();
-    this.selectAllClassifiedEmployees();
   }
 
   onActivate(event) {
@@ -74,7 +73,6 @@ export class StructureTab {
   }
 
   selectAllClassifiedEmployees() {
-    console.log(this.dataService.employees.length);
     this.allEmployees = this.dataService.employees.filter(x => x.companyUnitId);
     this.copyToFoundEmployees();
   }
