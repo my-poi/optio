@@ -74,6 +74,7 @@ export class StructureTab {
   }
 
   selectAllClassifiedEmployees() {
+    console.log(this.dataService.employees.length);
     this.allEmployees = this.dataService.employees.filter(x => x.companyUnitId);
     this.copyToFoundEmployees();
   }
