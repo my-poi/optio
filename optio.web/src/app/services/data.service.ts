@@ -25,7 +25,7 @@ export class DataService {
   shifts: Shift[] = [];
   timeSheets: TimeSheet[] = [];
 
-  constructor(private http: Http) { 
+  constructor(private http: Http) {
     this.load();
   }
 
