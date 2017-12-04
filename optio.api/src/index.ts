@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as cors from 'cors';
 import { Request, Response } from 'express';
+import { json, urlencoded } from 'body-parser';
 // Optio
 import { Queries } from './queries';
 // Databases
@@ -16,7 +17,11 @@ import { HolidaysMethods } from './methods/holidays.methods';
 import { PeriodDefinitionsMethods } from './methods/period-definitions.methods';
 import { PeriodsMethods } from './methods/periods.methods';
 import { ShiftsMethods } from './methods/shifts.methods';
+import { TokensMethods } from './methods/tokens.methods';
+// Public routers
+import { UsersPublicRouter } from './routers/public/users.public-router';
 // Routers
+import { TokenHandler } from './routers/token-handler.router';
 import { ClassificationsRouter } from './routers/classifications.router';
 import { CompanyUnitsRouter } from './routers/company-units.router';
 import { EmployeesRouter } from './routers/employees.router';
@@ -41,6 +46,9 @@ const holidaysMethods = new HolidaysMethods(queries, workTimeDatabase);
 const periodDefinitionsMethods = new PeriodDefinitionsMethods(queries, workTimeDatabase);
 const periodsMethods = new PeriodsMethods(queries, workTimeDatabase);
 const shiftsMethods = new ShiftsMethods(queries, workTimeDatabase);
+const tokensMethods = new TokensMethods();
+// Public routers
+const usersPublicRouter = new UsersPublicRouter(tokensMethods);
 // Routers
 const classificationsRouter = new ClassificationsRouter(classificationsMethods);
 const companyUnitsRouter = new CompanyUnitsRouter(companyUnitsMethods);
@@ -50,8 +58,15 @@ const holidaysRouter = new HolidaysRouter(holidaysMethods);
 const periodDefinitionsRouter = new PeriodDefinitionsRouter(periodDefinitionsMethods);
 const periodsRouter = new PeriodsRouter(periodsMethods);
 const shiftsRouter = new ShiftsRouter(shiftsMethods);
+const tokenHandler = new TokenHandler();
 
 app.use(cors());
+app.use(json({ limit: '2mb' }));
+app.use(urlencoded({ limit: '2mb', extended: true }));
+app.disable('x-powered-by');
+
+app.use('/api/public/users', usersPublicRouter.router);
+app.use('/api/data/*', tokenHandler.router);
 app.use('/api/data/classifications', classificationsRouter.router);
 app.use('/api/data/company-units', companyUnitsRouter.router);
 app.use('/api/data/employees', employeesRouter.router);
@@ -62,7 +77,7 @@ app.use('/api/data/periods', periodsRouter.router);
 app.use('/api/data/shifts', shiftsRouter.router);
 
 app.get('/api', (request: Request, response: Response) => {
-  response.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+  response.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
   response.end('Usługi sieciowe Optio');
 });
 
