@@ -94,8 +94,4 @@ export class AppComponent implements AfterViewInit {
     tab.hidden = true;
     this.activeTabId = parent.id;
   }
-
-  showShifts() {
-    this.shiftsModal.open();
-  }
 }

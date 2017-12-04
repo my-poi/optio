@@ -46,7 +46,9 @@ export class StructureTab {
   }
 
   onInitialized(tree) {
-    tree.treeModel.roots[0].toggleActivated();
+    setTimeout(() => {
+      tree.treeModel.getFirstRoot().toggleActivated();
+    }, 500);
   }
 
   onActivate(event) {
