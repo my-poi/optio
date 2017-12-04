@@ -13,6 +13,7 @@ import { RibbonInfosService } from './services/ribbon-infos.service';
 import { Http } from '@angular/http';
 import { CompanyUnit } from './objects/company-unit';
 import { Employee } from './objects/employee';
+import { Tab } from './objects/tab';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +35,7 @@ export class AppComponent implements AfterViewInit {
   @ViewChild(ScheduleTab) scheduleTab: ScheduleTab;
   @ViewChild(ShiftsModal) shiftsModal: ShiftsModal;
   contentHeight = window.innerHeight - 151;
-  tabs;
+  tabs: Tab[];
   activeTabId = 1;
 
   constructor(private http: Http,

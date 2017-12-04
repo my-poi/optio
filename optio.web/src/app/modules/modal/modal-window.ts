@@ -39,7 +39,7 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(public _elRef: ElementRef, public _renderer: Renderer2) {}
+  constructor(private _elRef: ElementRef, private _renderer: Renderer2) {}
 
   backdropClick($event): void {
     if (this.backdrop === true && this._elRef.nativeElement === $event.target) {
