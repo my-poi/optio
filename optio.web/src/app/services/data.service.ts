@@ -14,16 +14,16 @@ import { Classification } from '../objects/classification';
 @Injectable()
 export class DataService {
   apiBaseUrl = 'https://optio.xyz/api/';
-  companyUnits: CompanyUnit[] = [];
+  companyUnits: CompanyUnit[];
   hierarchicalCompanyUnits: CompanyUnit[] = [];
-  employees: Employee[] = [];
-  companyUnitSchedules: CompanyUnitSchedule[] = [];
-  holidayTypes: HolidayType[] = [];
-  holidays: Holiday[] = [];
-  periodDefinitions: PeriodDefinition[] = [];
-  periods: Period[] = [];
-  shifts: Shift[] = [];
-  timeSheets: TimeSheet[] = [];
+  employees: Employee[];
+  companyUnitSchedules: CompanyUnitSchedule[];
+  holidayTypes: HolidayType[];
+  holidays: Holiday[];
+  periodDefinitions: PeriodDefinition[];
+  periods: Period[];
+  shifts: Shift[];
+  timeSheets: TimeSheet[];
 
   constructor(private http: Http) {
     this.load();
