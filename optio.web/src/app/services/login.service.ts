@@ -10,7 +10,7 @@ export class LoginService {
   login(callback) {
     const body = { email: 'email', password: 'password' };
     this.http.post(config.apiBaseUrl + 'public/users/login', body).subscribe(response => {
-      localStorage.token = response.json().token;
+      sessionStorage.token = response.json().token;
       callback();
     });
   }

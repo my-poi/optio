@@ -30,7 +30,7 @@ export class DataService {
   loadStartData(callback) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    headers.append('token', localStorage.token);
+    headers.append('token', sessionStorage.token);
     const options = { headers: headers };
 
     // do usunięcia!
