@@ -32,7 +32,7 @@ export class SchedulesTab {
     const currentMonth = new Date().getMonth();
     const currentRoot = tree.treeModel.roots.find(x => x.data.value === currentYear);
     const currentChild = currentRoot.children.find(x => x.data.value === currentMonth);
-    // currentChild.toggleActivated();
+    currentChild.toggleActivated();
   }
 
   onActivate(node) {

@@ -33,6 +33,12 @@ export class DataService {
     headers.append('token', localStorage.token);
     const options = { headers: headers };
 
+    // do usunięcia!
+    this.http.get('assets/test-data/company-unit-schedules.json', options).subscribe(response =>
+      this.companyUnitSchedules = response.json());
+    this.http.get('assets/test-data/time-sheets.json', options).subscribe(response =>
+      this.timeSheets = response.json());
+
     this.http.get(config.apiBaseUrl + 'data/get-start-data', options).subscribe(response => {
       const results = response.json();
       this.companyUnits = results.companyUnits;
@@ -46,26 +52,6 @@ export class DataService {
       this.shifts = results.shifts;
       callback();
     });
-    // this.http.get(config.apiBaseUrl + 'data/employees/get-employees', options).subscribe(response => {
-    //   this.employees = response.json();
-    //   this.setAdditionalEmployeesData();
-    // });
-    
-    // this.http.get(config.apiBaseUrl + 'data/holiday-types/get-holiday-types', options).subscribe(response =>
-    //   this.holidayTypes = response.json());
-    // this.http.get(config.apiBaseUrl + 'data/holidays/get-holidays', options).subscribe(response =>
-    //   this.holidays = response.json());
-    // this.http.get(config.apiBaseUrl + 'data/period-definitions/get-period-definitions', options).subscribe(response =>
-    //   this.periodDefinitions = response.json());
-    // this.http.get(config.apiBaseUrl + 'data/periods/get-periods', options).subscribe(response =>
-    //   this.periods = response.json());
-    // this.http.get(config.apiBaseUrl + 'data/shifts/get-shifts', options).subscribe(response =>
-    //   this.shifts = response.json());
-    // this.http.get('assets/test-data/company-unit-schedules.json', options).subscribe(response =>
-    //   this.companyUnitSchedules = response.json());
-    // this.http.get('assets/test-data/time-sheets.json', options).subscribe(response =>
-    //   this.timeSheets = response.json());
-    
   }
 
   setHierarchicalCompanyUnits() {
