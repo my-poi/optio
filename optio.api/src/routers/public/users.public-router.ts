@@ -10,8 +10,8 @@ export class UsersPublicRouter {
       const email = request.body.email;
       const password = request.body.password;
       if (!password || !email) return response.status(401).send(errors[1]);
-      const userIp = request.headers.host !== 'localhost:8000' ? request.headers['x-real-ip'] : 'localhost';
-      const token = tokensMethods.issueToken(2, 'Maciej Tokarz', String(userIp));
+      const userIp = String(request.headers['x-real-ip']);
+      const token = tokensMethods.issueToken(2, 'Maciej Tokarz', userIp);
       response.end(token);
     });
   }

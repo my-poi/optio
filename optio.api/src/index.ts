@@ -61,8 +61,8 @@ const shiftsRouter = new ShiftsRouter(shiftsMethods);
 const tokenHandlerRouter = new TokenHandlerRouter();
 
 app.use(cors());
-app.use(json({ limit: '2mb' }));
-app.use(urlencoded({ limit: '2mb', extended: true }));
+app.use(json({ limit: '1mb' }));
+app.use(urlencoded({ limit: '1mb', extended: true }));
 app.disable('x-powered-by');
 
 app.use('/api/public/users', usersPublicRouter.router);

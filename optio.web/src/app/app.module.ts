@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { NgbModalModule } from './modules/modal/modal.module';
@@ -7,6 +7,7 @@ import { NgbTabsetModule } from './modules/tabset/tabset.module';
 import { TreeModule } from 'angular-tree-component';
 import { NgxDnDModule } from '@swimlane/ngx-dnd';
 import { AppComponent } from './app.component';
+import { OptioErrorHandler } from './error-handler';
 
 // Extensions
 import './extensions/array';
@@ -75,7 +76,7 @@ import { SplashModal } from './modals/splash/splash.modal';
     TreeModule,
     NgxDnDModule
   ],
-  providers: [],
+  providers: [{ provide: ErrorHandler, useClass: OptioErrorHandler }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
