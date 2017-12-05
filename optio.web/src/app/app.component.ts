@@ -6,6 +6,7 @@ import { SchedulesTab } from './tabs/schedules/schedules.tab';
 import { ScheduleTab } from './tabs/schedule/schedule.tab';
 import { ShiftsModal } from './modals/shifts/shifts.modal';
 import { BrowserService } from './services/browser.service';
+import { LoginService } from './services/login.service';
 import { DataService } from './services/data.service';
 import { DisabledButtonsService } from './services/disabled-buttons.service';
 import { GlobalService } from './services/global.service';
@@ -19,6 +20,7 @@ import { Tab } from './objects/tab';
   selector: 'app-root',
   providers: [
     BrowserService,
+    LoginService,
     DataService,
     DisabledButtonsService,
     GlobalService,
@@ -40,12 +42,21 @@ export class AppComponent implements AfterViewInit {
 
   constructor(private http: Http,
     private browserService: BrowserService,
+    private loginService: LoginService,
     private dataService: DataService,
     private globalService: GlobalService) { }
 
   ngAfterViewInit() {
     this.browserService.detect();
-    this.http.get('assets/tabs.json').subscribe(res => this.tabs = res.json());
+    this.loadData();
+  }
+
+  loadData() {
+    this.loginService.login(() => {
+      this.dataService.loadStartData(() => {
+        this.http.get('assets/tabs.json').subscribe(res => this.tabs = res.json());
+      });
+    });
   }
 
   tabChange() {

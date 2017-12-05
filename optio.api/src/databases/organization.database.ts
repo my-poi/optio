@@ -1,4 +1,5 @@
 import * as mysql from 'mysql2/promise';
+import { config } from '../config';
 
 export class OrganizationDatabase {
   private pool: mysql.Pool;
@@ -6,7 +7,7 @@ export class OrganizationDatabase {
   constructor() {
     this.pool = mysql.createPool({
       connectionLimit: 10,
-      host: '192.168.1.18', // 192.168.1.18 127.0.0.1
+      host: config.host,
       user: 'sa',
       password: 'ahoj',
       database: 'OptioOrganization'

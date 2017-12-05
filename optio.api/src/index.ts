@@ -21,6 +21,7 @@ import { TokensMethods } from './methods/tokens.methods';
 // Public routers
 import { UsersPublicRouter } from './routers/public/users.public-router';
 // Routers
+import { StartRouter } from './routers/start.router';
 import { ClassificationsRouter } from './routers/classifications.router';
 import { CompanyUnitsRouter } from './routers/company-units.router';
 import { EmployeesRouter } from './routers/employees.router';
@@ -50,6 +51,15 @@ const tokensMethods = new TokensMethods();
 // Public routers
 const usersPublicRouter = new UsersPublicRouter(tokensMethods);
 // Routers
+const startRouter = new StartRouter(
+  companyUnitsMethods,
+  employeesMethods,
+  holidayTypesMethods,
+  holidaysMethods,
+  periodDefinitionsMethods,
+  periodsMethods,
+  shiftsMethods
+);
 const classificationsRouter = new ClassificationsRouter(classificationsMethods);
 const companyUnitsRouter = new CompanyUnitsRouter(companyUnitsMethods);
 const employeesRouter = new EmployeesRouter(employeesMethods);
@@ -66,7 +76,8 @@ app.use(urlencoded({ limit: '1mb', extended: true }));
 app.disable('x-powered-by');
 
 app.use('/api/public/users', usersPublicRouter.router);
-app.use('/api/data/*', tokenHandlerRouter.router);
+// app.use('/api/data/*', tokenHandlerRouter.router);
+app.use('/api/data/', startRouter.router);
 app.use('/api/data/classifications', classificationsRouter.router);
 app.use('/api/data/company-units', companyUnitsRouter.router);
 app.use('/api/data/employees', employeesRouter.router);

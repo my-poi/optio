@@ -25,9 +25,9 @@ export class TimeSheetsTab {
   }
 
   load() {
-    this.timeSheets = this.dataService.timeSheets;
-    this.selectedTimeSheet = this.timeSheets[0];
-    this.loadEmployees();
+    // this.timeSheets = this.dataService.timeSheets;
+    // this.selectedTimeSheet = this.timeSheets[0];
+    // this.loadEmployees();
   }
 
   loadEmployees() {

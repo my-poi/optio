@@ -12,7 +12,7 @@ export class UsersPublicRouter {
       if (!password || !email) return response.status(401).send(errors[1]);
       const userIp = String(request.headers['x-real-ip']);
       const token = tokensMethods.issueToken(2, 'Maciej Tokarz', userIp);
-      response.end(token);
+      response.json({token: token });
     });
   }
 }

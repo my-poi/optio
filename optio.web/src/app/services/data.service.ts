@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
+import { config } from '../config';
 import { CompanyUnit } from '../objects/company-unit';
 import { Employee } from '../objects/employee';
 import { HolidayType } from '../objects/holiday-type';
@@ -13,7 +14,6 @@ import { Classification } from '../objects/classification';
 
 @Injectable()
 export class DataService {
-  apiBaseUrl = 'https://optio.xyz/api/';
   companyUnits: CompanyUnit[];
   hierarchicalCompanyUnits: CompanyUnit[] = [];
   employees: Employee[];
@@ -25,33 +25,47 @@ export class DataService {
   shifts: Shift[];
   timeSheets: TimeSheet[];
 
-  constructor(private http: Http) {
-    this.load();
-  }
+  constructor(private http: Http) { }
 
-  load() {
-    this.http.get(this.apiBaseUrl + 'data/company-units/get-company-units').subscribe(response => {
-      this.companyUnits = response.json();
+  loadStartData(callback) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('token', localStorage.token);
+    const options = { headers: headers };
+
+    this.http.get(config.apiBaseUrl + 'data/get-start-data', options).subscribe(response => {
+      const results = response.json();
+      this.companyUnits = results.companyUnits;
       this.setHierarchicalCompanyUnits();
-    });
-    this.http.get(this.apiBaseUrl + 'data/employees/get-employees').subscribe(response => {
-      this.employees = response.json();
+      this.employees = results.employees;
       this.setAdditionalEmployeesData();
+      this.holidayTypes = results.holidayTypes;
+      this.holidays = results.holidays;
+      this.periodDefinitions = results.periodDefinitions;
+      this.periods = results.periods;
+      this.shifts = results.shifts;
+      callback();
     });
-    this.http.get('assets/test-data/company-unit-schedules.json').subscribe(response =>
-      this.companyUnitSchedules = response.json());
-    this.http.get(this.apiBaseUrl + 'data/holiday-types/get-holiday-types').subscribe(response =>
-      this.holidayTypes = response.json());
-    this.http.get(this.apiBaseUrl + 'data/holidays/get-holidays').subscribe(response =>
-      this.holidays = response.json());
-    this.http.get(this.apiBaseUrl + 'data/period-definitions/get-period-definitions').subscribe(response =>
-      this.periodDefinitions = response.json());
-    this.http.get(this.apiBaseUrl + 'data/periods/get-periods').subscribe(response =>
-      this.periods = response.json());
-    this.http.get(this.apiBaseUrl + 'data/shifts/get-shifts').subscribe(response =>
-      this.shifts = response.json());
-    this.http.get('assets/test-data/time-sheets.json').subscribe(response =>
-      this.timeSheets = response.json());
+    // this.http.get(config.apiBaseUrl + 'data/employees/get-employees', options).subscribe(response => {
+    //   this.employees = response.json();
+    //   this.setAdditionalEmployeesData();
+    // });
+    
+    // this.http.get(config.apiBaseUrl + 'data/holiday-types/get-holiday-types', options).subscribe(response =>
+    //   this.holidayTypes = response.json());
+    // this.http.get(config.apiBaseUrl + 'data/holidays/get-holidays', options).subscribe(response =>
+    //   this.holidays = response.json());
+    // this.http.get(config.apiBaseUrl + 'data/period-definitions/get-period-definitions', options).subscribe(response =>
+    //   this.periodDefinitions = response.json());
+    // this.http.get(config.apiBaseUrl + 'data/periods/get-periods', options).subscribe(response =>
+    //   this.periods = response.json());
+    // this.http.get(config.apiBaseUrl + 'data/shifts/get-shifts', options).subscribe(response =>
+    //   this.shifts = response.json());
+    // this.http.get('assets/test-data/company-unit-schedules.json', options).subscribe(response =>
+    //   this.companyUnitSchedules = response.json());
+    // this.http.get('assets/test-data/time-sheets.json', options).subscribe(response =>
+    //   this.timeSheets = response.json());
+    
   }
 
   setHierarchicalCompanyUnits() {
