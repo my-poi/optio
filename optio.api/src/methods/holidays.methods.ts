@@ -1,11 +1,11 @@
 import { RowDataPacket } from 'mysql2/promise';
-import { Queries } from '../queries';
 import { WorkTimeDatabase } from '../databases/work-time.database';
+import { queries } from '../queries';
 
 export class HolidaysMethods {
-  constructor(private queries: Queries, private workTimeDatabase: WorkTimeDatabase) { }
+  constructor(private workTimeDatabase: WorkTimeDatabase) { }
 
   getHolidays() {
-    return this.workTimeDatabase.execute(this.queries.dictionary['select-holidays'], []);
+    return this.workTimeDatabase.execute(queries['select-holidays'], []);
   }
 }

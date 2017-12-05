@@ -1,20 +1,20 @@
 import * as jwt from 'jsonwebtoken';
 import { Router, Request, Response, NextFunction } from 'express';
-import { Config } from '../config';
+import { config } from '../config';
+import { errors } from '../errors';
 
-export class TokenHandler {
+export class TokenHandlerRouter {
   router = Router();
-  config = new Config();
 
   constructor() {
     this.router.get('/', async (request: Request, response: Response, next: NextFunction) => {
       const token: any = request.headers.token;
       if (token) {
-        jwt.verify(token, this.config.secretKey, (error: any, decoded: any) => {
-          if (error) return response.status(401).send({success: false, message: 'Failed to authenticate token.', errorCode: '0001'});
+        jwt.verify(token, config.secretKey, (error: any, decoded: any) => {
+          if (error) return response.status(401).send(errors[3]);
           next();
         });
-      } else response.status(401).send({success: false, message: 'No token provided.', errorCode: '0003'});
+      } else response.status(401).send(errors[2]);
     });
   }
 }

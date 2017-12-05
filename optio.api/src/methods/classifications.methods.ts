@@ -1,11 +1,11 @@
 import { RowDataPacket } from 'mysql2/promise';
-import { Queries } from '../queries';
 import { OrganizationDatabase } from '../databases/organization.database';
+import { queries } from '../queries';
 
 export class ClassificationsMethods {
-  constructor(private queries: Queries, private organizationDatabase: OrganizationDatabase) { }
+  constructor(private organizationDatabase: OrganizationDatabase) { }
 
   getClassifications() {
-    return this.organizationDatabase.execute(this.queries.dictionary['select-classifications'], []);
+    return this.organizationDatabase.execute(queries['select-classifications'], []);
   }
 }

@@ -3,7 +3,7 @@ import * as cors from 'cors';
 import { Request, Response } from 'express';
 import { json, urlencoded } from 'body-parser';
 // Optio
-import { Queries } from './queries';
+import { queries } from './queries';
 // Databases
 import { OrganizationDatabase } from './databases/organization.database';
 import { SystemDatabase } from './databases/system.database';
@@ -21,7 +21,6 @@ import { TokensMethods } from './methods/tokens.methods';
 // Public routers
 import { UsersPublicRouter } from './routers/public/users.public-router';
 // Routers
-import { TokenHandler } from './routers/token-handler.router';
 import { ClassificationsRouter } from './routers/classifications.router';
 import { CompanyUnitsRouter } from './routers/company-units.router';
 import { EmployeesRouter } from './routers/employees.router';
@@ -30,22 +29,23 @@ import { HolidaysRouter } from './routers/holidays.router';
 import { PeriodDefinitionsRouter } from './routers/period-definitions.router';
 import { PeriodsRouter } from './routers/periods.router';
 import { ShiftsRouter } from './routers/shifts.router';
+import { TokenHandlerRouter } from './routers/token-handler.router';
+import { errors } from './errors';
 
 const app = express();
-const queries = new Queries();
 // Databases
 const organizationDatabase = new OrganizationDatabase();
 const systemDatabase = new SystemDatabase();
 const workTimeDatabase = new WorkTimeDatabase();
 // Methods
-const classificationsMethods = new ClassificationsMethods(queries, organizationDatabase);
-const companyUnitsMethods = new CompanyUnitsMethods(queries, organizationDatabase);
-const employeesMethods = new EmployeesMethods(queries, organizationDatabase);
-const holidayTypesMethods = new HolidayTypesMethods(queries, workTimeDatabase);
-const holidaysMethods = new HolidaysMethods(queries, workTimeDatabase);
-const periodDefinitionsMethods = new PeriodDefinitionsMethods(queries, workTimeDatabase);
-const periodsMethods = new PeriodsMethods(queries, workTimeDatabase);
-const shiftsMethods = new ShiftsMethods(queries, workTimeDatabase);
+const classificationsMethods = new ClassificationsMethods(organizationDatabase);
+const companyUnitsMethods = new CompanyUnitsMethods(organizationDatabase);
+const employeesMethods = new EmployeesMethods(organizationDatabase);
+const holidayTypesMethods = new HolidayTypesMethods(workTimeDatabase);
+const holidaysMethods = new HolidaysMethods(workTimeDatabase);
+const periodDefinitionsMethods = new PeriodDefinitionsMethods(workTimeDatabase);
+const periodsMethods = new PeriodsMethods(workTimeDatabase);
+const shiftsMethods = new ShiftsMethods(workTimeDatabase);
 const tokensMethods = new TokensMethods();
 // Public routers
 const usersPublicRouter = new UsersPublicRouter(tokensMethods);
@@ -58,7 +58,7 @@ const holidaysRouter = new HolidaysRouter(holidaysMethods);
 const periodDefinitionsRouter = new PeriodDefinitionsRouter(periodDefinitionsMethods);
 const periodsRouter = new PeriodsRouter(periodsMethods);
 const shiftsRouter = new ShiftsRouter(shiftsMethods);
-const tokenHandler = new TokenHandler();
+const tokenHandlerRouter = new TokenHandlerRouter();
 
 app.use(cors());
 app.use(json({ limit: '2mb' }));
@@ -66,7 +66,7 @@ app.use(urlencoded({ limit: '2mb', extended: true }));
 app.disable('x-powered-by');
 
 app.use('/api/public/users', usersPublicRouter.router);
-app.use('/api/data/*', tokenHandler.router);
+app.use('/api/data/*', tokenHandlerRouter.router);
 app.use('/api/data/classifications', classificationsRouter.router);
 app.use('/api/data/company-units', companyUnitsRouter.router);
 app.use('/api/data/employees', employeesRouter.router);

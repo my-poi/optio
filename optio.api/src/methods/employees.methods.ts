@@ -1,17 +1,17 @@
 import { RowDataPacket } from 'mysql2/promise';
-import { Queries } from '../queries';
 import { OrganizationDatabase } from '../databases/organization.database';
+import { queries } from '../queries';
 import { Classification } from '../objects/classification';
 import { Employee } from '../objects/employee';
 
 export class EmployeesMethods {
-  constructor(private queries: Queries, private organizationDatabase: OrganizationDatabase) { }
+  constructor(private organizationDatabase: OrganizationDatabase) { }
 
   async getEmployees() {
     const employeesRows: RowDataPacket[] = await this.organizationDatabase.
-      execute(this.queries.dictionary['select-employees'], []);
+      execute(queries['select-employees'], []);
     const classificationsRows: RowDataPacket[] = await this.organizationDatabase.
-      execute(this.queries.dictionary['select-classifications'], []);
+      execute(queries['select-classifications'], []);
 
     const classifications: Classification[] = classificationsRows.map(row => {
       return new Classification(row.employeeId, row.companyUnitId, row.validFrom, row.validTo, row.createdBy, row.created);

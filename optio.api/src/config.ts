@@ -1,4 +1,4 @@
-export class Config {
-  secretKey = 'secret_key';
-  salt = 'secret_salt';
-}
+export const config = {
+  secretKey: 'secret_key',
+  salt: 'secret_salt'
+};

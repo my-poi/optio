@@ -1,10 +1,9 @@
 import * as jwt from 'jsonwebtoken';
 import { Response } from 'express';
-import { Config } from '../config';
 import { VerifyCallback } from 'jsonwebtoken';
+import { config } from '../config';
 
 export class TokensMethods {
-  config = new Config();
 
   issueToken(userId: number, userName: string, userIp: string): string {
     const payload = {
@@ -14,7 +13,7 @@ export class TokensMethods {
       userIp: userIp
     };
 
-    const token = jwt.sign(payload, this.config.secretKey, {
+    const token = jwt.sign(payload, config.secretKey, {
       expiresIn: '60 days' // Eg: 60, "2 days", "10h", "7d"
     });
 
