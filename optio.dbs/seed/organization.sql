@@ -6,8 +6,8 @@ INSERT INTO CompanyUnits VALUES (3, 2, 3, 'Oddział A', '', '', '', '', '', true
 INSERT INTO CompanyUnits VALUES (4, 2, 4, 'Oddział B', '', '', '', '', '', true, true, true, false, false, 1, '2015-06-07T00:00:00', 2, '2016-10-25T14:02:00');
 INSERT INTO CompanyUnits VALUES (5, 1, 5, 'Wydział B', '', '', '', '', '', true, true, true, false, false, 1, '2015-06-07T00:00:00', 2, '2017-03-13T16:59:00');
 INSERT INTO CompanyUnits VALUES (6, 1, 6, 'Wydział C', '', '', '', '', '', true, false, false, false, false, 1, '2015-06-07T00:00:00', 2, '2017-03-13T16:59:00');
-INSERT INTO CompanyUnits VALUES (7, 6, 7, 'Oddział A', '', '', '', '', '', true, true, true, false, false, 1, '2015-06-07T00:00:00', 2, '2016-10-25T14:02:00');
-INSERT INTO CompanyUnits VALUES (8, 6, 8, 'Oddział B', '', '', '', '', '', true, true, true, false, false, 1, '2015-06-07T00:00:00', 2, '2016-10-25T14:02:00');
+INSERT INTO CompanyUnits VALUES (7, 3, 7, 'Referat I', '', '', '', '', '', true, true, false, false, false, 1, '2015-06-07T00:00:00', 2, '2016-10-25T14:02:00');
+INSERT INTO CompanyUnits VALUES (8, 3, 8, 'Referat II', '', '', '', '', '', true, true, true, false, false, 1, '2015-06-07T00:00:00', 2, '2016-10-25T14:02:00');
 
 INSERT INTO Employees VALUES (1, 'Maciej', 'Tokarz', '519 585 106', '', '', 'maciej.tokarz@my-poi.pl', 'assets/photos/employees/b1c9945d-bc77-4872-a56e-d5d47027cd87.png', 1, '2015-06-07T00:00:00', 2, '2017-03-29T10:34:00');
 INSERT INTO Employees VALUES (2, 'Anna', 'Szymańska', '122 399 966', '', '', '', 'assets/photos/employees/1055defc-3931-4655-82c9-25980bee8e4e.png', 1, '2015-06-07T00:00:00', 1, '2015-11-21T17:40:00');

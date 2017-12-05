@@ -16,6 +16,7 @@ import { HolidayTypesMethods } from './methods/holiday-types.methods';
 import { HolidaysMethods } from './methods/holidays.methods';
 import { PeriodDefinitionsMethods } from './methods/period-definitions.methods';
 import { PeriodsMethods } from './methods/periods.methods';
+import { SchedulesMethods } from './methods/schedules.methods';
 import { ShiftsMethods } from './methods/shifts.methods';
 import { TokensMethods } from './methods/tokens.methods';
 // Public routers
@@ -29,6 +30,7 @@ import { HolidayTypesRouter } from './routers/holiday-types.router';
 import { HolidaysRouter } from './routers/holidays.router';
 import { PeriodDefinitionsRouter } from './routers/period-definitions.router';
 import { PeriodsRouter } from './routers/periods.router';
+import { SchedulesRouter } from './routers/schedules.router';
 import { ShiftsRouter } from './routers/shifts.router';
 import { TokenHandlerRouter } from './routers/token-handler.router';
 import { errors } from './errors';
@@ -46,6 +48,7 @@ const holidayTypesMethods = new HolidayTypesMethods(workTimeDatabase);
 const holidaysMethods = new HolidaysMethods(workTimeDatabase);
 const periodDefinitionsMethods = new PeriodDefinitionsMethods(workTimeDatabase);
 const periodsMethods = new PeriodsMethods(workTimeDatabase);
+const schedulesMethods = new SchedulesMethods(organizationDatabase, workTimeDatabase);
 const shiftsMethods = new ShiftsMethods(workTimeDatabase);
 const tokensMethods = new TokensMethods();
 // Public routers
@@ -67,6 +70,7 @@ const holidayTypesRouter = new HolidayTypesRouter(holidayTypesMethods);
 const holidaysRouter = new HolidaysRouter(holidaysMethods);
 const periodDefinitionsRouter = new PeriodDefinitionsRouter(periodDefinitionsMethods);
 const periodsRouter = new PeriodsRouter(periodsMethods);
+const schedulesRouter = new SchedulesRouter(schedulesMethods);
 const shiftsRouter = new ShiftsRouter(shiftsMethods);
 const tokenHandlerRouter = new TokenHandlerRouter();
 
@@ -85,6 +89,7 @@ app.use('/api/data/holiday-types', holidayTypesRouter.router);
 app.use('/api/data/holidays', holidaysRouter.router);
 app.use('/api/data/period-definitions', periodDefinitionsRouter.router);
 app.use('/api/data/periods', periodsRouter.router);
+app.use('/api/data/schedules', schedulesRouter.router);
 app.use('/api/data/shifts', shiftsRouter.router);
 
 app.get('/api', (request: Request, response: Response) => {
