@@ -16,13 +16,12 @@ export class SchedulesMethods {
     const userId = request.body.decoded.userId;
     const date = new Date();
     // tslint:disable-next-line:max-line-length
-    const operationDateTime = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    const operationDateTime = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     const companyUnitId = Number(request.body.companyUnitId);
     const year = Number(request.body.year);
     const month = Number(request.body.month);
     const companyUnitRows = await this.organizationDatabase.execute(queries['select-company-units'], []);
-    const companyUnitIdentifiers: number[] = [];
-    companyUnitIdentifiers.push(companyUnitId);
+    let companyUnitIdentifiers: number[] = [];
     const companyUnits: CompanyUnit[] = companyUnitRows.map(row => {
       return new CompanyUnit(
         row.id,
@@ -74,7 +73,9 @@ export class SchedulesMethods {
       );
     });
 
-    this.getCompanyUnitIdentifiers(companyUnitId, companyUnits, companyUnitIdentifiers);
+    companyUnitIdentifiers = this.getCompanyUnitIdentifiers(companyUnitId, companyUnits);
+    companyUnitIdentifiers.push(companyUnitId);
+
     const employeeIdentifiers = employees.filter(x =>
       x.classifications &&
       x.classifications.find(y =>
@@ -83,12 +84,11 @@ export class SchedulesMethods {
       sort((a, b) => this.compareFullName(a, b)).
       map(z => z.id);
 
-    console.log(companyUnitIdentifiers);
-
-
-    this.insertPlannedDays(employeeIdentifiers, year, month, userId, operationDateTime);
-    this.insertWorkedDays(employeeIdentifiers, year, month, userId, operationDateTime);
-    this.insertSchedules(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime);
+    const sqls: string[] = [];
+    sqls.push(this.getInsertPlannedDaysSql(employeeIdentifiers, year, month, userId, operationDateTime));
+    sqls.push(this.getInsertWorkedDaysSql(employeeIdentifiers, year, month, userId, operationDateTime));
+    sqls.push(this.getInsertSchedulesSql(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime));
+    await this.workTimeDatabase.transaction(sqls);
 
     return 'OK';
   }
@@ -99,15 +99,13 @@ export class SchedulesMethods {
     return 0;
   }
 
-  getCompanyUnitIdentifiers(companyUnitId: number, companyUnits: CompanyUnit[], companyUnitIdentifiers: number[]) {
-    const identifiers = companyUnits.filter(x => x.parentId === companyUnitId && !x.isScheduled && !x.isHidden).map(y => y.id);
-    identifiers.forEach(x => {
-      companyUnitIdentifiers.push(x);
-      this.getCompanyUnitIdentifiers(x, companyUnits, companyUnitIdentifiers);
-    });
+  getCompanyUnitIdentifiers(companyUnitId: number, companyUnits: CompanyUnit[]): any {
+    const childIds = companyUnits.filter(x => x.parentId === companyUnitId && !x.isScheduled && !x.isHidden).map(y => y.id);
+    childIds.forEach(c => this.getCompanyUnitIdentifiers(c, companyUnits));
+    return childIds;
   }
 
-  async insertPlannedDays(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+  getInsertPlannedDaysSql(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
     let values = '';
     const daysInMonth = new Date(year, month, 0).getDate();
 
@@ -125,10 +123,11 @@ export class SchedulesMethods {
     VALUES
     `;
     sql += values.slice(0, -1) + ';';
-    await this.workTimeDatabase.execute(sql, []);
+    return sql;
+    // await this.workTimeDatabase.execute(sql, []);
   }
 
-  async insertWorkedDays(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+  getInsertWorkedDaysSql(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
     let values = '';
     const daysInMonth = new Date(year, month, 0).getDate();
 
@@ -146,12 +145,12 @@ export class SchedulesMethods {
     VALUES
     `;
     sql += values.slice(0, -1) + ';';
-    console.log(sql);
-    await this.workTimeDatabase.execute(sql, []);
+    return sql;
+    // await this.workTimeDatabase.execute(sql, []);
   }
 
   // tslint:disable-next-line:max-line-length
-  async insertSchedules(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+  getInsertSchedulesSql(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
     let values = '';
     let sortOrder = 1;
 
@@ -173,6 +172,7 @@ export class SchedulesMethods {
     VALUES
     `;
     sql += values.slice(0, -1) + ';';
-    await this.workTimeDatabase.execute(sql, []);
+    return sql;
+    // await this.workTimeDatabase.execute(sql, []);
   }
 }

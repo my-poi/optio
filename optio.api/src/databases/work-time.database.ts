@@ -18,4 +18,18 @@ export class WorkTimeDatabase {
     const [rows, fields] = await this.pool.execute<mysql.RowDataPacket[]>(sql, values);
     return rows;
   }
+
+  async transaction(sqls: string[]) {
+    const connection = await mysql.createConnection({
+      host: config.host,
+      user: 'sa',
+      password: 'ahoj',
+      database: 'OptioWorkTime'
+    });
+
+    await connection.beginTransaction();
+    sqls.forEach(async sql => await connection.query(sql, []));
+    await connection.commit();
+    connection.destroy();
+  }
 }
