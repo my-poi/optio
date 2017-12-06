@@ -13,6 +13,7 @@ const queryNames = [
   'select-holidays',
   'select-period-definitions',
   'select-periods',
+  'select-schedules',
   'select-shift-durations',
   'select-shifts'
 ];

@@ -139,4 +139,10 @@ export class SchedulesMethods {
 
     return values;
   }
+
+  async getSchedules(request: Request) {
+    const year = Number(request.params.year);
+    const month = Number(request.params.month);
+    return await this.workTimeDatabase.execute(queries['select-schedules'], [year, month]);
+  }
 }

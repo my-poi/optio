@@ -69,6 +69,8 @@ CREATE TABLE Schedules (
   comments VARCHAR(100),
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
+  updatedBy INT,
+  updated DATETIME,
   PRIMARY KEY (employeeId, year, month),
   CONSTRAINT CompanyUnitsCompanyUnitSchedules
     FOREIGN KEY (companyUnitId)
@@ -80,8 +82,13 @@ CREATE TABLE Schedules (
     REFERENCES OptioOrganization.Employees (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT UsersCompanyUnitSchedules
+  CONSTRAINT UsersCompanyUnitSchedules1
     FOREIGN KEY (createdBy)
+    REFERENCES OptioSystem.Users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT UsersCompanyUnitSchedules2
+    FOREIGN KEY (updatedBy)
     REFERENCES OptioSystem.Users (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE

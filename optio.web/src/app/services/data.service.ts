@@ -39,7 +39,7 @@ export class DataService {
     this.http.get('assets/test-data/time-sheets.json', options).subscribe(response =>
       this.timeSheets = response.json());
 
-    this.http.get(config.apiBaseUrl + 'data/get-start-data', options).subscribe(response => {
+    this.http.get(config.apiBaseUrl + 'data/start/get-start-data', options).subscribe(response => {
       const results = response.json();
       this.companyUnits = results.companyUnits;
       this.setHierarchicalCompanyUnits();
