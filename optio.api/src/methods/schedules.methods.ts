@@ -85,6 +85,7 @@ export class SchedulesMethods {
 
     console.log(companyUnitIdentifiers);
 
+
     this.insertPlannedDays(employeeIdentifiers, year, month, userId, operationDateTime);
     this.insertWorkedDays(employeeIdentifiers, year, month, userId, operationDateTime);
     this.insertSchedules(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime);
@@ -116,7 +117,6 @@ export class SchedulesMethods {
       }
     });
 
-    values = values.slice(0, -1);
     let sql = `INSERT INTO PlannedDays
     (employeeId,
     day,
@@ -124,7 +124,7 @@ export class SchedulesMethods {
     updated)
     VALUES
     `;
-    sql += values + ';';
+    sql += values.slice(0, -1) + ';';
     await this.workTimeDatabase.execute(sql, []);
   }
 
@@ -138,7 +138,6 @@ export class SchedulesMethods {
       }
     });
 
-    values = values.slice(0, -1);
     let sql = `INSERT INTO WorkedDays
     (employeeId,
     day,
@@ -146,7 +145,7 @@ export class SchedulesMethods {
     updated)
     VALUES
     `;
-    sql += values + ';';
+    sql += values.slice(0, -1) + ';';
     console.log(sql);
     await this.workTimeDatabase.execute(sql, []);
   }
@@ -161,7 +160,6 @@ export class SchedulesMethods {
       sortOrder += 1;
     });
 
-    values = values.slice(0, -1);
     let sql = `INSERT INTO Schedules
     (companyUnitId,
     employeeId,
@@ -174,7 +172,7 @@ export class SchedulesMethods {
     created)
     VALUES
     `;
-    sql += values + ';';
+    sql += values.slice(0, -1) + ';';
     await this.workTimeDatabase.execute(sql, []);
   }
 }
