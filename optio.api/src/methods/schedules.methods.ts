@@ -82,26 +82,24 @@ export class SchedulesMethods {
       sort((a, b) => this.compareFullName(a, b)).
       map(z => z.id);
 
-    const queryList: { sql: string, values: any }[] = [];
     const dayValues = this.getDayValues(employeeIdentifiers, year, month, userId);
-
-    queryList.push({
-      sql: queries['insert-planned-days'],
-      values: [dayValues]
-    });
-
-    queryList.push({
-      sql: queries['insert-worked-days'],
-      values: [dayValues]
-    });
-
-    queryList.push({
-      sql: queries['insert-schedules'],
-      values: [this.getScheduleValues(companyUnitId, employeeIdentifiers, year, month, userId)]
-    });
+    const queryList = [
+      {
+        sql: queries['insert-planned-days'],
+        values: [dayValues]
+      },
+      {
+        sql: queries['insert-worked-days'],
+        values: [dayValues]
+      },
+      {
+        sql: queries['insert-schedules'],
+        values: [this.getScheduleValues(companyUnitId, employeeIdentifiers, year, month, userId)]
+      }
+    ];
 
     await this.workTimeDatabase.transaction(queryList);
-    return 'OK';
+    return { success: true };
   }
 
   compareFullName(a: any, b: any) {

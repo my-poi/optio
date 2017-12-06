@@ -6,10 +6,10 @@ export class SystemDatabase {
 
   constructor() {
     this.pool = mysql.createPool({
-      connectionLimit: 10,
+      connectionLimit: config.connectionLimit,
       host: config.host,
-      user: 'sa',
-      password: 'ahoj',
+      user: config.user,
+      password: config.password,
       database: 'OptioSystem'
     });
   }

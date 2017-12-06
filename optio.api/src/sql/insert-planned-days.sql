@@ -1,4 +1,4 @@
-INSERT INTO PlannedDays
+INSERT IGNORE INTO PlannedDays
 (employeeId,
 day)
 VALUES

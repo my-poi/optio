@@ -6,10 +6,10 @@ export class WorkTimeDatabase {
 
   constructor() {
     this.pool = mysql.createPool({
-      connectionLimit: 10,
+      connectionLimit: config.connectionLimit,
       host: config.host,
-      user: 'sa',
-      password: 'ahoj',
+      user: config.user,
+      password: config.password,
       database: 'OptioWorkTime'
     });
   }
@@ -22,8 +22,8 @@ export class WorkTimeDatabase {
   async transaction(queryList: {sql: string, values: any}[]) {
     const connection = await mysql.createConnection({
       host: config.host,
-      user: 'sa',
-      password: 'ahoj',
+      user: config.user,
+      password: config.password,
       database: 'OptioWorkTime'
     });
 

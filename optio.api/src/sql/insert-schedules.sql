@@ -1,4 +1,4 @@
-INSERT INTO Schedules
+INSERT IGNORE INTO Schedules
 (companyUnitId,
 employeeId,
 year,
