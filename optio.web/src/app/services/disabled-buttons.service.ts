@@ -10,7 +10,9 @@ export class DisabledButtonsService {
   companyUnitMoveDown = false;
   employeeAdd = false;
   employeeEdit = false;
-  scheduleEdit = false;
+  schedulesAdd = false;
+  schedulesEdit = false;
+  schedulesLock = false;
   employeeScheduleMoveUp = false;
   employeeScheduleMoveDown = false;
 }

@@ -27,19 +27,19 @@ export class DataService {
 
   constructor(private http: Http) { }
 
-  loadStartData(callback) {
+  getOptions() {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('token', sessionStorage.token);
-    const options = { headers: headers };
+    return { headers: headers };
+  }
 
+  loadStartData(callback) {
     // do usunięcia!
-    this.http.get('assets/test-data/company-unit-schedules.json', options).subscribe(response =>
-      this.companyUnitSchedules = response.json());
-    this.http.get('assets/test-data/time-sheets.json', options).subscribe(response =>
+    this.http.get('assets/test-data/time-sheets.json', this.getOptions()).subscribe(response =>
       this.timeSheets = response.json());
 
-    this.http.get(config.apiBaseUrl + 'data/start/get-start-data', options).subscribe(response => {
+    this.http.get(config.apiBaseUrl + 'data/start/get-start-data', this.getOptions()).subscribe(response => {
       const results = response.json();
       this.companyUnits = results.companyUnits;
       this.setHierarchicalCompanyUnits();
@@ -78,6 +78,13 @@ export class DataService {
         employee.companyUnitId = employee.classifications.find(x => !x.validTo).companyUnitId;
       else employee.companyUnitId = 0;
       employee.fullName = String.format('{0} {1}', employee.lastName, employee.firstName);
+    });
+  }
+
+  loadCompanyUnitSchedules(year: number, month: number, callback) {
+    this.http.get(config.apiBaseUrl + `data/schedules/get-schedules/${year}/${month}`, this.getOptions()).subscribe(response => {
+      this.companyUnitSchedules = response.json();
+      callback();
     });
   }
 }

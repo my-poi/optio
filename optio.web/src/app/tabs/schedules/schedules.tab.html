@@ -23,7 +23,7 @@
             <tr *ngFor="let schedule of foundSchedules" (mousedown)="selectSchedule(schedule)" [class.selected]="schedule.isSelected">
               <td width="440">{{schedule.path}}</td>
               <td width="135">{{schedule.created | date: 'yyyy-MM-dd HH:mm'}}</td>
-              <td>{{schedule.lastModified | date: 'yyyy-MM-dd HH:mm'}}</td>
+              <td>{{schedule.updated | date: 'yyyy-MM-dd HH:mm'}}</td>
             </tr>
           </tbody>
         </table>

@@ -37,18 +37,31 @@ export class SchedulesTab {
 
   onActivate(node) {
     this.schedulesFilter = '';
+    this.selectedCalendarItem = node.data;
     this.deselectSchedule();
     this.loadSchedules();
-    this.selectedCalendarItem = node.data;
     const info = node.data.dateFrom() + '\n' + node.data.dateTo() + '\n' + node.data.name;
     this.ribbonInfosService.schedulesInfo = info;
   }
 
   loadSchedules() {
-    this.foundSchedules = this.dataService.companyUnitSchedules;
-    if (this.foundSchedules.length > 0) this.selectSchedule(this.foundSchedules[0]);
-    else this.selectedSchedule = null;
-    this.disabledButtonsService.scheduleEdit = !this.selectedSchedule;
+    if (this.selectedCalendarItem.parent) {
+      const year = this.selectedCalendarItem.parent.value;
+      const month = this.selectedCalendarItem.value + 1;
+      this.dataService.loadCompanyUnitSchedules(year, month, () => {
+        this.foundSchedules = this.dataService.companyUnitSchedules;
+        if (this.foundSchedules.length > 0) this.selectSchedule(this.foundSchedules[0]);
+        else this.selectedSchedule = null;
+        this.disabledButtonsService.schedulesAdd = false;
+        this.disabledButtonsService.schedulesEdit = !this.selectedSchedule;
+        this.disabledButtonsService.schedulesLock = !this.selectedSchedule;
+      });
+    } else {
+      this.disabledButtonsService.schedulesAdd = true;
+      this.disabledButtonsService.schedulesEdit = true;
+      this.disabledButtonsService.schedulesLock = true;
+      this.foundSchedules = [];
+    }
   }
 
   filterSchedules() {
@@ -61,7 +74,8 @@ export class SchedulesTab {
     this.deselectSchedule();
     if (this.foundSchedules.length > 0) this.selectSchedule(this.foundSchedules[0]);
     else this.selectedSchedule = null;
-    this.disabledButtonsService.scheduleEdit = !this.selectedSchedule;
+    this.disabledButtonsService.schedulesEdit = !this.selectedSchedule;
+    this.disabledButtonsService.schedulesLock = !this.selectedSchedule;
   }
 
   selectSchedule(schedule) {
