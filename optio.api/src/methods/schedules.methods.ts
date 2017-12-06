@@ -85,16 +85,16 @@ export class SchedulesMethods {
       map(z => z.id);
 
     const queryList: { sql: string, values: any }[] = [];
-    const daysValues = this.getDayValues(employeeIdentifiers, year, month, userId, operationDateTime);
+    const dayValues = this.getDayValues(employeeIdentifiers, year, month, userId, operationDateTime);
 
     queryList.push({
       sql: queries['insert-planned-days'],
-      values: [daysValues]
+      values: [dayValues]
     });
 
     queryList.push({
       sql: queries['insert-worked-days'],
-      values: [daysValues]
+      values: [dayValues]
     });
 
     queryList.push({
