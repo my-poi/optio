@@ -13,10 +13,10 @@ export class SchedulesMethods {
     private workTimeDatabase: WorkTimeDatabase) { }
 
   async addSchedule(request: Request) {
-    // 1. pobież id pracowników wskazanej komórki pomijając te gałęzie, które mają/mogą mieć własne grafiki
-    // 2. dodaj dni planu oraz przepracowanych zgodnie ze wskazanym rokiem i miesiącem (od 1 do ostatniego dnia)
-    // 3. dodaj rekord grafiku dla komórki organizacyjnej
-
+    const userId = request.body.decoded.userId;
+    const date = new Date();
+    // tslint:disable-next-line:max-line-length
+    const operationDateTime = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     const companyUnitId = Number(request.body.companyUnitId);
     const year = Number(request.body.year);
     const month = Number(request.body.month);
@@ -74,22 +74,80 @@ export class SchedulesMethods {
       );
     });
 
-
-    this.getChildIdentifiers(companyUnitId, companyUnits, companyUnitIdentifiers);
+    this.getCompanyUnitIdentifiers(companyUnitId, companyUnits, companyUnitIdentifiers);
     const employeeIdentifiers = employees.filter(x =>
       x.classifications &&
       x.classifications.find(y =>
         !y.validTo &&
-        companyUnitIdentifiers.includes(y.companyUnitId))).map(z => z.id);
+        companyUnitIdentifiers.includes(y.companyUnitId))).
+      sort((a, b) => this.compareFullName(a, b)).
+      map(z => z.id);
 
-    console.log(JSON.stringify(employeeIdentifiers));
-    return companyUnitIdentifiers;
+    this.insertPlannedDays(employeeIdentifiers, year, month, userId, operationDateTime);
+    this.insertWorkedDays(employeeIdentifiers, year, month, userId, operationDateTime);
+    this.insertSchedules(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime);
+
+    return 'OK';
   }
 
-  getChildIdentifiers(companyUnitId: number, companyUnits: CompanyUnit[], companyUnitIdentifiers: number[]) {
-    const identifiers = companyUnits.filter(x =>
-      x.parentId === companyUnitId && !x.isScheduled && !x.isHidden).map(y => y.id);
+  compareFullName(a: any, b: any) {
+    if (a.lastName + ' ' + a.firstName < b.lastName + ' ' + b.firstName) return -1;
+    if (a.lastName + ' ' + a.firstName > b.lastName + ' ' + b.firstName) return 1;
+    return 0;
+  }
+
+  getCompanyUnitIdentifiers(companyUnitId: number, companyUnits: CompanyUnit[], companyUnitIdentifiers: number[]) {
+    const identifiers = companyUnits.filter(x => x.parentId === companyUnitId && !x.isScheduled && !x.isHidden).map(y => y.id);
     identifiers.forEach(x => companyUnitIdentifiers.push(x));
-    identifiers.forEach(x => this.getChildIdentifiers(x, companyUnits, companyUnitIdentifiers));
+    identifiers.forEach(x => this.getCompanyUnitIdentifiers(x, companyUnits, companyUnitIdentifiers));
+  }
+
+  async insertPlannedDays(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+    let values = '';
+    const daysInMonth = new Date(year, month, 0).getDate();
+
+    employeeIdentifiers.forEach(employeeId => {
+      for (let i = 1; i <= daysInMonth; i++) {
+        values += `(${employeeId},'${year}-${month}-${i}',NULL,NULL,NULL,${userId},'${operationDateTime}'),`;
+      }
+    });
+
+    values = values.slice(0, -1);
+    let sql = queries['insert-planned-day'];
+    sql += values + ';';
+    await this.workTimeDatabase.execute(sql, []);
+  }
+
+  async insertWorkedDays(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+    let values = '';
+    const daysInMonth = new Date(year, month, 0).getDate();
+
+    employeeIdentifiers.forEach(employeeId => {
+      for (let i = 1; i <= daysInMonth; i++) {
+        // tslint:disable-next-line:max-line-length
+        values += `(${employeeId},'${year}-${month}-${i}',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,${userId},'${operationDateTime}'),`;
+      }
+    });
+
+    values = values.slice(0, -1);
+    let sql = queries['insert-worked-day'];
+    sql += values + ';';
+    await this.workTimeDatabase.execute(sql, []);
+  }
+
+  // tslint:disable-next-line:max-line-length
+  async insertSchedules(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+    let values = '';
+    let sortOrder = 1;
+
+    employeeIdentifiers.forEach(employeeId => {
+      values += `(${companyUnitId},${employeeId},${year},${month},${sortOrder},0,0,NULL,${userId},'${operationDateTime}'),`;
+      sortOrder += 1;
+    });
+
+    values = values.slice(0, -1);
+    let sql = queries['insert-schedule'];
+    sql += values + ';';
+    await this.workTimeDatabase.execute(sql, []);
   }
 }

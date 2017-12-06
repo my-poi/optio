@@ -80,8 +80,8 @@ app.use(urlencoded({ limit: '1mb', extended: true }));
 app.disable('x-powered-by');
 
 app.use('/api/public/users', usersPublicRouter.router);
-app.use('/api/data/*', tokenHandlerRouter.router);
-app.use('/api/data/', startRouter.router);
+app.use('/api/data/', tokenHandlerRouter.router);
+app.use('/api/data/start', startRouter.router);
 app.use('/api/data/classifications', classificationsRouter.router);
 app.use('/api/data/company-units', companyUnitsRouter.router);
 app.use('/api/data/employees', employeesRouter.router);
