@@ -7,6 +7,7 @@ CREATE TABLE CompanyUnits (
   parentId INT NOT NULL,
   sortOrder SMALLINT NOT NULL,
   name VARCHAR(50) NOT NULL,
+  path VARCHAR(200) NOT NULL,
   sign VARCHAR(10) NOT NULL,
   phone1 VARCHAR(20) NOT NULL,
   phone2 VARCHAR(20) NOT NULL,
