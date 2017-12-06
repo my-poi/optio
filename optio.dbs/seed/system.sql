@@ -1,7 +1,7 @@
 USE OptioSystem;
 
-INSERT INTO Users VALUES (1, 'optio', 'Serwis Optio', 'serwis@optio.xyz', 'PzsI7KYsIddiVubh0Li/mfTvvjdvZDNbcvQWOo/FDbo=', NULL, NULL, NULL, 0, 1, '2017-03-21 08:00:00');
-INSERT INTO Users VALUES (2, 'm.tokarz', 'Maciej Tokarz', 'maciej.tokarz@my-poi.pl', 'PzsI7KYsIddiVubh0Li/mfTvvjdvZDNbcvQWOo/FDbo=', NULL, NULL, NULL, 0, 1, '2017-03-21 08:00:00');
+INSERT INTO Users VALUES (1, 'optio', 'Serwis Optio', 'serwis@optio.xyz', 'PzsI7KYsIddiVubh0Li/mfTvvjdvZDNbcvQWOo/FDbo=', NULL, NULL, NULL, 0, 1, '2017-03-21 08:00:00', null, null);
+INSERT INTO Users VALUES (2, 'm.tokarz', 'Maciej Tokarz', 'maciej.tokarz@my-poi.pl', 'PzsI7KYsIddiVubh0Li/mfTvvjdvZDNbcvQWOo/FDbo=', NULL, NULL, NULL, 0, 1, '2017-03-21 08:00:00', null, null);
 
 INSERT INTO Roles VALUES (1, 'super-administrator', 'Super Administrator');
 INSERT INTO Roles VALUES (2, 'administrator', 'Administrator');

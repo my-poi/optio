@@ -16,7 +16,7 @@ export class SchedulesMethods {
     const userId = request.body.decoded.userId;
     const date = new Date();
     // tslint:disable-next-line:max-line-length
-    const operationDateTime = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    const operationDateTime = new Date();
     const companyUnitId = Number(request.body.companyUnitId);
     const year = Number(request.body.year);
     const month = Number(request.body.month);
@@ -118,7 +118,7 @@ export class SchedulesMethods {
     return childIds;
   }
 
-  getDayValues(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+  getDayValues(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: Date) {
     const values: any[] = [];
     const daysInMonth = new Date(year, month, 0).getDate();
 
@@ -132,7 +132,7 @@ export class SchedulesMethods {
   }
 
   // tslint:disable-next-line:max-line-length
-  getScheduleValues(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+  getScheduleValues(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: Date) {
     const values: any[] = [];
     let sortOrder = 1;
 

@@ -1,7 +1,5 @@
 INSERT INTO WorkedDays
 (employeeId,
-day,
-updatedBy,
-updated)
+day)
 VALUES
 ?;

@@ -14,11 +14,18 @@ CREATE TABLE Users (
   isLocked BOOL NOT NULL,
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
+  updatedBy INT,
+  updated DATETIME,
   PRIMARY KEY (id),
   UNIQUE KEY Name (name),
   UNIQUE KEY Email (email),
-  CONSTRAINT UsersUsers
+  CONSTRAINT UsersUsers1
     FOREIGN KEY (createdBy)
+    REFERENCES Users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT UsersUsers2
+    FOREIGN KEY (updatedBy)
     REFERENCES Users (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE

@@ -93,8 +93,8 @@ CREATE TABLE PlannedDays (
   planned TIME,
   shiftId TINYINT,
   comments VARCHAR(100),
-  updatedBy INT NOT NULL,
-  updated DATETIME NOT NULL,
+  updatedBy INT,
+  updated DATETIME,
   PRIMARY KEY (employeeId, day),
   CONSTRAINT EmployeesPlannedDays
     FOREIGN KEY (employeeId)
@@ -131,8 +131,8 @@ CREATE TABLE WorkedDays (
   overtimeNight TIME,
   overtimeFree TIME,
   comments VARCHAR(100),
-  updatedBy INT NOT NULL,
-  updated DATETIME NOT NULL,
+  updatedBy INT,
+  updated DATETIME,
   PRIMARY KEY (employeeId, day),
   CONSTRAINT EmployeesWorkedDays
     FOREIGN KEY (employeeId)
@@ -164,8 +164,8 @@ CREATE TABLE Vacations (
   isLocked BOOL NOT NULL,
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
-  updatedBy INT NOT NULL,
-  updated DATETIME NOT NULL,
+  updatedBy INT,
+  updated DATETIME,
   PRIMARY KEY (employeeId, start),
   CONSTRAINT EmployeesVacations
     FOREIGN KEY (employeeId)

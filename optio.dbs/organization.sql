@@ -19,8 +19,8 @@ CREATE TABLE CompanyUnits (
   isHidden BOOL NOT NULL,
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
-  updatedBy INT NOT NULL,
-  updated DATETIME NOT NULL,
+  updatedBy INT,
+  updated DATETIME,
   PRIMARY KEY (id),
   CONSTRAINT UsersCompanyUnits1
     FOREIGN KEY (createdBy)
@@ -45,8 +45,8 @@ CREATE TABLE Employees (
   photo VARCHAR(100) NOT NULL,
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
-  updatedBy INT NOT NULL,
-  updated DATETIME NOT NULL,
+  updatedBy INT,
+  updated DATETIME,
   PRIMARY KEY (id),
   CONSTRAINT UsersEmployees1
     FOREIGN KEY (createdBy)
