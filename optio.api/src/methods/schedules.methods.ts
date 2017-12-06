@@ -83,6 +83,8 @@ export class SchedulesMethods {
       sort((a, b) => this.compareFullName(a, b)).
       map(z => z.id);
 
+    console.log(companyUnitIdentifiers);
+
     this.insertPlannedDays(employeeIdentifiers, year, month, userId, operationDateTime);
     this.insertWorkedDays(employeeIdentifiers, year, month, userId, operationDateTime);
     this.insertSchedules(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime);
@@ -98,8 +100,10 @@ export class SchedulesMethods {
 
   getCompanyUnitIdentifiers(companyUnitId: number, companyUnits: CompanyUnit[], companyUnitIdentifiers: number[]) {
     const identifiers = companyUnits.filter(x => x.parentId === companyUnitId && !x.isScheduled && !x.isHidden).map(y => y.id);
-    identifiers.forEach(x => companyUnitIdentifiers.push(x));
-    identifiers.forEach(x => this.getCompanyUnitIdentifiers(x, companyUnits, companyUnitIdentifiers));
+    identifiers.forEach(x => {
+      companyUnitIdentifiers.push(x);
+      this.getCompanyUnitIdentifiers(x, companyUnits, companyUnitIdentifiers);
+    });
   }
 
   async insertPlannedDays(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
@@ -108,12 +112,18 @@ export class SchedulesMethods {
 
     employeeIdentifiers.forEach(employeeId => {
       for (let i = 1; i <= daysInMonth; i++) {
-        values += `(${employeeId},'${year}-${month}-${i}',NULL,NULL,NULL,${userId},'${operationDateTime}'),`;
+        values += `(${employeeId},'${year}-${month}-${i}',${userId},'${operationDateTime}'),`;
       }
     });
 
     values = values.slice(0, -1);
-    let sql = queries['insert-planned-day'];
+    let sql = `INSERT INTO PlannedDays
+    (employeeId,
+    day,
+    updatedBy,
+    updated)
+    VALUES
+    `;
     sql += values + ';';
     await this.workTimeDatabase.execute(sql, []);
   }
@@ -124,14 +134,20 @@ export class SchedulesMethods {
 
     employeeIdentifiers.forEach(employeeId => {
       for (let i = 1; i <= daysInMonth; i++) {
-        // tslint:disable-next-line:max-line-length
-        values += `(${employeeId},'${year}-${month}-${i}',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,${userId},'${operationDateTime}'),`;
+        values += `(${employeeId},'${year}-${month}-${i}',${userId},'${operationDateTime}'),`;
       }
     });
 
     values = values.slice(0, -1);
-    let sql = queries['insert-worked-day'];
+    let sql = `INSERT INTO WorkedDays
+    (employeeId,
+    day,
+    updatedBy,
+    updated)
+    VALUES
+    `;
     sql += values + ';';
+    console.log(sql);
     await this.workTimeDatabase.execute(sql, []);
   }
 
@@ -141,12 +157,23 @@ export class SchedulesMethods {
     let sortOrder = 1;
 
     employeeIdentifiers.forEach(employeeId => {
-      values += `(${companyUnitId},${employeeId},${year},${month},${sortOrder},0,0,NULL,${userId},'${operationDateTime}'),`;
+      values += `(${companyUnitId},${employeeId},${year},${month},${sortOrder},0,0,${userId},'${operationDateTime}'),`;
       sortOrder += 1;
     });
 
     values = values.slice(0, -1);
-    let sql = queries['insert-schedule'];
+    let sql = `INSERT INTO Schedules
+    (companyUnitId,
+    employeeId,
+    year,
+    month,
+    sortOrder,
+    plannedIsLocked,
+    workedIsLocked,
+    createdBy,
+    created)
+    VALUES
+    `;
     sql += values + ';';
     await this.workTimeDatabase.execute(sql, []);
   }
