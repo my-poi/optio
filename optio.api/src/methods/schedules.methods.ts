@@ -85,20 +85,21 @@ export class SchedulesMethods {
       map(z => z.id);
 
     const queryList: { sql: string, values: any }[] = [];
+    const daysValues = this.getDayValues(employeeIdentifiers, year, month, userId, operationDateTime);
 
     queryList.push({
       sql: queries['insert-planned-days'],
-      values: [this.getDaysValues(employeeIdentifiers, year, month, userId, operationDateTime)]
+      values: [daysValues]
     });
 
     queryList.push({
       sql: queries['insert-worked-days'],
-      values: [this.getDaysValues(employeeIdentifiers, year, month, userId, operationDateTime)]
+      values: [daysValues]
     });
 
     queryList.push({
       sql: queries['insert-schedules'],
-      values: [this.getSchedulesValues(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime)]
+      values: [this.getScheduleValues(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime)]
     });
 
     await this.workTimeDatabase.transaction(queryList);
@@ -117,7 +118,7 @@ export class SchedulesMethods {
     return childIds;
   }
 
-  getDaysValues(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+  getDayValues(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
     const values: any[] = [];
     const daysInMonth = new Date(year, month, 0).getDate();
 
@@ -131,7 +132,7 @@ export class SchedulesMethods {
   }
 
   // tslint:disable-next-line:max-line-length
-  getSchedulesValues(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+  getScheduleValues(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
     const values: any[] = [];
     let sortOrder = 1;
 
