@@ -19,7 +19,7 @@ export class WorkTimeDatabase {
     return rows;
   }
 
-  async transaction(sqls: string[]) {
+  async transaction(queryList: {sql: string, values: any}[]) {
     const connection = await mysql.createConnection({
       host: config.host,
       user: 'sa',
@@ -28,7 +28,7 @@ export class WorkTimeDatabase {
     });
 
     await connection.beginTransaction();
-    sqls.forEach(async sql => await connection.query(sql, []));
+    queryList.forEach(async (x: any) => await connection.query(x.sql, x.values));
     await connection.commit();
     connection.destroy();
   }

@@ -84,12 +84,24 @@ export class SchedulesMethods {
       sort((a, b) => this.compareFullName(a, b)).
       map(z => z.id);
 
-    const sqls: string[] = [];
-    sqls.push(this.getInsertPlannedDaysSql(employeeIdentifiers, year, month, userId, operationDateTime));
-    sqls.push(this.getInsertWorkedDaysSql(employeeIdentifiers, year, month, userId, operationDateTime));
-    sqls.push(this.getInsertSchedulesSql(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime));
-    await this.workTimeDatabase.transaction(sqls);
+    const queryList: { sql: string, values: any }[] = [];
 
+    queryList.push({
+      sql: queries['insert-planned-days'],
+      values: [this.getDaysValues(employeeIdentifiers, year, month, userId, operationDateTime)]
+    });
+
+    queryList.push({
+      sql: queries['insert-worked-days'],
+      values: [this.getDaysValues(employeeIdentifiers, year, month, userId, operationDateTime)]
+    });
+
+    queryList.push({
+      sql: queries['insert-schedules'],
+      values: [this.getSchedulesValues(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime)]
+    });
+
+    await this.workTimeDatabase.transaction(queryList);
     return 'OK';
   }
 
@@ -105,74 +117,29 @@ export class SchedulesMethods {
     return childIds;
   }
 
-  getInsertPlannedDaysSql(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
-    let values = '';
+  getDaysValues(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+    const values: any[] = [];
     const daysInMonth = new Date(year, month, 0).getDate();
 
     employeeIdentifiers.forEach(employeeId => {
       for (let i = 1; i <= daysInMonth; i++) {
-        values += `(${employeeId},'${year}-${month}-${i}',${userId},'${operationDateTime}'),`;
+        values.push([employeeId, `${year}-${month}-${i}`, userId, operationDateTime]);
       }
     });
 
-    let sql = `INSERT INTO PlannedDays
-    (employeeId,
-    day,
-    updatedBy,
-    updated)
-    VALUES
-    `;
-    sql += values.slice(0, -1) + ';';
-    return sql;
-    // await this.workTimeDatabase.execute(sql, []);
-  }
-
-  getInsertWorkedDaysSql(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
-    let values = '';
-    const daysInMonth = new Date(year, month, 0).getDate();
-
-    employeeIdentifiers.forEach(employeeId => {
-      for (let i = 1; i <= daysInMonth; i++) {
-        values += `(${employeeId},'${year}-${month}-${i}',${userId},'${operationDateTime}'),`;
-      }
-    });
-
-    let sql = `INSERT INTO WorkedDays
-    (employeeId,
-    day,
-    updatedBy,
-    updated)
-    VALUES
-    `;
-    sql += values.slice(0, -1) + ';';
-    return sql;
-    // await this.workTimeDatabase.execute(sql, []);
+    return values;
   }
 
   // tslint:disable-next-line:max-line-length
-  getInsertSchedulesSql(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
-    let values = '';
+  getSchedulesValues(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: string) {
+    const values: any[] = [];
     let sortOrder = 1;
 
     employeeIdentifiers.forEach(employeeId => {
-      values += `(${companyUnitId},${employeeId},${year},${month},${sortOrder},0,0,${userId},'${operationDateTime}'),`;
+      values.push([companyUnitId, employeeId, year, month, sortOrder, 0, 0, userId, operationDateTime]);
       sortOrder += 1;
     });
 
-    let sql = `INSERT INTO Schedules
-    (companyUnitId,
-    employeeId,
-    year,
-    month,
-    sortOrder,
-    plannedIsLocked,
-    workedIsLocked,
-    createdBy,
-    created)
-    VALUES
-    `;
-    sql += values.slice(0, -1) + ';';
-    return sql;
-    // await this.workTimeDatabase.execute(sql, []);
+    return values;
   }
 }

@@ -3,6 +3,9 @@ import * as path from 'path';
 
 export const queries: { [key: string]: string } = {};
 const queryNames = [
+  'insert-planned-days',
+  'insert-schedules',
+  'insert-worked-days',
   'select-classifications',
   'select-company-units',
   'select-employees',
