@@ -15,8 +15,6 @@ export class SchedulesMethods {
   async addSchedule(request: Request) {
     const userId = request.body.decoded.userId;
     const date = new Date();
-    // tslint:disable-next-line:max-line-length
-    const operationDateTime = new Date();
     const companyUnitId = Number(request.body.companyUnitId);
     const year = Number(request.body.year);
     const month = Number(request.body.month);
@@ -85,7 +83,7 @@ export class SchedulesMethods {
       map(z => z.id);
 
     const queryList: { sql: string, values: any }[] = [];
-    const dayValues = this.getDayValues(employeeIdentifiers, year, month, userId, operationDateTime);
+    const dayValues = this.getDayValues(employeeIdentifiers, year, month, userId);
 
     queryList.push({
       sql: queries['insert-planned-days'],
@@ -99,7 +97,7 @@ export class SchedulesMethods {
 
     queryList.push({
       sql: queries['insert-schedules'],
-      values: [this.getScheduleValues(companyUnitId, employeeIdentifiers, year, month, userId, operationDateTime)]
+      values: [this.getScheduleValues(companyUnitId, employeeIdentifiers, year, month, userId)]
     });
 
     await this.workTimeDatabase.transaction(queryList);
@@ -118,23 +116,23 @@ export class SchedulesMethods {
     return childIds;
   }
 
-  getDayValues(employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: Date) {
+  getDayValues(employeeIdentifiers: number[], year: number, month: number, userId: number) {
     const values: any[] = [];
     const daysInMonth = new Date(year, month, 0).getDate();
 
     employeeIdentifiers.forEach(employeeId => {
       for (let i = 1; i <= daysInMonth; i++) {
-        values.push([employeeId, `${year}-${month}-${i}`, userId, operationDateTime]);
+        values.push([employeeId, `${year}-${month}-${i}`]);
       }
     });
 
     return values;
   }
 
-  // tslint:disable-next-line:max-line-length
-  getScheduleValues(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number, operationDateTime: Date) {
+  getScheduleValues(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number) {
     const values: any[] = [];
     let sortOrder = 1;
+    const operationDateTime = new Date();
 
     employeeIdentifiers.forEach(employeeId => {
       values.push([companyUnitId, employeeId, year, month, sortOrder, 0, 0, userId, operationDateTime]);
