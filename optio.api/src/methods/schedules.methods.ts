@@ -144,6 +144,7 @@ export class SchedulesMethods {
       sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
 
     const firstMonth: number = currentPeriodMonths[0].month;
+    const periodStartDate = new Date(year, firstMonth - 1, 1, 0, 0, 0, 0);
     const from = new Date(year, firstMonth - 1, 1, 0, 0, 0, 0);
     const to = new Date(year, month, 0, 23, 59, 59, 59);
     if (firstMonth === month) from.setMonth(from.getMonth() - 1);
@@ -189,6 +190,12 @@ export class SchedulesMethods {
       const scheduleDays = this.getScheduleDays(schedulePlannedDays, shifts, holidays, employeeVacations);
       // console.log('from: ' + scheduleFrom);
       // console.log('to: ' + scheduleTo);
+      const employeePeriodPlannedDays = plannedDays.filter((plannedDay: PlannedDay) =>
+        plannedDay.employeeId === schedule.employeeId &&
+        new Date(plannedDay.day).getTime() >= periodStartDate.getTime() &&
+        new Date(plannedDay.day).getTime() <= to.getTime());
+      const totalHours = employeePeriodPlannedDays.map((x: PlannedDay) => x.hours).reduce((a: number, b: number) => a + b, 0);
+      const totalMinutes = employeePeriodPlannedDays.map((x: PlannedDay) => x.minutes).reduce((a: number, b: number) => a + b, 0);
       return new EmployeeSchedule(
         schedule.employeeId,
         `${employee.lastName} ${employee.firstName}`,
@@ -201,9 +208,9 @@ export class SchedulesMethods {
         schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0),
         this.getMonthlyDays(schedulePlannedDays),
         1,
-        1,
-        1,
-        1,
+        totalHours,
+        totalMinutes,
+        this.getTotalDays(employeePeriodPlannedDays),
         1,
         schedule.createdBy,
         schedule.created,
@@ -216,6 +223,14 @@ export class SchedulesMethods {
   getMonthlyDays(plannedDays: PlannedDay[]): number {
     let result = 0;
     plannedDays.forEach(x => {
+      if (x.shiftId && x.shiftId >= 1 && x.shiftId <= 20) result += 1;
+    });
+    return result;
+  }
+
+  getTotalDays(employeePeriodPlannedDays: PlannedDay[]): number {
+    let result = 0;
+    employeePeriodPlannedDays.forEach(x => {
       if (x.shiftId && x.shiftId >= 1 && x.shiftId <= 20) result += 1;
     });
     return result;
