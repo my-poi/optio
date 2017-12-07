@@ -5,7 +5,7 @@ import { queries } from '../queries';
 export class ClassificationsMethods {
   constructor(private organizationDatabase: OrganizationDatabase) { }
 
-  getClassifications() {
-    return this.organizationDatabase.execute(queries['select-classifications'], []);
+  async getClassifications() {
+    return await this.organizationDatabase.execute(queries['select-classifications'], []);
   }
 }

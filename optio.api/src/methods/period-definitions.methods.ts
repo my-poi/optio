@@ -5,7 +5,7 @@ import { queries } from '../queries';
 export class PeriodDefinitionsMethods {
   constructor(private workTimeDatabase: WorkTimeDatabase) { }
 
-  getPeriodDefinitions() {
-    return this.workTimeDatabase.execute(queries['select-period-definitions'], []);
+  async getPeriodDefinitions() {
+    return await this.workTimeDatabase.execute(queries['select-period-definitions'], []);
   }
 }

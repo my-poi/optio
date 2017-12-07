@@ -8,15 +8,11 @@ export class EmployeesMethods {
   constructor(private organizationDatabase: OrganizationDatabase) { }
 
   async getEmployees() {
-    const employeesRows: RowDataPacket[] = await this.organizationDatabase.
+    const employeesRows = await this.organizationDatabase.
       execute(queries['select-employees'], []);
-    const classificationsRows: RowDataPacket[] = await this.organizationDatabase.
+    const classificationsRows = await this.organizationDatabase.
       execute(queries['select-classifications'], []);
-
-    const classifications: Classification[] = classificationsRows.map(row => {
-      return new Classification(row.employeeId, row.companyUnitId, row.validFrom, row.validTo, row.createdBy, row.created);
-    });
-
+    const classifications = JSON.parse(JSON.stringify(classificationsRows));
     const employees: Employee[] = employeesRows.map(row => {
       return new Employee(
         row.id,
@@ -31,7 +27,7 @@ export class EmployeesMethods {
         row.created,
         row.updatedBy,
         row.updated,
-        classifications.filter(x => x.employeeId === row.id)
+        classifications.filter((x: Classification) => x.employeeId === row.id)
       );
     });
 

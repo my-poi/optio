@@ -6,6 +6,7 @@ import { queries } from '../queries';
 import { CompanyUnit } from '../objects/company-unit';
 import { Employee } from '../objects/employee';
 import { Classification } from '../objects/classification';
+import { PeriodDefinition } from '../objects/period-definition';
 
 export class SchedulesMethods {
   constructor(
@@ -20,39 +21,12 @@ export class SchedulesMethods {
     const month = Number(request.body.month);
     const companyUnitRows = await this.organizationDatabase.execute(queries['select-company-units'], []);
     let companyUnitIdentifiers: number[] = [];
-    const companyUnits: CompanyUnit[] = companyUnitRows.map(row => {
-      return new CompanyUnit(
-        row.id,
-        row.parentId,
-        row.sortOrder,
-        row.name,
-        row.sign,
-        row.phone1,
-        row.phone2,
-        row.fax,
-        row.email,
-        row.isExpanded,
-        row.isClassified,
-        row.isScheduled,
-        row.isPosition,
-        row.isHidden,
-        row.createdBy,
-        row.created,
-        row.updatedBy,
-        row.updated,
-        row.children);
-    });
-
-    const classificationsRows: RowDataPacket[] = await this.organizationDatabase.
+    const companyUnits = JSON.parse(JSON.stringify(companyUnitRows));
+    const classificationsRows = await this.organizationDatabase.
       execute(queries['select-classifications'], []);
-
-    const classifications: Classification[] = classificationsRows.map(row => {
-      return new Classification(row.employeeId, row.companyUnitId, row.validFrom, row.validTo, row.createdBy, row.created);
-    });
-
-    const employeesRows: RowDataPacket[] = await this.organizationDatabase.
+    const classifications = JSON.parse(JSON.stringify(classificationsRows));
+    const employeesRows = await this.organizationDatabase.
       execute(queries['select-employees'], []);
-
     const employees: Employee[] = employeesRows.map(row => {
       return new Employee(
         row.id,
@@ -67,7 +41,7 @@ export class SchedulesMethods {
         row.created,
         row.updatedBy,
         row.updated,
-        classifications.filter(x => x.employeeId === row.id)
+        classifications.filter((x: Classification) => x.employeeId === row.id)
       );
     });
 
@@ -151,7 +125,7 @@ export class SchedulesMethods {
     const year = Number(request.params.year);
     const month = Number(request.params.month);
 
-    const employeeIdentifierRows: RowDataPacket[] = await this.workTimeDatabase.
+    const employeeIdentifierRows = await this.workTimeDatabase.
       execute(queries['select-schedule-employees'], [companyUnitId, year, month]);
     const employeeIdentifiers = employeeIdentifierRows.map(row => row.employeeId);
 
@@ -159,8 +133,14 @@ export class SchedulesMethods {
     // 2. jeśli wskazany miesiąc jest kolejnym okresu rozliczeniowego załaduj dane od pierwszego miesiąca okresu
 
     // ustalenie miesięcy okresu rozliczeniowego:
+    const periodDefinitionRows =  await this.workTimeDatabase.execute(queries['select-period-definitions'], []);
+    const periodDefinitions = JSON.parse(JSON.stringify(periodDefinitionRows));
+    const monthDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
+    const periodMonths = periodDefinitions.filter((x: PeriodDefinition) => x.period === monthDefinition.period);
+    console.log(periodMonths);
 
-
+    const plannedDays = await this.workTimeDatabase.execute(
+      queries['select-planned-days'], [employeeIdentifiers, '2017-12-01', '2017-12-31']);
 
     return await this.workTimeDatabase.execute(queries['select-planned-days'], [employeeIdentifiers, '2017-12-01', '2017-12-31']);
   }

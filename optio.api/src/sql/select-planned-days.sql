@@ -7,6 +7,6 @@ SELECT
   updatedBy,
   updated
 FROM PlannedDays
-WHERE FIND_IN_SET(employeeId, ?) > 0
+WHERE employeeId IN(?)
 AND day >= ?
 AND day <= ?;

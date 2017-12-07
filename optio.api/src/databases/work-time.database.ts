@@ -28,7 +28,7 @@ export class WorkTimeDatabase {
     });
 
     await connection.beginTransaction();
-    queryList.forEach(async (x: any) => await connection.query(x.sql, x.values));
+    queryList.forEach(async (x: any) => await connection.query<mysql.RowDataPacket[]>(x.sql, x.values));
     await connection.commit();
     connection.destroy();
   }

@@ -10,14 +10,10 @@ export class ShiftsMethods {
   async getShifts() {
     const shiftRows: RowDataPacket[] = await this.workTimeDatabase.execute(queries['select-shifts'], []);
     const shiftDurationRows: RowDataPacket[] = await this.workTimeDatabase.execute(queries['select-shift-durations'], []);
-
-    const shiftDurations: ShiftDuration[] = shiftDurationRows.map(row => {
-      return new ShiftDuration(row.shiftId, row.validFrom, row.validTo, row.start, row.finish, row.hours, row.minutes);
-    });
-
+    const shiftDurations = JSON.parse(JSON.stringify(shiftDurationRows));
     const shifts: Shift[] = shiftRows.map(row => {
-      const durations = shiftDurations.filter(x => x.shiftId === row.id);
-      const current = durations.find(x => !x.validTo);
+      const durations = shiftDurations.filter((x: ShiftDuration) => x.shiftId === row.id);
+      const current = durations.find((x: ShiftDuration) => !x.validTo);
       return new Shift(row.id, row.sign, row.isValid, durations, current);
     });
 
