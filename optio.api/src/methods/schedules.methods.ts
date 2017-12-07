@@ -14,6 +14,8 @@ import { PlannedDay } from '../objects/planned-day';
 import { ScheduleDay } from '../objects/schedule-day';
 import { Shift } from '../objects/shift';
 import { Holiday } from '../objects/holiday';
+import { Vacation } from '../objects/vacation';
+import { CLIENT_RENEG_LIMIT } from 'tls';
 
 export class SchedulesMethods {
   constructor(
@@ -171,8 +173,8 @@ export class SchedulesMethods {
     const holidays = JSON.parse(JSON.stringify(holidayRows));
 
     const vacationRows = await this.workTimeDatabase.
-      query(queries['select-vacations'], []);
-    const holidays = JSON.parse(JSON.stringify(holidayRows));
+      query(queries['select-vacations-by-employee'], [[scheduleEmployeeIdentifiers]]);
+    const vacations = JSON.parse(JSON.stringify(vacationRows));
 
     const schedules = employeeSchedules.map((schedule: Schedule) => {
       const employee: Employee = scheduleEmployees.find((x: Employee) => x.id === schedule.employeeId);
@@ -183,7 +185,8 @@ export class SchedulesMethods {
         x.employeeId === schedule.employeeId &&
         new Date(x.day).getTime() >= scheduleFrom.getTime() &&
         new Date(x.day).getTime() <= scheduleTo.getTime());
-      const scheduleDays = this.getScheduleDays(schedulePlannedDays, shifts, holidays);
+      const employeeVacations = vacations.filter((x: Vacation) => x.employeeId === schedule.employeeId);
+      const scheduleDays = this.getScheduleDays(schedulePlannedDays, shifts, holidays, employeeVacations);
       // console.log('from: ' + scheduleFrom);
       // console.log('to: ' + scheduleTo);
       return new EmployeeSchedule(
@@ -196,7 +199,7 @@ export class SchedulesMethods {
         31 === daysInMonth,
         schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0),
         schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0),
-        1,
+        this.getMonthlyDays(schedulePlannedDays),
         1,
         1,
         1,
@@ -210,38 +213,57 @@ export class SchedulesMethods {
     return schedules;
   }
 
-  getMonthlyDays() {
-
+  getMonthlyDays(plannedDays: PlannedDay[]): number {
+    let result = 0;
+    plannedDays.forEach(x => {
+      if (x.shiftId && x.shiftId >= 1 && x.shiftId <= 20) result += 1;
+    });
+    return result;
   }
 
-  getScheduleDays(schedulePlannedDays: PlannedDay[], shifts: Shift[], holidays: Holiday[]): ScheduleDay[] {
-    const results: ScheduleDay[] = schedulePlannedDays.map(x => {
-      const shift = shifts.find((s: Shift) => s.id === x.shiftId);
+  getScheduleDays(schedulePlannedDays: PlannedDay[], shifts: Shift[], holidays: Holiday[], employeeVacations: Vacation[]): ScheduleDay[] {
+    const results: ScheduleDay[] = schedulePlannedDays.map(plannedDay => {
+      const shift = shifts.find((s: Shift) => s.id === plannedDay.shiftId);
+      const day = new Date(plannedDay.day);
+      day.setHours(0, 0, 0, 0);
+      const vacation = this.hasVacation(day, employeeVacations);
+      const weekDay = day.getDay() === 6 || day.getDay() === 0;
+      const holiday = holidays.find(h => new Date(h.dayOff).getTime() === day.getTime()) !== undefined;
       return new ScheduleDay(
-        x.day,
-        x.hours,
-        x.minutes,
-        x.shiftId,
+        plannedDay.day,
+        plannedDay.hours,
+        plannedDay.minutes,
+        plannedDay.shiftId,
         shift ? shift.sign : '',
-        true,
-        x.comment,
-        this.getTimeBackground(x.day, x.comment, holidays),
-        1,
-        x.updatedBy,
-        x.updated);
+        vacation,
+        plannedDay.comment,
+        this.getTimeBackground(plannedDay.comment, weekDay, holiday),
+        this.getShiftBackground(vacation, weekDay, holiday),
+        plannedDay.updatedBy,
+        plannedDay.updated);
     });
     return results;
   }
 
-  getVacation() {
-
+  hasVacation(day: Date, employeeVacations: Vacation[]): boolean {
+    const dayTime = day.getTime();
+    const result = employeeVacations.find(x =>
+      new Date(x.start).getTime() <= dayTime &&
+      new Date(x.finish).getTime() >= dayTime);
+    return result !== undefined;
   }
 
-  getTimeBackground(day: Date, comment: string, holidays: Holiday[]): number {
-    const dayDate = new Date(day);
+  getTimeBackground(comment: string, weekDay: boolean, holiday: boolean): number {
     if (comment) return 2;
-    if (dayDate.getDay() === 6 || dayDate.getDay() === 0) return 1;
-    if (holidays.find(x => new Date(x.dayOff).getTime() === dayDate.getTime())) return 1;
+    if (weekDay) return 1;
+    if (holiday) return 1;
+    return 0;
+  }
+
+  getShiftBackground(vacation: boolean, weekDay: boolean, holiday: boolean): number {
+    if (vacation) return 2;
+    if (weekDay) return 1;
+    if (holiday) return 1;
     return 0;
   }
 }
