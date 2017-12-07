@@ -4,7 +4,7 @@ SELECT
   hours,
   minutes,
   shiftId,
-  comments,
+  comment,
   updatedBy,
   updated
 FROM PlannedDays

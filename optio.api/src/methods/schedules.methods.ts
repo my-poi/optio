@@ -137,8 +137,8 @@ export class SchedulesMethods {
       filter((x: PeriodDefinition) => x.period === monthDefinition.period).
       sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
     const firstMonth: number = periodMonths[0].month;
-    const from = new Date(year, firstMonth - 1, 1);
-    const to = new Date(year, month, 0);
+    const from = new Date(year, firstMonth - 1, 1, 0, 0, 0, 0);
+    const to = new Date(year, month, 0, 23, 59, 59, 59);
     if (firstMonth === month) from.setMonth(from.getMonth() - 1);
     if (firstMonth > month) from.setFullYear(from.getFullYear() - 1);
 
@@ -154,8 +154,8 @@ export class SchedulesMethods {
       query(queries['select-employee-schedules'], [[employeeIdentifiers], from, to]);
     const allEmployeeSchedules = JSON.parse(JSON.stringify(allEmployeeScheduleRows));
 
-    const plannedDayRows = await this.workTimeDatabase.query(
-      queries['select-planned-days'], [[employeeIdentifiers], from, to]);
+    const plannedDayRows = await this.workTimeDatabase.
+      query(queries['select-planned-days'], [[employeeIdentifiers], from, to]);
     const plannedDays = JSON.parse(JSON.stringify(plannedDayRows));
 
     // console.log('from: ' + from);
@@ -164,14 +164,15 @@ export class SchedulesMethods {
     const schedules = allEmployeeSchedules.map((schedule: Schedule) => {
       const employee: Employee = employees.find((x: Employee) => x.id === schedule.employeeId);
       const daysInMonth = new Date(schedule.year, schedule.month, 0).getDate();
-      const scheduleFrom = new Date(schedule.year, schedule.month - 1, 1);
-      const scheduleTo = new Date(schedule.year, schedule.month, 0);
-      const schedulePlannedDays: PlannedDay[] = plannedDays.filter((x: PlannedDay) => x.day >= scheduleFrom && x.day <= scheduleTo);
+      const scheduleFrom = new Date(schedule.year, schedule.month - 1, 1, 0, 0, 0, 0);
+      const scheduleTo = new Date(schedule.year, schedule.month, 0, 23, 59, 59, 59);
+      const schedulePlannedDays: PlannedDay[] = plannedDays.filter((x: PlannedDay) =>
+        x.employeeId === schedule.employeeId &&
+        new Date(x.day).getTime() >= scheduleFrom.getTime() &&
+        new Date(x.day).getTime() <= scheduleTo.getTime());
       const scheduleDays = this.getScheduleDays(schedule.employeeId, scheduleFrom, scheduleTo, shifts, schedulePlannedDays);
-      // console.log('from: ' + scheduleFrom);
-      // console.log('to: ' + scheduleTo);
-      console.log(schedulePlannedDays);
-      console.log(scheduleDays);
+      console.log('from: ' + scheduleFrom);
+      console.log('to: ' + scheduleTo);
 
       return new EmployeeSchedule(
         schedule.employeeId,
