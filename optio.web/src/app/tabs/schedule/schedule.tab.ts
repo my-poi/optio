@@ -5,7 +5,7 @@ import { DisabledButtonsService } from '../../services/disabled-buttons.service'
 import { GlobalService } from '../../services/global.service';
 import { RibbonInfosService } from '../../services/ribbon-infos.service';
 import { PeriodDefinition } from '../../objects/period-definition';
-import { PlannedDay } from '../../objects/planned-day';
+import { ScheduleDay } from '../../objects/schedule-day';
 import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { TimeSpan } from '../../objects/time-span';
 import { ShiftDuration } from '../../objects/shift-duration';
@@ -103,80 +103,80 @@ export class ScheduleTab {
     });
   }
 
-  hourChanged(employeeId: number, plannedDay: PlannedDay) {
-    this.setHour(plannedDay);
+  hourChanged(employeeId: number, scheduleDay: ScheduleDay) {
+    this.setHour(scheduleDay);
     this.setSummaryData(employeeId);
   }
 
-  minuteChanged(employeeId: number, plannedDay: PlannedDay) {
-    this.setMinute(plannedDay);
+  minuteChanged(employeeId: number, scheduleDay: ScheduleDay) {
+    this.setMinute(scheduleDay);
     this.setSummaryData(employeeId);
   }
 
-  shiftChanged(employeeId: number, plannedDay: PlannedDay) {
-    this.setShift(plannedDay);
+  shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
+    this.setShift(scheduleDay);
     this.setSummaryData(employeeId);
   }
 
-  setHour(plannedDay: PlannedDay) {
+  setHour(scheduleDay: ScheduleDay) {
     setTimeout(() => {
-      plannedDay.h = plannedDay.h.replace(/\D/g, '');
+      scheduleDay.h = scheduleDay.h.replace(/\D/g, '');
 
-      if (!plannedDay.x || plannedDay.s === 40 || plannedDay.s === 41 || plannedDay.s === 42) {
-        plannedDay.h = null;
+      if (!scheduleDay.x || scheduleDay.s === 40 || scheduleDay.s === 41 || scheduleDay.s === 42) {
+        scheduleDay.h = null;
         return;
       }
 
-      if (parseInt(plannedDay.h, 10) < 1 || parseInt(plannedDay.h, 10) > 12) plannedDay.h = null;
-      if (!plannedDay.h && !plannedDay.m) this.clearDay(plannedDay);
-      this.validateDailyLimit(plannedDay);
+      if (parseInt(scheduleDay.h, 10) < 1 || parseInt(scheduleDay.h, 10) > 12) scheduleDay.h = null;
+      if (!scheduleDay.h && !scheduleDay.m) this.clearDay(scheduleDay);
+      this.validateDailyLimit(scheduleDay);
     });
   }
 
-  setMinute(plannedDay: PlannedDay) {
+  setMinute(scheduleDay: ScheduleDay) {
     setTimeout(() => {
-      plannedDay.m = plannedDay.m.replace(/\D/g, '');
+      scheduleDay.m = scheduleDay.m.replace(/\D/g, '');
 
-      if (!plannedDay.x || plannedDay.s === 40 || plannedDay.s === 41 || plannedDay.s === 42) {
-        plannedDay.m = null;
+      if (!scheduleDay.x || scheduleDay.s === 40 || scheduleDay.s === 41 || scheduleDay.s === 42) {
+        scheduleDay.m = null;
         return;
       }
 
-      if (parseInt(plannedDay.m, 10) < 1 || parseInt(plannedDay.m, 10) > 59) plannedDay.m = null;
-      if (!plannedDay.h && !plannedDay.m) this.clearDay(plannedDay);
-      this.validateDailyLimit(plannedDay);
+      if (parseInt(scheduleDay.m, 10) < 1 || parseInt(scheduleDay.m, 10) > 59) scheduleDay.m = null;
+      if (!scheduleDay.h && !scheduleDay.m) this.clearDay(scheduleDay);
+      this.validateDailyLimit(scheduleDay);
     });
   }
 
-  setShift(plannedDay) {
+  setShift(scheduleDay) {
     setTimeout(() => {
-      if (!plannedDay.x) {
-        this.clearDay(plannedDay);
+      if (!scheduleDay.x) {
+        this.clearDay(scheduleDay);
         return;
       }
 
-      const shift = this.dataService.shifts.find(x => x.isValid && x.sign.startsWith(plannedDay.x.toUpperCase()));
+      const shift = this.dataService.shifts.find(x => x.isValid && x.sign.startsWith(scheduleDay.x.toUpperCase()));
 
       if (!shift) {
-        this.clearDay(plannedDay);
+        this.clearDay(scheduleDay);
         return;
       }
 
       if (shift.id === 40 || shift.id === 41 || shift.id === 42) {
-        plannedDay.h = null;
-        plannedDay.m = null;
+        scheduleDay.h = null;
+        scheduleDay.m = null;
       }
 
-      if (shift.id === 42) plannedDay.x = 'D5';
+      if (shift.id === 42) scheduleDay.x = 'D5';
 
       if (shift.id <= 20) {
-        const shiftDuration: ShiftDuration = this.getShiftDuration(shift.durations, plannedDay.d);
-        plannedDay.s = null;
-        plannedDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : null;
-        plannedDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : null;
+        const shiftDuration: ShiftDuration = this.getShiftDuration(shift.durations, scheduleDay.d);
+        scheduleDay.s = null;
+        scheduleDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : null;
+        scheduleDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : null;
       }
 
-      plannedDay.s = shift.id;
+      scheduleDay.s = shift.id;
     });
   }
 
@@ -189,16 +189,16 @@ export class ScheduleTab {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateDailyLimit(plannedDay) {
-    const planned = new TimeSpan(0, plannedDay.h, plannedDay.m);
-    if (planned.totalMinutes() <= 0 || planned.totalMinutes() > 720) this.clearDay(plannedDay);
+  validateDailyLimit(scheduleDay) {
+    const planned = new TimeSpan(0, scheduleDay.h, scheduleDay.m);
+    if (planned.totalMinutes() <= 0 || planned.totalMinutes() > 720) this.clearDay(scheduleDay);
   }
 
-  clearDay(plannedDay: PlannedDay) {
-    plannedDay.s = null;
-    plannedDay.h = null;
-    plannedDay.m = null;
-    plannedDay.x = null;
+  clearDay(scheduleDay: ScheduleDay) {
+    scheduleDay.s = null;
+    scheduleDay.h = null;
+    scheduleDay.m = null;
+    scheduleDay.x = null;
   }
 
   setSummaryData(employeeId: number) {
@@ -216,7 +216,7 @@ export class ScheduleTab {
     let minutes = 0;
     let days = 0;
 
-    employeeSchedule.pd.forEach(x => {
+    employeeSchedule.sd.forEach(x => {
       hours += Number(x.h);
       minutes += Number(x.m);
       if (x.s === 40 || x.s === 41 || x.s === 42) return;
@@ -240,7 +240,7 @@ export class ScheduleTab {
         y.year === this.year &&
         y.month === x.month);
 
-      periodMonthSchedule.pd.forEach(z => {
+      periodMonthSchedule.sd.forEach(z => {
         hours += Number(z.h);
         minutes += Number(z.m);
         if (z.s === 40 || z.s === 41 || z.s === 42) return;

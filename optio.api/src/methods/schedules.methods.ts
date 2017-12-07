@@ -15,7 +15,8 @@ import { ScheduleDay } from '../objects/schedule-day';
 import { Shift } from '../objects/shift';
 import { Holiday } from '../objects/holiday';
 import { Vacation } from '../objects/vacation';
-import { CLIENT_RENEG_LIMIT } from 'tls';
+import { Period } from '../objects/period';
+import { TimeSpan } from '../objects/time-span';
 
 export class SchedulesMethods {
   constructor(
@@ -135,8 +136,13 @@ export class SchedulesMethods {
 
     if (scheduleEmployeeIdentifiers.length === 0) return { success: false };
 
-    const periodDefinitionRows = await this.workTimeDatabase.execute(queries['select-period-definitions'], []);
+    const periodDefinitionRows = await this.workTimeDatabase.
+      execute(queries['select-period-definitions'], []);
     const periodDefinitions = JSON.parse(JSON.stringify(periodDefinitionRows));
+
+    const periodRows = await this.workTimeDatabase.
+      execute(queries['select-periods'], []);
+    const periods = JSON.parse(JSON.stringify(periodRows));
 
     const currentMonthPeriodDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
     const currentPeriodMonths = periodDefinitions.
@@ -150,6 +156,17 @@ export class SchedulesMethods {
     if (firstMonth === month) from.setMonth(from.getMonth() - 1);
     if (firstMonth > month) from.setFullYear(from.getFullYear() - 1);
 
+    let periodMinutesLimit = 0;
+    currentPeriodMonths.forEach((x: PeriodDefinition) => {
+      const periodYear = firstMonth > x.month ? year - 1 : year;
+      const hours = periods.find((period: Period) =>
+        period.year === periodYear && period.month === x.month).
+        map((y: Period) => y.hours);
+      periodMinutesLimit += hours * 60;
+    });
+
+    console.log(periodMinutesLimit);
+
     // console.log('from: ' + from);
     // console.log('to: ' + to);
 
@@ -158,7 +175,7 @@ export class SchedulesMethods {
     const scheduleEmployees = JSON.parse(JSON.stringify(scheduleEmployeeRows));
 
     const shiftRows = await this.workTimeDatabase.
-      query(queries['select-shifts'], []);
+      execute(queries['select-shifts'], []);
     const shifts = JSON.parse(JSON.stringify(shiftRows));
 
     const employeeScheduleRows = await this.workTimeDatabase.
@@ -170,7 +187,7 @@ export class SchedulesMethods {
     const plannedDays = JSON.parse(JSON.stringify(plannedDayRows));
 
     const holidayRows = await this.workTimeDatabase.
-      query(queries['select-holidays'], []);
+      execute(queries['select-holidays'], []);
     const holidays = JSON.parse(JSON.stringify(holidayRows));
 
     const vacationRows = await this.workTimeDatabase.
@@ -194,6 +211,8 @@ export class SchedulesMethods {
         plannedDay.employeeId === schedule.employeeId &&
         new Date(plannedDay.day).getTime() >= periodStartDate.getTime() &&
         new Date(plannedDay.day).getTime() <= to.getTime());
+      const monthlyHours = schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0);
+      const monthlyMinutes = schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0);
       const totalHours = employeePeriodPlannedDays.map((x: PlannedDay) => x.hours).reduce((a: number, b: number) => a + b, 0);
       const totalMinutes = employeePeriodPlannedDays.map((x: PlannedDay) => x.minutes).reduce((a: number, b: number) => a + b, 0);
       return new EmployeeSchedule(
@@ -204,14 +223,14 @@ export class SchedulesMethods {
         29 <= daysInMonth,
         30 <= daysInMonth,
         31 === daysInMonth,
-        schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0),
-        schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0),
+        monthlyHours,
+        monthlyMinutes,
         this.getMonthlyDays(schedulePlannedDays),
-        1,
+        this.getMonthlyBackground(monthlyHours, monthlyMinutes, year, month, periods),
         totalHours,
         totalMinutes,
         this.getTotalDays(employeePeriodPlannedDays),
-        1,
+        this.getTotalBackground(totalHours, totalMinutes, periodMinutesLimit),
         schedule.createdBy,
         schedule.created,
         scheduleDays);
@@ -226,6 +245,24 @@ export class SchedulesMethods {
       if (x.shiftId && x.shiftId >= 1 && x.shiftId <= 20) result += 1;
     });
     return result;
+  }
+
+  getMonthlyBackground(monthlyHours: number, monthlyMinutes: number, year: number, month: number, periods: Period[]): number {
+    const monthlyTime = new TimeSpan(0, monthlyHours, monthlyMinutes);
+    const monhtlyLimit = periods.find(x => x.year === year && x.month === month);
+    if (monhtlyLimit) {
+      const monthlyMinutesLimit = monhtlyLimit.hours * 60;
+      if (monthlyTime.totalMinutes() === monthlyMinutesLimit) return 2;
+      if (monthlyTime.totalMinutes() > monthlyMinutesLimit) return 4;
+    }
+    return 0;
+  }
+
+  getTotalBackground(totalHours: number, totalMinutes: number, periodMinutesLimit: number): number {
+    const totalTime = new TimeSpan(0, totalHours, totalMinutes);
+    if (totalTime.totalMinutes() === periodMinutesLimit) return 2;
+    if (totalTime.totalMinutes() > periodMinutesLimit) return 4;
+    return 0;
   }
 
   getTotalDays(employeePeriodPlannedDays: PlannedDay[]): number {
