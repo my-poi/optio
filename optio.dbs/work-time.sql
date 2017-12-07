@@ -167,7 +167,7 @@ CREATE TABLE Vacations (
   employeeId INT NOT NULL,
   start DATE NOT NULL,
   finish DATE NOT NULL,
-  comments VARCHAR(100) NOT NULL,
+  comments VARCHAR(100),
   isLocked BOOL NOT NULL,
   createdBy INT NOT NULL,
   created DATETIME NOT NULL,
