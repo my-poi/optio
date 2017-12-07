@@ -1,6 +1,6 @@
-import { ScheduleDay } from '../objects/schedule-day';
+import { PlannedDay } from '../objects/planned-day';
 
-export interface Schedule {
+export interface EmployeeSchedule {
   employeeId: number;
   employeeName: string;
   year: number;
@@ -18,5 +18,5 @@ export interface Schedule {
   totalBackground: number;
   createdBy: number;
   created: Date;
-  sd: ScheduleDay[];
+  pd: PlannedDay[];
 }

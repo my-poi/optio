@@ -3,333 +3,333 @@
     <thead class="schedule-header">
       <tr>
         <th style="width: 131px; min-width: 131px; border: none"></th>
-        <th [ngClass]="{'free': header?.sd[0].bt === 1}">1</th>
-        <th [ngClass]="{'free': header?.sd[1].bt === 1}">2</th>
-        <th [ngClass]="{'free': header?.sd[2].bt === 1}">3</th>
-        <th [ngClass]="{'free': header?.sd[3].bt === 1}">4</th>
-        <th [ngClass]="{'free': header?.sd[4].bt === 1}">5</th>
-        <th [ngClass]="{'free': header?.sd[5].bt === 1}">6</th>
-        <th [ngClass]="{'free': header?.sd[6].bt === 1}">7</th>
-        <th [ngClass]="{'free': header?.sd[7].bt === 1}">8</th>
-        <th [ngClass]="{'free': header?.sd[8].bt === 1}">9</th>
-        <th [ngClass]="{'free': header?.sd[9].bt === 1}">10</th>
-        <th [ngClass]="{'free': header?.sd[10].bt === 1}">11</th>
-        <th [ngClass]="{'free': header?.sd[11].bt === 1}">12</th>
-        <th [ngClass]="{'free': header?.sd[12].bt === 1}">13</th>
-        <th [ngClass]="{'free': header?.sd[13].bt === 1}">14</th>
-        <th [ngClass]="{'free': header?.sd[14].bt === 1}">15</th>
-        <th [ngClass]="{'free': header?.sd[15].bt === 1}">16</th>
-        <th [ngClass]="{'free': header?.sd[16].bt === 1}">17</th>
-        <th [ngClass]="{'free': header?.sd[17].bt === 1}">18</th>
-        <th [ngClass]="{'free': header?.sd[18].bt === 1}">19</th>
-        <th [ngClass]="{'free': header?.sd[19].bt === 1}">20</th>
-        <th [ngClass]="{'free': header?.sd[20].bt === 1}">21</th>
-        <th [ngClass]="{'free': header?.sd[21].bt === 1}">22</th>
-        <th [ngClass]="{'free': header?.sd[22].bt === 1}">23</th>
-        <th [ngClass]="{'free': header?.sd[23].bt === 1}">24</th>
-        <th [ngClass]="{'free': header?.sd[24].bt === 1}">25</th>
-        <th [ngClass]="{'free': header?.sd[25].bt === 1}">26</th>
-        <th [ngClass]="{'free': header?.sd[26].bt === 1}">27</th>
-        <th [ngClass]="{'free': header?.sd[27].bt === 1}">28</th>
-        <th [ngClass]="{'free': header?.sd[28] && header.sd[28].bt === 1}" [ngStyle]="!header?.column29 && {'display': 'none'}">29</th>
-        <th [ngClass]="{'free': header?.sd[29] && header.sd[29].bt === 1}" [ngStyle]="!header?.column30 && {'display': 'none'}">30</th>
-        <th [ngClass]="{'free': header?.sd[30] && header.sd[30].bt === 1}" [ngStyle]="!header?.column31 && {'display': 'none'}">31</th>
+        <th [ngClass]="{'free': header?.pd[0].bt === 1}">1</th>
+        <th [ngClass]="{'free': header?.pd[1].bt === 1}">2</th>
+        <th [ngClass]="{'free': header?.pd[2].bt === 1}">3</th>
+        <th [ngClass]="{'free': header?.pd[3].bt === 1}">4</th>
+        <th [ngClass]="{'free': header?.pd[4].bt === 1}">5</th>
+        <th [ngClass]="{'free': header?.pd[5].bt === 1}">6</th>
+        <th [ngClass]="{'free': header?.pd[6].bt === 1}">7</th>
+        <th [ngClass]="{'free': header?.pd[7].bt === 1}">8</th>
+        <th [ngClass]="{'free': header?.pd[8].bt === 1}">9</th>
+        <th [ngClass]="{'free': header?.pd[9].bt === 1}">10</th>
+        <th [ngClass]="{'free': header?.pd[10].bt === 1}">11</th>
+        <th [ngClass]="{'free': header?.pd[11].bt === 1}">12</th>
+        <th [ngClass]="{'free': header?.pd[12].bt === 1}">13</th>
+        <th [ngClass]="{'free': header?.pd[13].bt === 1}">14</th>
+        <th [ngClass]="{'free': header?.pd[14].bt === 1}">15</th>
+        <th [ngClass]="{'free': header?.pd[15].bt === 1}">16</th>
+        <th [ngClass]="{'free': header?.pd[16].bt === 1}">17</th>
+        <th [ngClass]="{'free': header?.pd[17].bt === 1}">18</th>
+        <th [ngClass]="{'free': header?.pd[18].bt === 1}">19</th>
+        <th [ngClass]="{'free': header?.pd[19].bt === 1}">20</th>
+        <th [ngClass]="{'free': header?.pd[20].bt === 1}">21</th>
+        <th [ngClass]="{'free': header?.pd[21].bt === 1}">22</th>
+        <th [ngClass]="{'free': header?.pd[22].bt === 1}">23</th>
+        <th [ngClass]="{'free': header?.pd[23].bt === 1}">24</th>
+        <th [ngClass]="{'free': header?.pd[24].bt === 1}">25</th>
+        <th [ngClass]="{'free': header?.pd[25].bt === 1}">26</th>
+        <th [ngClass]="{'free': header?.pd[26].bt === 1}">27</th>
+        <th [ngClass]="{'free': header?.pd[27].bt === 1}">28</th>
+        <th [ngClass]="{'free': header?.pd[28] && header.pd[28].bt === 1}" [ngStyle]="!header?.column29 && {'display': 'none'}">29</th>
+        <th [ngClass]="{'free': header?.pd[29] && header.pd[29].bt === 1}" [ngStyle]="!header?.column30 && {'display': 'none'}">30</th>
+        <th [ngClass]="{'free': header?.pd[30] && header.pd[30].bt === 1}" [ngStyle]="!header?.column31 && {'display': 'none'}">31</th>
       </tr>
     </thead>
   </table>
   <table>
     <tbody [style.height.px]="scheduleTableBodyHeight" class="schedule-scrollable-tbody">
-      <tr *ngFor="let s of schedule" (mousedown)="select(s)">
+      <tr *ngFor="let es of employeeSchedule" (mousedown)="select(es)">
         <td style="border: none; padding-top: 10px">
           <table>
             <tr>
               <td rowspan="3" style="min-width: 131px; max-width: 131px; text-align: right">
-                <div style="white-space: pre; cursor: pointer; padding: 25px 15px 25px 25px; border-radius: 5px 0 0 5px" [ngClass]="{'selected': s === selected}">{{s.employeeName}}</div>
+                <div style="white-space: pre; cursor: pointer; padding: 25px 15px 25px 25px; border-radius: 5px 0 0 5px" [ngClass]="{'selected': es === selectedEmployeeSchedule}">{{es.employeeName}}</div>
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[0].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[0])" [ngClass]="{'free': s.sd[0].bt === 1, 'comment': s.sd[0].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[0].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[0])" [ngClass]="{'free': es.pd[0].bt === 1, 'comment': es.pd[0].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[1].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[1])" [ngClass]="{'free': s.sd[1].bt === 1, 'comment': s.sd[1].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[1].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[1])" [ngClass]="{'free': es.pd[1].bt === 1, 'comment': es.pd[1].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[2].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[2])" [ngClass]="{'free': s.sd[2].bt === 1, 'comment': s.sd[2].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[2].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[2])" [ngClass]="{'free': es.pd[2].bt === 1, 'comment': es.pd[2].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[3].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[3])" [ngClass]="{'free': s.sd[3].bt === 1, 'comment': s.sd[3].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[3].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[3])" [ngClass]="{'free': es.pd[3].bt === 1, 'comment': es.pd[3].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[4].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[4])" [ngClass]="{'free': s.sd[4].bt === 1, 'comment': s.sd[4].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[4].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[4])" [ngClass]="{'free': es.pd[4].bt === 1, 'comment': es.pd[4].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[5].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[5])" [ngClass]="{'free': s.sd[5].bt === 1, 'comment': s.sd[5].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[5].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[5])" [ngClass]="{'free': es.pd[5].bt === 1, 'comment': es.pd[5].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[6].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[6])" [ngClass]="{'free': s.sd[6].bt === 1, 'comment': s.sd[6].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[6].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[6])" [ngClass]="{'free': es.pd[6].bt === 1, 'comment': es.pd[6].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[7].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[7])" [ngClass]="{'free': s.sd[7].bt === 1, 'comment': s.sd[7].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[7].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[7])" [ngClass]="{'free': es.pd[7].bt === 1, 'comment': es.pd[7].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[8].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[8])" [ngClass]="{'free': s.sd[8].bt === 1, 'comment': s.sd[8].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[8].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[8])" [ngClass]="{'free': es.pd[8].bt === 1, 'comment': es.pd[8].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[9].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[9])" [ngClass]="{'free': s.sd[9].bt === 1, 'comment': s.sd[9].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[9].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[9])" [ngClass]="{'free': es.pd[9].bt === 1, 'comment': es.pd[9].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[10].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[10])" [ngClass]="{'free': s.sd[10].bt === 1, 'comment': s.sd[10].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[10].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[10])" [ngClass]="{'free': es.pd[10].bt === 1, 'comment': es.pd[10].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[11].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[11])" [ngClass]="{'free': s.sd[11].bt === 1, 'comment': s.sd[11].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[11].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[11])" [ngClass]="{'free': es.pd[11].bt === 1, 'comment': es.pd[11].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[12].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[12])" [ngClass]="{'free': s.sd[12].bt === 1, 'comment': s.sd[12].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[12].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[12])" [ngClass]="{'free': es.pd[12].bt === 1, 'comment': es.pd[12].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[13].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[13])" [ngClass]="{'free': s.sd[13].bt === 1, 'comment': s.sd[13].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[13].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[13])" [ngClass]="{'free': es.pd[13].bt === 1, 'comment': es.pd[13].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[14].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[14])" [ngClass]="{'free': s.sd[14].bt === 1, 'comment': s.sd[14].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[14].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[14])" [ngClass]="{'free': es.pd[14].bt === 1, 'comment': es.pd[14].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[15].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[15])" [ngClass]="{'free': s.sd[15].bt === 1, 'comment': s.sd[15].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[15].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[15])" [ngClass]="{'free': es.pd[15].bt === 1, 'comment': es.pd[15].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[16].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[16])" [ngClass]="{'free': s.sd[16].bt === 1, 'comment': s.sd[16].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[16].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[16])" [ngClass]="{'free': es.pd[16].bt === 1, 'comment': es.pd[16].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[17].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[17])" [ngClass]="{'free': s.sd[17].bt === 1, 'comment': s.sd[17].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[17].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[17])" [ngClass]="{'free': es.pd[17].bt === 1, 'comment': es.pd[17].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[18].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[18])" [ngClass]="{'free': s.sd[18].bt === 1, 'comment': s.sd[18].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[18].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[18])" [ngClass]="{'free': es.pd[18].bt === 1, 'comment': es.pd[18].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[19].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[19])" [ngClass]="{'free': s.sd[19].bt === 1, 'comment': s.sd[19].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[19].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[19])" [ngClass]="{'free': es.pd[19].bt === 1, 'comment': es.pd[19].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[20].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[20])" [ngClass]="{'free': s.sd[20].bt === 1, 'comment': s.sd[20].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[20].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[20])" [ngClass]="{'free': es.pd[20].bt === 1, 'comment': es.pd[20].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[21].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[21])" [ngClass]="{'free': s.sd[21].bt === 1, 'comment': s.sd[21].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[21].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[21])" [ngClass]="{'free': es.pd[21].bt === 1, 'comment': es.pd[21].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[22].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[22])" [ngClass]="{'free': s.sd[22].bt === 1, 'comment': s.sd[22].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[22].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[22])" [ngClass]="{'free': es.pd[22].bt === 1, 'comment': es.pd[22].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[23].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[23])" [ngClass]="{'free': s.sd[23].bt === 1, 'comment': s.sd[23].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[23].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[23])" [ngClass]="{'free': es.pd[23].bt === 1, 'comment': es.pd[23].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[24].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[24])" [ngClass]="{'free': s.sd[24].bt === 1, 'comment': s.sd[24].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[24].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[24])" [ngClass]="{'free': es.pd[24].bt === 1, 'comment': es.pd[24].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[25].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[25])" [ngClass]="{'free': s.sd[25].bt === 1, 'comment': s.sd[25].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[25].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[25])" [ngClass]="{'free': es.pd[25].bt === 1, 'comment': es.pd[25].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[26].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[26])" [ngClass]="{'free': s.sd[26].bt === 1, 'comment': s.sd[26].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[26].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[26])" [ngClass]="{'free': es.pd[26].bt === 1, 'comment': es.pd[26].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[27].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[27])" [ngClass]="{'free': s.sd[27].bt === 1, 'comment': s.sd[27].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[27].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[27])" [ngClass]="{'free': es.pd[27].bt === 1, 'comment': es.pd[27].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column29 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[28] && s.sd[28].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[28])" [ngClass]="{'free': s.sd[28] && s.sd[28].bt === 1, 'comment': s.sd[28] && s.sd[28].bt === 2}" maxlength="2" tabindex="-1">
+              <td [ngStyle]="!es.column29 && {'display': 'none'}">
+                <input type="text" [(ngModel)]="es.pd[28] && es.pd[28].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[28])" [ngClass]="{'free': es.pd[28] && es.pd[28].bt === 1, 'comment': es.pd[28] && es.pd[28].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column30 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[29] && s.sd[29].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[29])" [ngClass]="{'free': s.sd[29] && s.sd[29].bt === 1, 'comment': s.sd[29] && s.sd[29].bt === 2}" maxlength="2" tabindex="-1">
+              <td [ngStyle]="!es.column30 && {'display': 'none'}">
+                <input type="text" [(ngModel)]="es.pd[29] && es.pd[29].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[29])" [ngClass]="{'free': es.pd[29] && es.pd[29].bt === 1, 'comment': es.pd[29] && es.pd[29].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column31 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[30] && s.sd[30].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[30])" [ngClass]="{'free': s.sd[30] && s.sd[30].bt === 1, 'comment': s.sd[30] && s.sd[30].bt === 2}" maxlength="2" tabindex="-1">
+              <td [ngStyle]="!es.column31 && {'display': 'none'}">
+                <input type="text" [(ngModel)]="es.pd[30] && es.pd[30].h" (ngModelChange)="hourChanged(es.employeeId, es.pd[30])" [ngClass]="{'free': es.pd[30] && es.pd[30].bt === 1, 'comment': es.pd[30] && es.pd[30].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td rowspan="3" style="width: 85px; min-width: 85px; text-align: center; border-left: 1px solid #d4d5d5" [ngClass]="{size: s.monthlyBackground === 2, 'error': s.monthlyBackground === 4}">{{s.monthlyHours}}:{{("00" + s.monthlyMinutes).slice(-2)}}/{{s.monthlyDays}}</td>
-              <td rowspan="3" style="width: 105px; min-width: 85px; text-align: center; border-radius: 0 5px 5px 0" [ngClass]="{size: s.totalBackground === 2, 'error': s.totalBackground === 4}">{{s.totalHours}}:{{("00" + s.totalMinutes).slice(-2)}}/{{s.totalDays}}</td>
+              <td rowspan="3" style="width: 85px; min-width: 85px; text-align: center; border-left: 1px solid #d4d5d5" [ngClass]="{size: es.monthlyBackground === 2, 'error': es.monthlyBackground === 4}">{{es.monthlyHours}}:{{("00" + es.monthlyMinutes).slice(-2)}}/{{es.monthlyDays}}</td>
+              <td rowspan="3" style="width: 105px; min-width: 85px; text-align: center; border-radius: 0 5px 5px 0" [ngClass]="{size: es.totalBackground === 2, 'error': es.totalBackground === 4}">{{es.totalHours}}:{{("00" + es.totalMinutes).slice(-2)}}/{{es.totalDays}}</td>
             </tr>
             <tr>
               <td>
-                <input type="text" [(ngModel)]="s.sd[0].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[0])" [ngClass]="{'free': s.sd[0].bt === 1, 'comment': s.sd[0].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[0].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[0])" [ngClass]="{'free': es.pd[0].bt === 1, 'comment': es.pd[0].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[1].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[1])" [ngClass]="{'free': s.sd[1].bt === 1, 'comment': s.sd[1].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[1].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[1])" [ngClass]="{'free': es.pd[1].bt === 1, 'comment': es.pd[1].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[2].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[2])" [ngClass]="{'free': s.sd[2].bt === 1, 'comment': s.sd[2].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[2].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[2])" [ngClass]="{'free': es.pd[2].bt === 1, 'comment': es.pd[2].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[3].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[3])" [ngClass]="{'free': s.sd[3].bt === 1, 'comment': s.sd[3].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[3].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[3])" [ngClass]="{'free': es.pd[3].bt === 1, 'comment': es.pd[3].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[4].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[4])" [ngClass]="{'free': s.sd[4].bt === 1, 'comment': s.sd[4].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[4].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[4])" [ngClass]="{'free': es.pd[4].bt === 1, 'comment': es.pd[4].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[5].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[5])" [ngClass]="{'free': s.sd[5].bt === 1, 'comment': s.sd[5].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[5].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[5])" [ngClass]="{'free': es.pd[5].bt === 1, 'comment': es.pd[5].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[6].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[6])" [ngClass]="{'free': s.sd[6].bt === 1, 'comment': s.sd[6].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[6].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[6])" [ngClass]="{'free': es.pd[6].bt === 1, 'comment': es.pd[6].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[7].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[7])" [ngClass]="{'free': s.sd[7].bt === 1, 'comment': s.sd[7].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[7].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[7])" [ngClass]="{'free': es.pd[7].bt === 1, 'comment': es.pd[7].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[8].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[8])" [ngClass]="{'free': s.sd[8].bt === 1, 'comment': s.sd[8].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[8].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[8])" [ngClass]="{'free': es.pd[8].bt === 1, 'comment': es.pd[8].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[9].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[9])" [ngClass]="{'free': s.sd[9].bt === 1, 'comment': s.sd[9].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[9].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[9])" [ngClass]="{'free': es.pd[9].bt === 1, 'comment': es.pd[9].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[10].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[10])" [ngClass]="{'free': s.sd[10].bt === 1, 'comment': s.sd[10].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[10].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[10])" [ngClass]="{'free': es.pd[10].bt === 1, 'comment': es.pd[10].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[11].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[11])" [ngClass]="{'free': s.sd[11].bt === 1, 'comment': s.sd[11].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[11].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[11])" [ngClass]="{'free': es.pd[11].bt === 1, 'comment': es.pd[11].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[12].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[12])" [ngClass]="{'free': s.sd[12].bt === 1, 'comment': s.sd[12].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[12].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[12])" [ngClass]="{'free': es.pd[12].bt === 1, 'comment': es.pd[12].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[13].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[13])" [ngClass]="{'free': s.sd[13].bt === 1, 'comment': s.sd[13].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[13].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[13])" [ngClass]="{'free': es.pd[13].bt === 1, 'comment': es.pd[13].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[14].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[14])" [ngClass]="{'free': s.sd[14].bt === 1, 'comment': s.sd[14].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[14].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[14])" [ngClass]="{'free': es.pd[14].bt === 1, 'comment': es.pd[14].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[15].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[15])" [ngClass]="{'free': s.sd[15].bt === 1, 'comment': s.sd[15].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[15].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[15])" [ngClass]="{'free': es.pd[15].bt === 1, 'comment': es.pd[15].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[16].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[16])" [ngClass]="{'free': s.sd[16].bt === 1, 'comment': s.sd[16].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[16].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[16])" [ngClass]="{'free': es.pd[16].bt === 1, 'comment': es.pd[16].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[17].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[17])" [ngClass]="{'free': s.sd[17].bt === 1, 'comment': s.sd[17].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[17].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[17])" [ngClass]="{'free': es.pd[17].bt === 1, 'comment': es.pd[17].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[18].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[18])" [ngClass]="{'free': s.sd[18].bt === 1, 'comment': s.sd[18].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[18].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[18])" [ngClass]="{'free': es.pd[18].bt === 1, 'comment': es.pd[18].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[19].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[19])" [ngClass]="{'free': s.sd[19].bt === 1, 'comment': s.sd[19].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[19].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[19])" [ngClass]="{'free': es.pd[19].bt === 1, 'comment': es.pd[19].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[20].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[20])" [ngClass]="{'free': s.sd[20].bt === 1, 'comment': s.sd[20].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[20].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[20])" [ngClass]="{'free': es.pd[20].bt === 1, 'comment': es.pd[20].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[21].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[21])" [ngClass]="{'free': s.sd[21].bt === 1, 'comment': s.sd[21].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[21].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[21])" [ngClass]="{'free': es.pd[21].bt === 1, 'comment': es.pd[21].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[22].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[22])" [ngClass]="{'free': s.sd[22].bt === 1, 'comment': s.sd[22].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[22].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[22])" [ngClass]="{'free': es.pd[22].bt === 1, 'comment': es.pd[22].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[23].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[23])" [ngClass]="{'free': s.sd[23].bt === 1, 'comment': s.sd[23].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[23].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[23])" [ngClass]="{'free': es.pd[23].bt === 1, 'comment': es.pd[23].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[24].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[24])" [ngClass]="{'free': s.sd[24].bt === 1, 'comment': s.sd[24].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[24].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[24])" [ngClass]="{'free': es.pd[24].bt === 1, 'comment': es.pd[24].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[25].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[25])" [ngClass]="{'free': s.sd[25].bt === 1, 'comment': s.sd[25].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[25].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[25])" [ngClass]="{'free': es.pd[25].bt === 1, 'comment': es.pd[25].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[26].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[26])" [ngClass]="{'free': s.sd[26].bt === 1, 'comment': s.sd[26].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[26].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[26])" [ngClass]="{'free': es.pd[26].bt === 1, 'comment': es.pd[26].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[27].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[27])" [ngClass]="{'free': s.sd[27].bt === 1, 'comment': s.sd[27].bt === 2}" maxlength="2" tabindex="-1">
+                <input type="text" [(ngModel)]="es.pd[27].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[27])" [ngClass]="{'free': es.pd[27].bt === 1, 'comment': es.pd[27].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column29 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[28] && s.sd[28].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[28])" [ngClass]="{'free': s.sd[28] && s.sd[28].bt === 1, 'comment': s.sd[28] && s.sd[28].bt === 2}" maxlength="2" tabindex="-1">
+              <td [ngStyle]="!es.column29 && {'display': 'none'}">
+                <input type="text" [(ngModel)]="es.pd[28] && es.pd[28].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[28])" [ngClass]="{'free': es.pd[28] && es.pd[28].bt === 1, 'comment': es.pd[28] && es.pd[28].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column30 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[29] && s.sd[29].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[29])" [ngClass]="{'free': s.sd[29] && s.sd[29].bt === 1, 'comment': s.sd[29] && s.sd[29].bt === 2}" maxlength="2" tabindex="-1">
+              <td [ngStyle]="!es.column30 && {'display': 'none'}">
+                <input type="text" [(ngModel)]="es.pd[29] && es.pd[29].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[29])" [ngClass]="{'free': es.pd[29] && es.pd[29].bt === 1, 'comment': es.pd[29] && es.pd[29].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column31 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[30] && s.sd[30].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[30])" [ngClass]="{'free': s.sd[30] && s.sd[30].bt === 1, 'comment': s.sd[30] && s.sd[30].bt === 2}" maxlength="2" tabindex="-1">
+              <td [ngStyle]="!es.column31 && {'display': 'none'}">
+                <input type="text" [(ngModel)]="es.pd[30] && es.pd[30].m" (ngModelChange)="minuteChanged(es.employeeId, es.pd[30])" [ngClass]="{'free': es.pd[30] && es.pd[30].bt === 1, 'comment': es.pd[30] && es.pd[30].bt === 2}" maxlength="2" tabindex="-1">
               </td>
             </tr>
             <tr class="schedule-bottom">
               <td>
-                <input type="text" [(ngModel)]="s.sd[0].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[0])" (focus)="select(s)" [ngClass]="{'free': s.sd[0].bx === 1, 'vacation': s.sd[0].bx === 2, 'error': s.sd[0].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[0].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[0])" (focus)="select(s)" [ngClass]="{'free': es.pd[0].bx === 1, 'vacation': es.pd[0].bx === 2, 'error': es.pd[0].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[1].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[1])" [ngClass]="{'free': s.sd[1].bx === 1, 'vacation': s.sd[1].bx === 2, 'error': s.sd[1].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[1].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[1])" [ngClass]="{'free': es.pd[1].bx === 1, 'vacation': es.pd[1].bx === 2, 'error': es.pd[1].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[2].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[2])" [ngClass]="{'free': s.sd[2].bx === 1, 'vacation': s.sd[2].bx === 2, 'error': s.sd[2].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[2].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[2])" [ngClass]="{'free': es.pd[2].bx === 1, 'vacation': es.pd[2].bx === 2, 'error': es.pd[2].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[3].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[3])" [ngClass]="{'free': s.sd[3].bx === 1, 'vacation': s.sd[3].bx === 2, 'error': s.sd[3].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[3].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[3])" [ngClass]="{'free': es.pd[3].bx === 1, 'vacation': es.pd[3].bx === 2, 'error': es.pd[3].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[4].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[4])" [ngClass]="{'free': s.sd[4].bx === 1, 'vacation': s.sd[4].bx === 2, 'error': s.sd[4].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[4].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[4])" [ngClass]="{'free': es.pd[4].bx === 1, 'vacation': es.pd[4].bx === 2, 'error': es.pd[4].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[5].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[5])" [ngClass]="{'free': s.sd[5].bx === 1, 'vacation': s.sd[5].bx === 2, 'error': s.sd[5].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[5].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[5])" [ngClass]="{'free': es.pd[5].bx === 1, 'vacation': es.pd[5].bx === 2, 'error': es.pd[5].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[6].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[6])" [ngClass]="{'free': s.sd[6].bx === 1, 'vacation': s.sd[6].bx === 2, 'error': s.sd[6].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[6].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[6])" [ngClass]="{'free': es.pd[6].bx === 1, 'vacation': es.pd[6].bx === 2, 'error': es.pd[6].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[7].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[7])" [ngClass]="{'free': s.sd[7].bx === 1, 'vacation': s.sd[7].bx === 2, 'error': s.sd[7].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[7].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[7])" [ngClass]="{'free': es.pd[7].bx === 1, 'vacation': es.pd[7].bx === 2, 'error': es.pd[7].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[8].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[8])" [ngClass]="{'free': s.sd[8].bx === 1, 'vacation': s.sd[8].bx === 2, 'error': s.sd[8].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[8].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[8])" [ngClass]="{'free': es.pd[8].bx === 1, 'vacation': es.pd[8].bx === 2, 'error': es.pd[8].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[9].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[9])" [ngClass]="{'free': s.sd[9].bx === 1, 'vacation': s.sd[9].bx === 2, 'error': s.sd[9].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[9].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[9])" [ngClass]="{'free': es.pd[9].bx === 1, 'vacation': es.pd[9].bx === 2, 'error': es.pd[9].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[10].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[10])" [ngClass]="{'free': s.sd[10].bx === 1, 'vacation': s.sd[10].bx === 2, 'error': s.sd[10].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[10].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[10])" [ngClass]="{'free': es.pd[10].bx === 1, 'vacation': es.pd[10].bx === 2, 'error': es.pd[10].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[11].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[11])" [ngClass]="{'free': s.sd[11].bx === 1, 'vacation': s.sd[11].bx === 2, 'error': s.sd[11].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[11].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[11])" [ngClass]="{'free': es.pd[11].bx === 1, 'vacation': es.pd[11].bx === 2, 'error': es.pd[11].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[12].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[12])" [ngClass]="{'free': s.sd[12].bx === 1, 'vacation': s.sd[12].bx === 2, 'error': s.sd[12].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[12].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[12])" [ngClass]="{'free': es.pd[12].bx === 1, 'vacation': es.pd[12].bx === 2, 'error': es.pd[12].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[13].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[13])" [ngClass]="{'free': s.sd[13].bx === 1, 'vacation': s.sd[13].bx === 2, 'error': s.sd[13].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[13].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[13])" [ngClass]="{'free': es.pd[13].bx === 1, 'vacation': es.pd[13].bx === 2, 'error': es.pd[13].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[14].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[14])" [ngClass]="{'free': s.sd[14].bx === 1, 'vacation': s.sd[14].bx === 2, 'error': s.sd[14].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[14].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[14])" [ngClass]="{'free': es.pd[14].bx === 1, 'vacation': es.pd[14].bx === 2, 'error': es.pd[14].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[15].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[15])" [ngClass]="{'free': s.sd[15].bx === 1, 'vacation': s.sd[15].bx === 2, 'error': s.sd[15].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[15].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[15])" [ngClass]="{'free': es.pd[15].bx === 1, 'vacation': es.pd[15].bx === 2, 'error': es.pd[15].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[16].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[16])" [ngClass]="{'free': s.sd[16].bx === 1, 'vacation': s.sd[16].bx === 2, 'error': s.sd[16].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[16].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[16])" [ngClass]="{'free': es.pd[16].bx === 1, 'vacation': es.pd[16].bx === 2, 'error': es.pd[16].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[17].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[17])" [ngClass]="{'free': s.sd[17].bx === 1, 'vacation': s.sd[17].bx === 2, 'error': s.sd[17].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[17].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[17])" [ngClass]="{'free': es.pd[17].bx === 1, 'vacation': es.pd[17].bx === 2, 'error': es.pd[17].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[18].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[18])" [ngClass]="{'free': s.sd[18].bx === 1, 'vacation': s.sd[18].bx === 2, 'error': s.sd[18].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[18].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[18])" [ngClass]="{'free': es.pd[18].bx === 1, 'vacation': es.pd[18].bx === 2, 'error': es.pd[18].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[19].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[19])" [ngClass]="{'free': s.sd[19].bx === 1, 'vacation': s.sd[19].bx === 2, 'error': s.sd[19].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[19].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[19])" [ngClass]="{'free': es.pd[19].bx === 1, 'vacation': es.pd[19].bx === 2, 'error': es.pd[19].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[20].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[20])" [ngClass]="{'free': s.sd[20].bx === 1, 'vacation': s.sd[20].bx === 2, 'error': s.sd[20].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[20].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[20])" [ngClass]="{'free': es.pd[20].bx === 1, 'vacation': es.pd[20].bx === 2, 'error': es.pd[20].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[21].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[21])" [ngClass]="{'free': s.sd[21].bx === 1, 'vacation': s.sd[21].bx === 2, 'error': s.sd[21].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[21].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[21])" [ngClass]="{'free': es.pd[21].bx === 1, 'vacation': es.pd[21].bx === 2, 'error': es.pd[21].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[22].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[22])" [ngClass]="{'free': s.sd[22].bx === 1, 'vacation': s.sd[22].bx === 2, 'error': s.sd[22].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[22].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[22])" [ngClass]="{'free': es.pd[22].bx === 1, 'vacation': es.pd[22].bx === 2, 'error': es.pd[22].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[23].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[23])" [ngClass]="{'free': s.sd[23].bx === 1, 'vacation': s.sd[23].bx === 2, 'error': s.sd[23].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[23].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[23])" [ngClass]="{'free': es.pd[23].bx === 1, 'vacation': es.pd[23].bx === 2, 'error': es.pd[23].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[24].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[24])" [ngClass]="{'free': s.sd[24].bx === 1, 'vacation': s.sd[24].bx === 2, 'error': s.sd[24].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[24].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[24])" [ngClass]="{'free': es.pd[24].bx === 1, 'vacation': es.pd[24].bx === 2, 'error': es.pd[24].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[25].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[25])" [ngClass]="{'free': s.sd[25].bx === 1, 'vacation': s.sd[25].bx === 2, 'error': s.sd[25].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[25].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[25])" [ngClass]="{'free': es.pd[25].bx === 1, 'vacation': es.pd[25].bx === 2, 'error': es.pd[25].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[26].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[26])" [ngClass]="{'free': s.sd[26].bx === 1, 'vacation': s.sd[26].bx === 2, 'error': s.sd[26].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[26].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[26])" [ngClass]="{'free': es.pd[26].bx === 1, 'vacation': es.pd[26].bx === 2, 'error': es.pd[26].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[27].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[27])" (focus)="select(s)" [ngClass]="{'free': s.sd[27].bx === 1, 'vacation': s.sd[27].bx === 2, 'error': s.sd[27].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="es.pd[27].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[27])" (focus)="select(s)" [ngClass]="{'free': es.pd[27].bx === 1, 'vacation': es.pd[27].bx === 2, 'error': es.pd[27].bx === 3}" spellcheck="false">
               </td>
-              <td [ngStyle]="!s.column29 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[28] && s.sd[28].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[28])" (focus)="select(s)" [ngClass]="{'free': s.sd[28] && s.sd[28].bx === 1, 'vacation': s.sd[28] && s.sd[28].bx === 2, 'error': s.sd[28] && s.sd[28].bx === 3}" spellcheck="false">
+              <td [ngStyle]="!es.column29 && {'display': 'none'}">
+                <input type="text" [(ngModel)]="es.pd[28] && es.pd[28].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[28])" (focus)="select(s)" [ngClass]="{'free': es.pd[28] && es.pd[28].bx === 1, 'vacation': es.pd[28] && es.pd[28].bx === 2, 'error': es.pd[28] && es.pd[28].bx === 3}" spellcheck="false">
               </td>
-              <td [ngStyle]="!s.column30 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[29] && s.sd[29].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[29])" (focus)="select(s)" [ngClass]="{'free': s.sd[29] && s.sd[29].bx === 1, 'vacation': s.sd[29] && s.sd[29].bx === 2, 'error': s.sd[29] && s.sd[29].bx === 3}" spellcheck="false">
+              <td [ngStyle]="!es.column30 && {'display': 'none'}">
+                <input type="text" [(ngModel)]="es.pd[29] && es.pd[29].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[29])" (focus)="select(s)" [ngClass]="{'free': es.pd[29] && es.pd[29].bx === 1, 'vacation': es.pd[29] && es.pd[29].bx === 2, 'error': es.pd[29] && es.pd[29].bx === 3}" spellcheck="false">
               </td>
-              <td [ngStyle]="!s.column31 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[30] && s.sd[30].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[30])" (focus)="select(s)" [ngClass]="{'free': s.sd[30] && s.sd[30].bx === 1, 'vacation': s.sd[30] && s.sd[30].bx === 2, 'error': s.sd[30] && s.sd[30].bx === 3}" spellcheck="false">
+              <td [ngStyle]="!es.column31 && {'display': 'none'}">
+                <input type="text" [(ngModel)]="es.pd[30] && es.pd[30].x" (ngModelChange)="shiftChanged(es.employeeId, es.pd[30])" (focus)="select(s)" [ngClass]="{'free': es.pd[30] && es.pd[30].bx === 1, 'vacation': es.pd[30] && es.pd[30].bx === 2, 'error': es.pd[30] && es.pd[30].bx === 3}" spellcheck="false">
               </td>
             </tr>
           </table>
