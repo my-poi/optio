@@ -90,11 +90,15 @@ export class AppComponent implements AfterViewInit {
     }
 
     if (event.tabName === 'schedule') {
+      const selectedSchedule = this.schedulesTab.selectedSchedule;
+      const selectedCalendarItem = this.schedulesTab.selectedCalendarItem;
+      const year = selectedCalendarItem.parent.value;
+      const month = selectedCalendarItem.value;
       tab.title = String.format('{0} - grafik na {1} {2}',
-      this.schedulesTab.selectedSchedule.path,
-      this.schedulesTab.selectedCalendarItem.name,
-      this.schedulesTab.selectedCalendarItem.parent.name);
-      this.scheduleTab.load();
+      selectedSchedule.path,
+      selectedCalendarItem.name,
+      year);
+      this.scheduleTab.load(selectedSchedule.companyUnitId, year, month);
     }
   }
 

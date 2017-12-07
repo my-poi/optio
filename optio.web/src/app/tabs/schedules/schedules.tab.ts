@@ -47,8 +47,8 @@ export class SchedulesTab {
     if (this.selectedCalendarItem.parent) {
       const year = this.selectedCalendarItem.parent.value;
       const month = this.selectedCalendarItem.value + 1;
-      this.dataService.loadCompanyUnitSchedules(year, month, () => {
-        this.foundSchedules = this.dataService.companyUnitSchedules;
+      this.dataService.loadSchedules(year, month, () => {
+        this.foundSchedules = this.dataService.schedules;
         if (this.foundSchedules.length > 0) this.selectSchedule(this.foundSchedules[0]);
         else this.selectedSchedule = null;
         this.disabledButtonsService.schedulesAdd = false;
@@ -64,7 +64,7 @@ export class SchedulesTab {
   }
 
   filterSchedules() {
-    const result = this.dataService.companyUnitSchedules.filter(x => {
+    const result = this.dataService.schedules.filter(x => {
       if (x.path.toLowerCase().indexOf(this.schedulesFilter.toLocaleLowerCase()) >= 0) return true;
       return false;
     });

@@ -216,7 +216,7 @@ export class SchedulesMethods {
       const totalMinutes = employeePeriodPlannedDays.map((x: PlannedDay) => x.minutes).reduce((a: number, b: number) => a + b, 0);
       return new EmployeeSchedule(
         schedule.employeeId,
-        `${employee.lastName} ${employee.firstName}`,
+        `${employee.lastName}\n${employee.firstName}`,
         schedule.year,
         schedule.month,
         29 <= daysInMonth,

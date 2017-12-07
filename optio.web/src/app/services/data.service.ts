@@ -11,13 +11,14 @@ import { Period } from '../objects/period';
 import { Shift } from '../objects/shift';
 import { TimeSheet } from '../objects/time-sheet';
 import { Classification } from '../objects/classification';
+import { EmployeeSchedule } from '../objects/employee-schedule';
 
 @Injectable()
 export class DataService {
   companyUnits: CompanyUnit[];
   hierarchicalCompanyUnits: CompanyUnit[] = [];
   employees: Employee[];
-  companyUnitSchedules: CompanyUnitSchedule[];
+  schedules: CompanyUnitSchedule[];
   holidayTypes: HolidayType[];
   holidays: Holiday[];
   periodDefinitions: PeriodDefinition[];
@@ -81,10 +82,15 @@ export class DataService {
     });
   }
 
-  loadCompanyUnitSchedules(year: number, month: number, callback) {
+  loadSchedules(year: number, month: number, callback) {
     this.http.get(config.apiBaseUrl + `data/schedules/get-schedules/${year}/${month}`, this.getOptions()).subscribe(response => {
-      this.companyUnitSchedules = response.json();
+      this.schedules = response.json();
       callback();
     });
+  }
+
+  loadSchedule(companyUnitId: number, year: number, month: number, callback: any) {
+    this.http.get(config.apiBaseUrl + `data/schedules/get-schedule/${companyUnitId}/${year}/${month}`,
+      this.getOptions()).subscribe(response => callback(response.json()));
   }
 }

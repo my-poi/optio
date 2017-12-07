@@ -18,8 +18,8 @@ import { ShiftDuration } from '../../objects/shift-duration';
 export class ScheduleTab {
   @Output() hideTabEvent = new EventEmitter<any>();
   scheduleTableBodyHeight = window.innerHeight - 242;
-  year = 2017;
-  month = 4;
+  year: number;
+  month: number;
   monthlyLimit: number;
   periodLimit: number;
   currentPeriodMonths: PeriodDefinition[];
@@ -35,9 +35,11 @@ export class ScheduleTab {
     private globalService: GlobalService,
     private ribbonInfosService: RibbonInfosService) { }
 
-  load() {
-    this.http.get('assets/test-data/schedules.json').subscribe(res => {
-      this.employeeSchedules = res.json();
+  load(companyUnitId: number, year: number, month: number) {
+    this.year = year;
+    this.month = month;
+    this.dataService.loadSchedule(companyUnitId, year, month, (results) => {
+      this.employeeSchedules = results;
       this.employeeSchedule = this.employeeSchedules.filter(x => x.year === this.year && x.month === this.month);
       this.header = this.employeeSchedule[0];
       this.select(this.employeeSchedule[0]);
