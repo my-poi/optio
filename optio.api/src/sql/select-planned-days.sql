@@ -7,6 +7,6 @@ SELECT
   updatedBy,
   updated
 FROM PlannedDays
-WHERE employeeId IN(?)
+WHERE employeeId IN ?
 AND day >= ?
 AND day <= ?;

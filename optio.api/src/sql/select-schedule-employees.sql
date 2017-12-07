@@ -1,4 +1,4 @@
-SELECT employeeId 
+SELECT * 
 FROM Schedules
 WHERE companyUnitId = ?
 AND year = ?

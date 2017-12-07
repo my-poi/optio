@@ -19,6 +19,11 @@ export class WorkTimeDatabase {
     return rows;
   }
 
+  async query(sql: string, values: any) {
+    const [rows, fields] = await this.pool.query<mysql.RowDataPacket[]>(sql, values);
+    return rows;
+  }
+
   async transaction(queryList: {sql: string, values: any}[]) {
     const connection = await mysql.createConnection({
       host: config.host,
