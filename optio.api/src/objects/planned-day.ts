@@ -4,7 +4,7 @@ export class PlannedDay {
   hours: number;
   minutes: number;
   shiftId: number;
-  comments: string;
+  comment: string;
   updatedBy: number;
   updated: Date;
 
@@ -14,7 +14,7 @@ export class PlannedDay {
     hours: number,
     minutes: number,
     shiftId: number,
-    comments: string,
+    comment: string,
     updatedBy: number,
     updated: Date) {
       this.employeeId = employeeId;
@@ -22,7 +22,7 @@ export class PlannedDay {
       this.hours = hours;
       this.minutes = minutes;
       this.shiftId = shiftId;
-      this.comments = comments;
+      this.comment = comment;
       this.updatedBy = updatedBy;
       this.updated = updated;
   }

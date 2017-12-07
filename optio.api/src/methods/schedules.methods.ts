@@ -11,6 +11,8 @@ import { PeriodDefinition } from '../objects/period-definition';
 import { Schedule } from '../objects/schedule';
 import { EmployeeSchedule } from '../objects/employee-schedule';
 import { PlannedDay } from '../objects/planned-day';
+import { ScheduleDay } from '../objects/schedule-day';
+import { Shift } from '../objects/shift';
 
 export class SchedulesMethods {
   constructor(
@@ -144,6 +146,10 @@ export class SchedulesMethods {
       query(queries['select-employees-by-id'], [[employeeIdentifiers]]);
     const employees = JSON.parse(JSON.stringify(employeeRows));
 
+    const shiftRows = await this.workTimeDatabase.
+      query(queries['select-shifts'], []);
+    const shifts = JSON.parse(JSON.stringify(shiftRows));
+
     const allEmployeeScheduleRows = await this.workTimeDatabase.
       query(queries['select-employee-schedules'], [[employeeIdentifiers], from, to]);
     const allEmployeeSchedules = JSON.parse(JSON.stringify(allEmployeeScheduleRows));
@@ -152,35 +158,62 @@ export class SchedulesMethods {
       queries['select-planned-days'], [[employeeIdentifiers], from, to]);
     const plannedDays = JSON.parse(JSON.stringify(plannedDayRows));
 
-    console.log(periodMonths);
-    console.log('from: ' + from);
-    console.log('to: ' + to);
+    // console.log('from: ' + from);
+    // console.log('to: ' + to);
 
-    // const results = allEmployeeSchedules.map((schedule: Schedule) => {
-    //   const employee: Employee = employees.find((x: Employee) => x.id === schedule.employeeId);
-    //   const daysInMonth = new Date(schedule.year, schedule.month, 0).getDate();
-    //   const plannedDays = plannedDayRows.filter((x: PlannedDay) => x.)
-    //   return new EmployeeSchedule(
-    //     schedule.employeeId,
-    //     `${employee.lastName} ${employee.firstName}`,
-    //     schedule.year,
-    //     schedule.month,
-    //     29 <= daysInMonth,
-    //     30 <= daysInMonth,
-    //     31 === daysInMonth,
-    //     null,
-    //     null,
-    //     null,
-    //     null,
-    //     null,
-    //     null,
-    //     null,
-    //     null,
-    //     null,
-    //     null,
-    //     null);
-    // });
+    const schedules = allEmployeeSchedules.map((schedule: Schedule) => {
+      const employee: Employee = employees.find((x: Employee) => x.id === schedule.employeeId);
+      const daysInMonth = new Date(schedule.year, schedule.month, 0).getDate();
+      const scheduleFrom = new Date(schedule.year, schedule.month - 1, 1);
+      const scheduleTo = new Date(schedule.year, schedule.month, 0);
+      const schedulePlannedDays: PlannedDay[] = plannedDays.filter((x: PlannedDay) => x.day >= scheduleFrom && x.day <= scheduleTo);
+      const scheduleDays = this.getScheduleDays(schedule.employeeId, scheduleFrom, scheduleTo, shifts, schedulePlannedDays);
+      // console.log('from: ' + scheduleFrom);
+      // console.log('to: ' + scheduleTo);
+      console.log(schedulePlannedDays);
+      console.log(scheduleDays);
 
-    return { success: true, result: plannedDays };
+      return new EmployeeSchedule(
+        schedule.employeeId,
+        `${employee.lastName} ${employee.firstName}`,
+        schedule.year,
+        schedule.month,
+        29 <= daysInMonth,
+        30 <= daysInMonth,
+        31 === daysInMonth,
+        schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0),
+        schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0),
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        schedule.createdBy,
+        schedule.created,
+        scheduleDays);
+    });
+
+    return schedules;
+  }
+
+  getScheduleDays(employeeId: number, from: Date, to: Date, shifts: Shift[], schedulePlannedDays: PlannedDay[]): ScheduleDay[] {
+    const plannedDays = schedulePlannedDays.filter(x => x.employeeId === employeeId && x.day >= from && x.day <= to);
+    const results: ScheduleDay[] = schedulePlannedDays.map(x => {
+      const shift = shifts.find((s: Shift) => s.id === x.shiftId);
+      return new ScheduleDay(
+        x.day,
+        x.hours,
+        x.minutes,
+        x.shiftId,
+        shift ? shift.sign : '',
+        true,
+        x.comment,
+        1,
+        1,
+        x.updatedBy,
+        x.updated);
+    });
+    return results;
   }
 }

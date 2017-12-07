@@ -1,4 +1,4 @@
-import { PlannedDay } from '../objects/planned-day';
+import { ScheduleDay } from '../objects/schedule-day';
 
 export class EmployeeSchedule {
   employeeId: number;
@@ -18,7 +18,7 @@ export class EmployeeSchedule {
   totalBackground: number;
   createdBy: number;
   created: Date;
-  pd: PlannedDay[];
+  sd: ScheduleDay[];
 
   constructor(
     employeeId: number,
@@ -38,7 +38,7 @@ export class EmployeeSchedule {
     totalBackground: number,
     createdBy: number,
     created: Date,
-    pd: any[]) {
+    scheduleDays: ScheduleDay[]) {
       this.employeeId = employeeId;
       this.employeeName = employeeName;
       this.year = year;
@@ -56,6 +56,6 @@ export class EmployeeSchedule {
       this.totalBackground = totalBackground;
       this.createdBy = createdBy;
       this.created = created;
-      this.pd = pd;
+      this.sd = scheduleDays;
   }
 }
