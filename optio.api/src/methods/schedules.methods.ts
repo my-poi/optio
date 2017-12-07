@@ -13,6 +13,7 @@ import { EmployeeSchedule } from '../objects/employee-schedule';
 import { PlannedDay } from '../objects/planned-day';
 import { ScheduleDay } from '../objects/schedule-day';
 import { Shift } from '../objects/shift';
+import { Holiday } from '../objects/holiday';
 
 export class SchedulesMethods {
   constructor(
@@ -128,41 +129,53 @@ export class SchedulesMethods {
     const currentCompanyUnitScheduleRows = await this.workTimeDatabase.
       execute(queries['select-company-unit-schedules'], [companyUnitId, year, month]);
     const currentCompanyUnitSchedules = JSON.parse(JSON.stringify(currentCompanyUnitScheduleRows));
-    const employeeIdentifiers = currentCompanyUnitSchedules.map((x: Schedule) => x.employeeId);
-    if (employeeIdentifiers.length === 0) return { success: false };
+    const scheduleEmployeeIdentifiers = currentCompanyUnitSchedules.map((x: Schedule) => x.employeeId);
+
+    if (scheduleEmployeeIdentifiers.length === 0) return { success: false };
+
     const periodDefinitionRows = await this.workTimeDatabase.execute(queries['select-period-definitions'], []);
     const periodDefinitions = JSON.parse(JSON.stringify(periodDefinitionRows));
-    const monthDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
-    const periodMonths = periodDefinitions.
-      filter((x: PeriodDefinition) => x.period === monthDefinition.period).
+
+    const currentMonthPeriodDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
+    const currentPeriodMonths = periodDefinitions.
+      filter((x: PeriodDefinition) => x.period === currentMonthPeriodDefinition.period).
       sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
-    const firstMonth: number = periodMonths[0].month;
+
+    const firstMonth: number = currentPeriodMonths[0].month;
     const from = new Date(year, firstMonth - 1, 1, 0, 0, 0, 0);
     const to = new Date(year, month, 0, 23, 59, 59, 59);
     if (firstMonth === month) from.setMonth(from.getMonth() - 1);
     if (firstMonth > month) from.setFullYear(from.getFullYear() - 1);
 
-    const employeeRows = await this.organizationDatabase.
-      query(queries['select-employees-by-id'], [[employeeIdentifiers]]);
-    const employees = JSON.parse(JSON.stringify(employeeRows));
+    // console.log('from: ' + from);
+    // console.log('to: ' + to);
+
+    const scheduleEmployeeRows = await this.organizationDatabase.
+      query(queries['select-employees-by-id'], [[scheduleEmployeeIdentifiers]]);
+    const scheduleEmployees = JSON.parse(JSON.stringify(scheduleEmployeeRows));
 
     const shiftRows = await this.workTimeDatabase.
       query(queries['select-shifts'], []);
     const shifts = JSON.parse(JSON.stringify(shiftRows));
 
-    const allEmployeeScheduleRows = await this.workTimeDatabase.
-      query(queries['select-employee-schedules'], [[employeeIdentifiers], from, to]);
-    const allEmployeeSchedules = JSON.parse(JSON.stringify(allEmployeeScheduleRows));
+    const employeeScheduleRows = await this.workTimeDatabase.
+      query(queries['select-employee-schedules'], [[scheduleEmployeeIdentifiers], from, to]);
+    const employeeSchedules = JSON.parse(JSON.stringify(employeeScheduleRows));
 
     const plannedDayRows = await this.workTimeDatabase.
-      query(queries['select-planned-days'], [[employeeIdentifiers], from, to]);
+      query(queries['select-planned-days'], [[scheduleEmployeeIdentifiers], from, to]);
     const plannedDays = JSON.parse(JSON.stringify(plannedDayRows));
 
-    // console.log('from: ' + from);
-    // console.log('to: ' + to);
+    const holidayRows = await this.workTimeDatabase.
+      query(queries['select-holidays'], []);
+    const holidays = JSON.parse(JSON.stringify(holidayRows));
 
-    const schedules = allEmployeeSchedules.map((schedule: Schedule) => {
-      const employee: Employee = employees.find((x: Employee) => x.id === schedule.employeeId);
+    const vacationRows = await this.workTimeDatabase.
+      query(queries['select-vacations'], []);
+    const holidays = JSON.parse(JSON.stringify(holidayRows));
+
+    const schedules = employeeSchedules.map((schedule: Schedule) => {
+      const employee: Employee = scheduleEmployees.find((x: Employee) => x.id === schedule.employeeId);
       const daysInMonth = new Date(schedule.year, schedule.month, 0).getDate();
       const scheduleFrom = new Date(schedule.year, schedule.month - 1, 1, 0, 0, 0, 0);
       const scheduleTo = new Date(schedule.year, schedule.month, 0, 23, 59, 59, 59);
@@ -170,10 +183,9 @@ export class SchedulesMethods {
         x.employeeId === schedule.employeeId &&
         new Date(x.day).getTime() >= scheduleFrom.getTime() &&
         new Date(x.day).getTime() <= scheduleTo.getTime());
-      const scheduleDays = this.getScheduleDays(schedule.employeeId, scheduleFrom, scheduleTo, shifts, schedulePlannedDays);
-      console.log('from: ' + scheduleFrom);
-      console.log('to: ' + scheduleTo);
-
+      const scheduleDays = this.getScheduleDays(schedulePlannedDays, shifts, holidays);
+      // console.log('from: ' + scheduleFrom);
+      // console.log('to: ' + scheduleTo);
       return new EmployeeSchedule(
         schedule.employeeId,
         `${employee.lastName} ${employee.firstName}`,
@@ -198,8 +210,11 @@ export class SchedulesMethods {
     return schedules;
   }
 
-  getScheduleDays(employeeId: number, from: Date, to: Date, shifts: Shift[], schedulePlannedDays: PlannedDay[]): ScheduleDay[] {
-    const plannedDays = schedulePlannedDays.filter(x => x.employeeId === employeeId && x.day >= from && x.day <= to);
+  getMonthlyDays() {
+
+  }
+
+  getScheduleDays(schedulePlannedDays: PlannedDay[], shifts: Shift[], holidays: Holiday[]): ScheduleDay[] {
     const results: ScheduleDay[] = schedulePlannedDays.map(x => {
       const shift = shifts.find((s: Shift) => s.id === x.shiftId);
       return new ScheduleDay(
@@ -210,11 +225,23 @@ export class SchedulesMethods {
         shift ? shift.sign : '',
         true,
         x.comment,
-        1,
+        this.getTimeBackground(x.day, x.comment, holidays),
         1,
         x.updatedBy,
         x.updated);
     });
     return results;
+  }
+
+  getVacation() {
+
+  }
+
+  getTimeBackground(day: Date, comment: string, holidays: Holiday[]): number {
+    const dayDate = new Date(day);
+    if (comment) return 2;
+    if (dayDate.getDay() === 6 || dayDate.getDay() === 0) return 1;
+    if (holidays.find(x => new Date(x.dayOff).getTime() === dayDate.getTime())) return 1;
+    return 0;
   }
 }
