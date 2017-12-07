@@ -31,7 +31,7 @@ export class SchedulesTab {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const currentRoot = tree.treeModel.roots.find(x => x.data.value === currentYear);
-    const currentChild = currentRoot.children.find(x => x.data.value === currentMonth);
+    const currentChild = currentRoot.children.find(x => x.data.value === currentMonth + 1);
     currentChild.toggleActivated();
   }
 
@@ -46,7 +46,7 @@ export class SchedulesTab {
   loadSchedules() {
     if (this.selectedCalendarItem.parent) {
       const year = this.selectedCalendarItem.parent.value;
-      const month = this.selectedCalendarItem.value + 1;
+      const month = this.selectedCalendarItem.value;
       this.dataService.loadSchedules(year, month, () => {
         this.foundSchedules = this.dataService.schedules;
         if (this.foundSchedules.length > 0) this.selectSchedule(this.foundSchedules[0]);

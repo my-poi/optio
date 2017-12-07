@@ -17,8 +17,8 @@ export class CalendarService {
     for (let y = 2016; y <= currentYear + 1; y++) {
       const year = new CalendarItem(y.toString(), y, y === currentYear, null, null);
       year.children  = new Array<CalendarItem>();
-      for (let m = 0; m <= 11; m++) {
-        const month = new CalendarItem(monthNames[m], m, false, year, null);
+      for (let m = 1; m <= 12; m++) {
+        const month = new CalendarItem(monthNames[m - 1], m, false, year, null);
         year.children.push(month);
       }
       this.items.push(year);
