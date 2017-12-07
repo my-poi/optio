@@ -163,7 +163,6 @@ export class ScheduleTab {
       }
 
       if (shift.id === 40 || shift.id === 41 || shift.id === 42) {
-        plannedDay.t = null;
         plannedDay.h = null;
         plannedDay.m = null;
       }
@@ -172,7 +171,6 @@ export class ScheduleTab {
 
       if (shift.id <= 20) {
         const shiftDuration: ShiftDuration = this.getShiftDuration(shift.durations, plannedDay.d);
-        plannedDay.t = null;
         plannedDay.s = null;
         plannedDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : null;
         plannedDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : null;
@@ -197,7 +195,6 @@ export class ScheduleTab {
   }
 
   clearDay(plannedDay: PlannedDay) {
-    plannedDay.t = null;
     plannedDay.s = null;
     plannedDay.h = null;
     plannedDay.m = null;

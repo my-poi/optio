@@ -3,11 +3,14 @@ import { Request } from 'express';
 import { OrganizationDatabase } from '../databases/organization.database';
 import { WorkTimeDatabase } from '../databases/work-time.database';
 import { queries } from '../queries';
+import * as tools from '../tools';
 import { CompanyUnit } from '../objects/company-unit';
 import { Employee } from '../objects/employee';
 import { Classification } from '../objects/classification';
 import { PeriodDefinition } from '../objects/period-definition';
 import { Schedule } from '../objects/schedule';
+import { EmployeeSchedule } from '../objects/employee-schedule';
+import { PlannedDay } from '../objects/planned-day';
 
 export class SchedulesMethods {
   constructor(
@@ -54,7 +57,7 @@ export class SchedulesMethods {
       x.classifications.find(y =>
         !y.validTo &&
         companyUnitIdentifiers.includes(y.companyUnitId))).
-      sort((a: Employee, b: Employee) => this.compare(a.lastName + a.firstName, b.lastName + b.firstName)).
+      sort((a: Employee, b: Employee) => tools.compare(a.lastName + a.firstName, b.lastName + b.firstName)).
       map(z => z.id);
 
     const dayValues = this.getDayValues(employeeIdentifiers, year, month, userId);
@@ -120,35 +123,64 @@ export class SchedulesMethods {
     const year = Number(request.params.year);
     const month = Number(request.params.month);
 
-    const scheduleEmployeeRows = await this.workTimeDatabase.
-      execute(queries['select-schedule-employees'], [companyUnitId, year, month]);
-    const scheduleEmployees = JSON.parse(JSON.stringify(scheduleEmployeeRows));
-    const employeeIdentifiers = scheduleEmployees.map((x: Schedule) => x.employeeId);
+    const currentCompanyUnitScheduleRows = await this.workTimeDatabase.
+      execute(queries['select-company-unit-schedules'], [companyUnitId, year, month]);
+    const currentCompanyUnitSchedules = JSON.parse(JSON.stringify(currentCompanyUnitScheduleRows));
+    const employeeIdentifiers = currentCompanyUnitSchedules.map((x: Schedule) => x.employeeId);
     if (employeeIdentifiers.length === 0) return { success: false };
     const periodDefinitionRows = await this.workTimeDatabase.execute(queries['select-period-definitions'], []);
     const periodDefinitions = JSON.parse(JSON.stringify(periodDefinitionRows));
     const monthDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
     const periodMonths = periodDefinitions.
       filter((x: PeriodDefinition) => x.period === monthDefinition.period).
-      sort((a: PeriodDefinition, b: PeriodDefinition) => this.compare(a.sortOrder, b.sortOrder));
+      sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
     const firstMonth: number = periodMonths[0].month;
     const from = new Date(year, firstMonth - 1, 1);
     const to = new Date(year, month, 0);
     if (firstMonth === month) from.setMonth(from.getMonth() - 1);
     if (firstMonth > month) from.setFullYear(from.getFullYear() - 1);
 
+    const employeeRows = await this.organizationDatabase.
+      query(queries['select-employees-by-id'], [[employeeIdentifiers]]);
+    const employees = JSON.parse(JSON.stringify(employeeRows));
+
+    const allEmployeeScheduleRows = await this.workTimeDatabase.
+      query(queries['select-employee-schedules'], [[employeeIdentifiers], from, to]);
+    const allEmployeeSchedules = JSON.parse(JSON.stringify(allEmployeeScheduleRows));
+
     const plannedDayRows = await this.workTimeDatabase.query(
       queries['select-planned-days'], [[employeeIdentifiers], from, to]);
     const plannedDays = JSON.parse(JSON.stringify(plannedDayRows));
-    // console.log(plannedDays);
 
+    console.log(periodMonths);
+    console.log('from: ' + from);
+    console.log('to: ' + to);
+
+    // const results = allEmployeeSchedules.map((schedule: Schedule) => {
+    //   const employee: Employee = employees.find((x: Employee) => x.id === schedule.employeeId);
+    //   const daysInMonth = new Date(schedule.year, schedule.month, 0).getDate();
+    //   const plannedDays = plannedDayRows.filter((x: PlannedDay) => x.)
+    //   return new EmployeeSchedule(
+    //     schedule.employeeId,
+    //     `${employee.lastName} ${employee.firstName}`,
+    //     schedule.year,
+    //     schedule.month,
+    //     29 <= daysInMonth,
+    //     30 <= daysInMonth,
+    //     31 === daysInMonth,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null);
+    // });
 
     return { success: true, result: plannedDays };
-  }
-
-  compare(a: any, b: any) {
-    if (a < b) return -1;
-    if (a > b) return 1;
-    return 0;
   }
 }

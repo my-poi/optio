@@ -18,4 +18,23 @@ export class OrganizationDatabase {
     const [rows, fields] = await this.pool.execute<mysql.RowDataPacket[]>(sql, values);
     return rows;
   }
+
+  async query(sql: string, values: any) {
+    const [rows, fields] = await this.pool.query<mysql.RowDataPacket[]>(sql, values);
+    return rows;
+  }
+
+  async transaction(queryList: {sql: string, values: any}[]) {
+    const connection = await mysql.createConnection({
+      host: config.host,
+      user: config.user,
+      password: config.password,
+      database: 'OptioWorkTime'
+    });
+
+    await connection.beginTransaction();
+    queryList.forEach(async (x: any) => await connection.query<mysql.RowDataPacket[]>(x.sql, x.values));
+    await connection.commit();
+    connection.destroy();
+  }
 }

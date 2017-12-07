@@ -97,7 +97,8 @@ CREATE TABLE Schedules (
 CREATE TABLE PlannedDays (
   employeeId INT NOT NULL,
   day DATE NOT NULL,
-  planned TIME,
+  hours TINYINT,
+  minutes TINYINT,
   shiftId TINYINT,
   comments VARCHAR(100),
   updatedBy INT,
@@ -128,8 +129,9 @@ CREATE TABLE AbsenceTypes (
 CREATE TABLE WorkedDays (
   employeeId INT NOT NULL,
   day DATE NOT NULL,
-  worked TIME,
-  night TIME,
+  hours TINYINT,
+  minutes TINYINT,
+  night TINYINT,
   shiftId TINYINT,
   absenceTypeId TINYINT,
   overtimeSurcharge TIME,

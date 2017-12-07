@@ -1,6 +1,5 @@
 export interface PlannedDay {
   d: Date;     // dzień grafiku
-  t: string;   // zaplanowany czas
   h: string;   // zaplanowane godziny
   m: string;   // zaplanowane minuty
   s: number;   // identyfikator zmiany
