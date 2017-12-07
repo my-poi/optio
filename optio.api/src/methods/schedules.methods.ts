@@ -159,10 +159,9 @@ export class SchedulesMethods {
     let periodMinutesLimit = 0;
     currentPeriodMonths.forEach((x: PeriodDefinition) => {
       const periodYear = firstMonth > x.month ? year - 1 : year;
-      const hours = periods.find((period: Period) =>
-        period.year === periodYear && period.month === x.month).
-        map((y: Period) => y.hours);
-      periodMinutesLimit += hours * 60;
+      const period = periods.find((y: Period) =>
+        y.year === periodYear && y.month === x.month);
+      periodMinutesLimit += period.hours * 60;
     });
 
     console.log(periodMinutesLimit);
