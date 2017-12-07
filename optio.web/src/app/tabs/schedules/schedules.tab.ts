@@ -40,8 +40,7 @@ export class SchedulesTab {
     this.selectedCalendarItem = node.data;
     this.deselectSchedule();
     this.loadSchedules();
-    const info = node.data.dateFrom() + '\n' + node.data.dateTo() + '\n' + node.data.name;
-    this.ribbonInfosService.schedulesInfo = info;
+    this.ribbonInfosService.schedulesInfo = '';
   }
 
   loadSchedules() {

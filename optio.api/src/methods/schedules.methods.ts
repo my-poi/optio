@@ -145,4 +145,23 @@ export class SchedulesMethods {
     const month = Number(request.params.month);
     return await this.workTimeDatabase.execute(queries['select-schedules'], [year, month]);
   }
+
+  async getSchedule(request: Request) {
+    const companyUnitId = Number(request.params.companyUnitId);
+    const year = Number(request.params.year);
+    const month = Number(request.params.month);
+
+    const employeeIdentifierRows: RowDataPacket[] = await this.workTimeDatabase.
+      execute(queries['select-schedule-employees'], [companyUnitId, year, month]);
+    const employeeIdentifiers = employeeIdentifierRows.map(row => row.employeeId);
+
+    // 1. jeśli wskazany miesiąc jest pierwszym okresu rozliczeniowego to sięgnij po poprzedni jeszcze
+    // 2. jeśli wskazany miesiąc jest kolejnym okresu rozliczeniowego załaduj dane od pierwszego miesiąca okresu
+
+    // ustalenie miesięcy okresu rozliczeniowego:
+
+
+
+    return await this.workTimeDatabase.execute(queries['select-planned-days'], [employeeIdentifiers, '2017-12-01', '2017-12-31']);
+  }
 }

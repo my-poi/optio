@@ -13,6 +13,8 @@ const queryNames = [
   'select-holidays',
   'select-period-definitions',
   'select-periods',
+  'select-planned-days',
+  'select-schedule-employees',
   'select-schedules',
   'select-shift-durations',
   'select-shifts'
