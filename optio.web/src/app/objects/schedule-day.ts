@@ -1,4 +1,4 @@
-export interface PlannedDay {
+export interface ScheduleDay {
   d: Date;     // dzień grafiku
   h: string;   // zaplanowane godziny
   m: string;   // zaplanowane minuty

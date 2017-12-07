@@ -1,7 +1,8 @@
 SELECT 
   employeeId,
   DATE_FORMAT(day, '%Y-%m-%d') AS day,
-  planned,
+  hours,
+  minutes,
   shiftId,
   comments,
   updatedBy,
