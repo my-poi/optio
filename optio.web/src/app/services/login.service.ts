@@ -8,9 +8,11 @@ export class LoginService {
   constructor(private http: Http) { }
 
   login(callback) {
-    const body = { email: 'email', password: 'password' };
+    const body = { userName: 'm.tokarz', password: 'password' };
     this.http.post(config.apiBaseUrl + 'public/users/login', body).subscribe(response => {
-      sessionStorage.token = response.json().token;
+      const responseJson = response.json();
+      sessionStorage.token = responseJson.token;
+      sessionStorage.userId = responseJson.userId;
       callback();
     });
   }

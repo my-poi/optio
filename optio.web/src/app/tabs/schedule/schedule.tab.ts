@@ -188,6 +188,11 @@ export class ScheduleTab {
     });
   }
 
+  setUpdatedBy(scheduleDay: ScheduleDay) {
+    scheduleDay.ub = sessionStorage.userId;
+    scheduleDay.u = new Date();
+  }
+
   getShiftDuration(durations: ShiftDuration[], day: Date): ShiftDuration {
     const dayTime = new Date(day).getTime();
     return durations.find(x => dayTime >= new Date(x.validFrom).getTime() && dayTime <= this.getShiftValidToDate(x.validTo).getTime());

@@ -7,12 +7,16 @@ export class UsersPublicRouter {
 
   constructor(private tokensMethods: TokensMethods) {
     this.router.post('/login', async (request: Request, response: Response) => {
-      const email = request.body.email;
+      const userName = request.body.userName;
       const password = request.body.password;
-      if (!password || !email) return response.status(401).send(errors[1]);
+      if (!password || !userName) return response.status(401).send(errors[1]);
       const userIp = String(request.headers['x-real-ip']);
-      const token = tokensMethods.issueToken(2, 'Maciej Tokarz', userIp);
-      response.json({token: token });
+
+      // proces logowania użytkownika da w efekcie:
+      const userId = 2;
+
+      const token = tokensMethods.issueToken(userId, 'm.tokarz', userIp);
+      response.json({token: token, userId: userId });
     });
   }
 }
