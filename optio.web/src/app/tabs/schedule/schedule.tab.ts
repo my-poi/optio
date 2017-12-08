@@ -40,7 +40,9 @@ export class ScheduleTab {
     this.month = month;
     this.dataService.loadSchedule(companyUnitId, year, month, (results) => {
       this.schedules = results;
-      this.currentSchedule = this.schedules.filter(x => x.year === this.year && x.month === this.month);
+      this.currentSchedule = this.schedules.
+        filter(x => x.year === this.year && x.month === this.month).
+        sort((a: EmployeeSchedule, b: EmployeeSchedule) => this.globalService.compare(a.sortOrder, b.sortOrder));
       const firstSchedule = this.currentSchedule[0];
       this.header = firstSchedule;
       this.selectFirstSchedule(firstSchedule);

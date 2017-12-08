@@ -9,4 +9,10 @@ export class GlobalService {
   isNullOrWhiteSpace(input) {
     return !input || !input.trim();
   }
+
+  compare(a: any, b: any) {
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+  }
 }

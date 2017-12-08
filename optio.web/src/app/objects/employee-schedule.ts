@@ -5,6 +5,7 @@ export interface EmployeeSchedule {
   employeeName: string;
   year: number;
   month: number;
+  sortOrder: number;
   column29: boolean;
   column30: boolean;
   column31: boolean;

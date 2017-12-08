@@ -5,6 +5,7 @@ export class EmployeeSchedule {
   employeeName: string;
   year: number;
   month: number;
+  sortOrder: number;
   column29: boolean;
   column30: boolean;
   column31: boolean;
@@ -25,6 +26,7 @@ export class EmployeeSchedule {
     employeeName: string,
     year: number,
     month: number,
+    sortOrder: number,
     column29: boolean,
     column30: boolean,
     column31: boolean,
@@ -43,6 +45,7 @@ export class EmployeeSchedule {
       this.employeeName = employeeName;
       this.year = year;
       this.month = month;
+      this.sortOrder = sortOrder;
       this.column29 = column29;
       this.column30 = column30;
       this.column31 = column31;

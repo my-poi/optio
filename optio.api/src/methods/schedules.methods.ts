@@ -218,6 +218,7 @@ export class SchedulesMethods {
         `${employee.lastName}\n${employee.firstName}`,
         schedule.year,
         schedule.month,
+        schedule.sortOrder,
         29 <= daysInMonth,
         30 <= daysInMonth,
         31 === daysInMonth,
