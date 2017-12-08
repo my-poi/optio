@@ -316,4 +316,9 @@ export class SchedulesMethods {
     if (holiday) return 1;
     return 0;
   }
+
+  // async setSchedule(request: Request) {
+    
+  
+  // }
 }
