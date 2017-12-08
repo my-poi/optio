@@ -17,6 +17,7 @@ import { Holiday } from '../objects/holiday';
 import { Vacation } from '../objects/vacation';
 import { Period } from '../objects/period';
 import { TimeSpan } from '../objects/time-span';
+import { EmployeesMethods } from './employees.methods';
 
 export class SchedulesMethods {
   constructor(
@@ -24,8 +25,7 @@ export class SchedulesMethods {
     private workTimeDatabase: WorkTimeDatabase) { }
 
   async addSchedule(request: Request) {
-    const userId = request.body.decoded.userId;
-    const date = new Date();
+    const userId = Number(request.body.decoded.userId);
     const companyUnitId = Number(request.body.companyUnitId);
     const year = Number(request.body.year);
     const month = Number(request.body.month);
@@ -317,8 +317,31 @@ export class SchedulesMethods {
     return 0;
   }
 
-  // async setSchedule(request: Request) {
-    
-  
-  // }
+  async updateSchedule(request: Request) {
+    const userId = Number(request.body.decoded.userId);
+    const schedule: EmployeeSchedule = request.body.schedule;
+    const operationDateTime = new Date();
+    const employeeId = schedule.employeeId;
+
+    await this.workTimeDatabase.
+      execute(queries['update-schedule'],
+      [userId, operationDateTime, employeeId, schedule.year, schedule.month]);
+
+    schedule.sd.forEach(async (scheduleDay: ScheduleDay) => {
+      await this.workTimeDatabase.
+        execute(queries['update-planned-day'],
+        [
+          scheduleDay.h,
+          scheduleDay.m,
+          scheduleDay.s,
+          scheduleDay.c,
+          scheduleDay.ub,
+          scheduleDay.u,
+          employeeId,
+          scheduleDay.d
+        ]);
+    });
+
+    return 'OK';
+  }
 }

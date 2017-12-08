@@ -21,7 +21,9 @@ const queryNames = [
   'select-shift-durations',
   'select-shifts',
   'select-vacations-by-employee',
-  'select-vacations'
+  'select-vacations',
+  'update-planned-day',
+  'update-schedule'
 ];
 
 queryNames.forEach(queryName => {

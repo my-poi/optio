@@ -17,5 +17,9 @@ export class SchedulesRouter {
       const results = await this.schedulesMethods.getSchedule(request);
       response.json(results);
     });
+    this.router.put('/update-schedule', async (request: Request, response: Response) => {
+      const results = await this.schedulesMethods.updateSchedule(request);
+      response.json(results);
+    });
   }
 }
