@@ -93,4 +93,11 @@ export class DataService {
     this.http.get(config.apiBaseUrl + `data/schedules/get-schedule/${companyUnitId}/${year}/${month}`,
       this.getOptions()).subscribe(response => callback(response.json()));
   }
+
+  updateSchedule(schedule: EmployeeSchedule, callback) {
+    const body = { schedule: schedule };
+    this.http.put(config.apiBaseUrl + 'data/schedules/update-schedule', body, this.getOptions()).subscribe(response => {
+      callback(response);
+    });
+  }
 }

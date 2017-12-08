@@ -18,6 +18,7 @@ import { Vacation } from '../objects/vacation';
 import { Period } from '../objects/period';
 import { TimeSpan } from '../objects/time-span';
 import { EmployeesMethods } from './employees.methods';
+import { json } from 'body-parser';
 
 export class SchedulesMethods {
   constructor(
@@ -320,12 +321,17 @@ export class SchedulesMethods {
   async updateSchedule(request: Request) {
     const userId = Number(request.body.decoded.userId);
     const schedule: EmployeeSchedule = request.body.schedule;
-    const operationDateTime = new Date();
     const employeeId = schedule.employeeId;
 
     await this.workTimeDatabase.
       execute(queries['update-schedule'],
-      [userId, operationDateTime, employeeId, schedule.year, schedule.month]);
+      [
+        userId,
+        new Date(),
+        employeeId,
+        schedule.year,
+        schedule.month
+      ]);
 
     schedule.sd.forEach(async (scheduleDay: ScheduleDay) => {
       await this.workTimeDatabase.

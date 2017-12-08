@@ -73,7 +73,7 @@ export class ScheduleTab {
 
   saveScheduleIfChanged() {
     if (this.isChanged(this.selectedEmployeeSchedule))
-      console.log('zapisuję: ' + this.selectedEmployeeSchedule.employeeName);
+      this.dataService.updateSchedule(this.selectedEmployeeSchedule, (response) => console.log(response));
   }
 
   isChanged(employeeSchedule) {
@@ -114,16 +114,19 @@ export class ScheduleTab {
   hourChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setHour(scheduleDay);
     this.setSummaryData(employeeId);
+    this.setUpdatedBy(scheduleDay);
   }
 
   minuteChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setMinute(scheduleDay);
     this.setSummaryData(employeeId);
+    this.setUpdatedBy(scheduleDay);
   }
 
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setShift(scheduleDay);
     this.setSummaryData(employeeId);
+    this.setUpdatedBy(scheduleDay);
   }
 
   setHour(scheduleDay: ScheduleDay) {
