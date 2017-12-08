@@ -1,4 +1,4 @@
-Aktualizacja
+﻿Aktualizacja
 sudo apt-get update        # Fetches the list of available updates
 sudo apt-get upgrade       # Strictly upgrades the current packages
 sudo apt-get dist-upgrade  # Installs updates (new ones)
@@ -7,3 +7,6 @@ Sprzątanie
 sudo apt-get autoclean
 sudo apt-get clean
 sudo apt-get autoremove
+
+Zmienne środowiskowe
+export MYSQL_HOST='127.0.0.1'
