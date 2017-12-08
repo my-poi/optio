@@ -95,7 +95,7 @@ export class DataService {
   }
 
   updateSchedule(schedule: EmployeeSchedule, callback) {
-    const body = { schedule: schedule };
+    const body = { schedule: JSON.stringify(schedule) };
     this.http.put(config.apiBaseUrl + 'data/schedules/update-schedule', body, this.getOptions()).subscribe(response => {
       callback(response);
     });

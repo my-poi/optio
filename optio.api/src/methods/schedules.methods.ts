@@ -318,16 +318,20 @@ export class SchedulesMethods {
     return 0;
   }
 
+  getFormattedDate(date: Date): string {
+    date = new Date(date);
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  }
+
   async updateSchedule(request: Request) {
     const userId = Number(request.body.decoded.userId);
-    const schedule: EmployeeSchedule = request.body.schedule;
+    const schedule: EmployeeSchedule = JSON.parse(request.body.schedule);
     const employeeId = schedule.employeeId;
-
     await this.workTimeDatabase.
       execute(queries['update-schedule'],
       [
         userId,
-        new Date(),
+        this.getFormattedDate(new Date),
         employeeId,
         schedule.year,
         schedule.month
@@ -342,7 +346,7 @@ export class SchedulesMethods {
           scheduleDay.s,
           scheduleDay.c,
           scheduleDay.ub,
-          scheduleDay.u,
+          this.getFormattedDate(scheduleDay.u),
           employeeId,
           scheduleDay.d
         ]);
