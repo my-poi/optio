@@ -4,6 +4,6 @@ import { Injectable, ErrorHandler } from '@angular/core';
 export class OptioErrorHandler implements ErrorHandler {
   handleError(error) {
     // alert(error);
-    console.log(error);
+    console.log(error.message);
   }
 }

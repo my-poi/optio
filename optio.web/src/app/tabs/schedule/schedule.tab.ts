@@ -23,8 +23,8 @@ export class ScheduleTab {
   monthlyLimit: number;
   periodLimit: number;
   currentPeriodMonths: PeriodDefinition[];
-  employeeSchedules: EmployeeSchedule[];
-  employeeSchedule: EmployeeSchedule[];
+  schedules: EmployeeSchedule[];
+  currentSchedule: EmployeeSchedule[];
   header: EmployeeSchedule;
   selectedEmployeeSchedule: EmployeeSchedule;
   originalEmployeeSchedule: EmployeeSchedule;
@@ -39,19 +39,25 @@ export class ScheduleTab {
     this.year = year;
     this.month = month;
     this.dataService.loadSchedule(companyUnitId, year, month, (results) => {
-      this.employeeSchedules = results;
-      this.employeeSchedule = this.employeeSchedules.filter(x => x.year === this.year && x.month === this.month);
-      this.header = this.employeeSchedule[0];
-      this.select(this.employeeSchedule[0]);
+      this.schedules = results;
+      this.currentSchedule = this.schedules.filter(x => x.year === this.year && x.month === this.month);
+      const firstSchedule = this.currentSchedule[0];
+      this.header = firstSchedule;
+      this.selectFirstSchedule(firstSchedule);
       this.setPeriodData();
       console.log('schedule loaded');
     });
   }
 
-  select(employeeSchedule) {
-    if (this.selectedEmployeeSchedule && this.selectedEmployeeSchedule.employeeId === employeeSchedule.employeeId) return;
-    if (this.selectedEmployeeSchedule && this.selectedEmployeeSchedule.employeeId !==
-      employeeSchedule.employeeId) this.saveScheduleIfChanged();
+  selectFirstSchedule(firstSchedule: EmployeeSchedule) {
+    this.selectedEmployeeSchedule = firstSchedule;
+    this.setOriginalCopy(firstSchedule);
+    this.setButtons();
+  }
+
+  select(employeeSchedule: EmployeeSchedule) {
+    if (this.selectedEmployeeSchedule.employeeId === employeeSchedule.employeeId) return;
+    if (this.selectedEmployeeSchedule.employeeId !== employeeSchedule.employeeId) this.saveScheduleIfChanged();
     this.selectedEmployeeSchedule = employeeSchedule;
     this.setOriginalCopy(employeeSchedule);
     this.ribbonInfosService.scheduleInfo = this.selectedEmployeeSchedule.employeeName;
@@ -59,10 +65,10 @@ export class ScheduleTab {
   }
 
   setButtons() {
-    this.disabledButtonsService.employeeScheduleMoveUp = this.employeeSchedule.indexOf(this.selectedEmployeeSchedule) === 0;
+    this.disabledButtonsService.employeeScheduleMoveUp = this.currentSchedule.indexOf(this.selectedEmployeeSchedule) === 0;
     this.disabledButtonsService.employeeScheduleMoveDown =
-      this.employeeSchedule.indexOf(this.selectedEmployeeSchedule) ===
-      this.employeeSchedule.length - 1;
+      this.currentSchedule.indexOf(this.selectedEmployeeSchedule) ===
+      this.currentSchedule.length - 1;
   }
 
   saveScheduleIfChanged() {
@@ -205,11 +211,11 @@ export class ScheduleTab {
 
   setSummaryData(employeeId: number) {
     setTimeout(() => {
-      const schedule = this.employeeSchedule.find(x => x.employeeId === employeeId);
-      this.calculateMonth(schedule);
-      this.calculateTotal(schedule);
-      this.setMonthlyBackground(schedule);
-      this.setTotalBackground(schedule);
+      const employeeSchedule = this.currentSchedule.find(x => x.employeeId === employeeId);
+      this.calculateMonth(employeeSchedule);
+      this.calculateTotal(employeeSchedule);
+      this.setMonthlyBackground(employeeSchedule);
+      this.setTotalBackground(employeeSchedule);
     });
   }
 
@@ -237,7 +243,7 @@ export class ScheduleTab {
     let days = 0;
 
     this.currentPeriodMonths.forEach(x => {
-      const periodMonthSchedule = this.employeeSchedules.find(y =>
+      const periodMonthSchedule = this.schedules.find(y =>
         y.employeeId === employeeSchedule.employeeId &&
         y.year === this.year &&
         y.month === x.month);
@@ -272,8 +278,8 @@ export class ScheduleTab {
 
   validate() {
     this.saveScheduleIfChanged();
-    this.employeeSchedules = [];
-    this.employeeSchedule = [];
+    this.schedules = [];
+    this.currentSchedule = [];
     this.header = null;
     this.selectedEmployeeSchedule = null;
     this.originalEmployeeSchedule = null;
@@ -289,12 +295,12 @@ export class ScheduleTab {
   }
 
   employeeScheduleMoveUp() {
-    this.move(this.employeeSchedule, this.selectedEmployeeSchedule, -1);
+    this.move(this.currentSchedule, this.selectedEmployeeSchedule, -1);
     this.setButtons();
   }
 
   employeeScheduleMoveDown() {
-    this.move(this.employeeSchedule, this.selectedEmployeeSchedule, 1);
+    this.move(this.currentSchedule, this.selectedEmployeeSchedule, 1);
     this.setButtons();
   }
 }
