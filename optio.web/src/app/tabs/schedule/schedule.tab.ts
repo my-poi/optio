@@ -72,7 +72,7 @@ export class ScheduleTab {
   }
 
   saveScheduleIfChanged() {
-    if (this.selectedEmployeeSchedule && this.isChanged(this.selectedEmployeeSchedule))
+    if (this.isChanged(this.selectedEmployeeSchedule))
       console.log('zapisuję: ' + this.selectedEmployeeSchedule.employeeName);
   }
 
