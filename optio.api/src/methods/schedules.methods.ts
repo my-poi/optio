@@ -164,8 +164,6 @@ export class SchedulesMethods {
       periodMinutesLimit += period.hours * 60;
     });
 
-    console.log(periodMinutesLimit);
-
     // console.log('from: ' + from);
     // console.log('to: ' + to);
 
@@ -276,10 +274,10 @@ export class SchedulesMethods {
     const results: ScheduleDay[] = schedulePlannedDays.map(plannedDay => {
       const shift = shifts.find((s: Shift) => s.id === plannedDay.shiftId);
       const day = new Date(plannedDay.day);
-      day.setHours(0, 0, 0, 0);
-      const vacation = this.hasVacation(day, employeeVacations);
       const weekDay = day.getDay() === 6 || day.getDay() === 0;
-      const holiday = holidays.find(h => new Date(h.dayOff).getTime() === day.getTime()) !== undefined;
+      let holiday = false;
+      if (!weekDay) holiday = holidays.find(h => new Date(h.dayOff).getTime() === day.getTime()) !== undefined;
+      const vacation = this.hasVacation(day, employeeVacations);
       return new ScheduleDay(
         plannedDay.day,
         plannedDay.hours,
@@ -297,6 +295,7 @@ export class SchedulesMethods {
   }
 
   hasVacation(day: Date, employeeVacations: Vacation[]): boolean {
+    day.setHours(0, 0, 0, 0);
     const dayTime = day.getTime();
     const result = employeeVacations.find(x =>
       new Date(x.start).getTime() <= dayTime &&
