@@ -60,7 +60,7 @@ export class ScheduleTab {
     if (this.selectedEmployeeSchedule.employeeId !== employeeSchedule.employeeId) this.saveScheduleIfChanged();
     this.selectedEmployeeSchedule = employeeSchedule;
     this.setOriginalCopy(employeeSchedule);
-    this.ribbonInfosService.scheduleInfo = this.selectedEmployeeSchedule.employeeName;
+    this.ribbonInfosService.scheduleInfo = employeeSchedule.employeeName;
     this.setButtons();
   }
 
@@ -248,12 +248,14 @@ export class ScheduleTab {
         y.year === this.year &&
         y.month === x.month);
 
-      periodMonthSchedule.sd.forEach(z => {
-        hours += Number(z.h);
-        minutes += Number(z.m);
-        if (z.s === 40 || z.s === 41 || z.s === 42) return;
-        if (z.x) days += 1;
-      });
+      if (periodMonthSchedule) {
+        periodMonthSchedule.sd.forEach(z => {
+          hours += Number(z.h);
+          minutes += Number(z.m);
+          if (z.s === 40 || z.s === 41 || z.s === 42) return;
+          if (z.x) days += 1;
+        });
+      }
     });
 
     const total = new TimeSpan(0, hours, minutes);
