@@ -256,7 +256,6 @@ export class ScheduleTab {
 
     this.currentPeriodMonths.forEach(x => {
       const year = x.month > this.month ? this.year - 1 : this.year;
-
       const periodMonthSchedule = this.schedules.find(y =>
         y.employeeId === employeeSchedule.employeeId &&
         y.year === year &&
