@@ -95,25 +95,18 @@ export class ScheduleTab {
     this.monthlyMinutesLimit = this.dataService.periods.find(x =>
       x.year === this.year && x.month === this.month).hours * 60;
 
-    periodMonths.forEach(x => {
-      const year = x.month > this.month ? this.year - 1 : this.year;
-      const periodMonth = this.dataService.periods.find(y =>
-        y.year === year && y.month === x.month);
-        minutesLimit += periodMonth.hours * 60;
-    });
-
-    this.periodMinutesLimit = minutesLimit;
-
     this.currentPeriodMonths = this.dataService.periodDefinitions.filter(x =>
       x.period === monthDefinition.period &&
       x.sortOrder <= monthDefinition.sortOrder);
 
-    console.log(this.currentPeriodMonths);
-    console.log(this.periodMinutesLimit);
-
-    this.currentPeriodMonths.forEach(x => {
-      console.log(x.month);
+    periodMonths.forEach(x => {
+      const year = x.month > this.month ? this.year - 1 : this.year;
+      const period = this.dataService.periods.find(y =>
+        y.year === year && y.month === x.month);
+        minutesLimit += period.hours * 60;
     });
+
+    this.periodMinutesLimit = minutesLimit;
   }
 
   hourChanged(employeeId: number, scheduleDay: ScheduleDay) {
