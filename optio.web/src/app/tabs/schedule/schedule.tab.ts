@@ -237,8 +237,7 @@ export class ScheduleTab {
     employeeSchedule.sd.forEach(x => {
       hours += Number(x.h);
       minutes += Number(x.m);
-      if (x.s === 40 || x.s === 41 || x.s === 42) return;
-      if (x.x) days += 1;
+      if (x.s && x.s >= 1 && x.s <= 20) days += 1;
     });
 
     const planned = new TimeSpan(0, hours, minutes);
@@ -262,8 +261,7 @@ export class ScheduleTab {
         periodMonthSchedule.sd.forEach(z => {
           hours += Number(z.h);
           minutes += Number(z.m);
-          if (z.s === 40 || z.s === 41 || z.s === 42) return;
-          if (z.x) days += 1;
+          if (z.s && z.s >= 1 && z.s <= 20) days += 1;
         });
       }
     });

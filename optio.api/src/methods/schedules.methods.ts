@@ -210,17 +210,13 @@ export class SchedulesMethods {
         new Date(plannedDay.day).getTime() >= periodStartDate.getTime() &&
         new Date(plannedDay.day).getTime() <= to.getTime());
 
-      let monthlyHours = schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0);
-      let monthlyMinutes = schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0);
-      const monthly = new TimeSpan(0, monthlyHours, monthlyMinutes);
-      monthlyHours = monthly.totalHours();
-      monthlyMinutes = monthly.minutes();
+      const monthlyHours = schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0);
+      const monthlyMinutes = schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0);
+      const monthlyTime = new TimeSpan(0, monthlyHours, monthlyMinutes);
 
-      let totalHours = employeePeriodPlannedDays.map((x: PlannedDay) => x.hours).reduce((a: number, b: number) => a + b, 0);
-      let totalMinutes = employeePeriodPlannedDays.map((x: PlannedDay) => x.minutes).reduce((a: number, b: number) => a + b, 0);
-      const total = new TimeSpan(0, totalHours, totalMinutes);
-      totalHours = total.totalHours();
-      totalMinutes = total.minutes();
+      const totalHours = employeePeriodPlannedDays.map((x: PlannedDay) => x.hours).reduce((a: number, b: number) => a + b, 0);
+      const totalMinutes = employeePeriodPlannedDays.map((x: PlannedDay) => x.minutes).reduce((a: number, b: number) => a + b, 0);
+      const totalTime = new TimeSpan(0, totalHours, totalMinutes);
 
       return new EmployeeSchedule(
         schedule.employeeId,
@@ -231,14 +227,14 @@ export class SchedulesMethods {
         29 <= daysInMonth,
         30 <= daysInMonth,
         31 === daysInMonth,
-        monthlyHours,
-        monthlyMinutes,
+        monthlyTime.totalHours(),
+        monthlyTime.minutes(),
         this.getMonthlyDays(schedulePlannedDays),
-        this.getMonthlyBackground(monthlyHours, monthlyMinutes, year, month, periods),
-        totalHours,
-        totalMinutes,
+        this.getMonthlyBackground(monthlyTime, year, month, periods),
+        totalTime.totalHours(),
+        totalTime.minutes(),
         this.getTotalDays(employeePeriodPlannedDays),
-        this.getTotalBackground(totalHours, totalMinutes, periodMinutesLimit),
+        this.getTotalBackground(totalTime, periodMinutesLimit),
         schedule.createdBy,
         schedule.created,
         scheduleDays);
@@ -255,8 +251,7 @@ export class SchedulesMethods {
     return result;
   }
 
-  getMonthlyBackground(monthlyHours: number, monthlyMinutes: number, year: number, month: number, periods: Period[]): number {
-    const monthlyTime = new TimeSpan(0, monthlyHours, monthlyMinutes);
+  getMonthlyBackground(monthlyTime: TimeSpan, year: number, month: number, periods: Period[]): number {
     const monhtlyLimit = periods.find(x => x.year === year && x.month === month);
     if (monhtlyLimit) {
       const monthlyMinutesLimit = monhtlyLimit.hours * 60;
@@ -266,8 +261,7 @@ export class SchedulesMethods {
     return 0;
   }
 
-  getTotalBackground(totalHours: number, totalMinutes: number, periodMinutesLimit: number): number {
-    const totalTime = new TimeSpan(0, totalHours, totalMinutes);
+  getTotalBackground(totalTime: TimeSpan, periodMinutesLimit: number): number {
     if (totalTime.totalMinutes() === periodMinutesLimit) return 2;
     if (totalTime.totalMinutes() > periodMinutesLimit) return 4;
     return 0;
