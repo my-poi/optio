@@ -142,7 +142,7 @@ export class SchedulesMethods {
 
     const firstMonth: number = currentPeriodMonths[0].month;
     const periodStartDate = new Date(year, firstMonth - 1, 1, 0, 0, 0, 0);
-    const periodMinutesLimit = this.getPeriodMinutesLimit(currentPeriodMonths, periods, firstMonth, year);
+    const periodMinutesLimit = this.getPeriodMinutesLimit(currentPeriodMonths, periods, year, month);
 
     const from = new Date(year, firstMonth - 1, 1, 0, 0, 0, 0);
     const to = new Date(year, month, 0, 23, 59, 59, 59);
@@ -241,7 +241,7 @@ export class SchedulesMethods {
 
   async getPeriodDefinitions() {
     const periodDefinitionRows = await this.workTimeDatabase.
-    execute(queries['select-period-definitions'], []);
+      execute(queries['select-period-definitions'], []);
     return JSON.parse(JSON.stringify(periodDefinitionRows));
   }
 
@@ -255,20 +255,19 @@ export class SchedulesMethods {
     const currentMonthPeriodDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
     if (currentMonthPeriodDefinition) {
       return periodDefinitions.
-      filter((x: PeriodDefinition) => x.period === currentMonthPeriodDefinition.period).
-      sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
+        filter((x: PeriodDefinition) => x.period === currentMonthPeriodDefinition.period).
+        sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
     } else return [];
   }
 
-  getPeriodMinutesLimit(currentPeriodMonths: PeriodDefinition[], periods: Period[], firstMonth: number, year: number): number {
+  getPeriodMinutesLimit(currentPeriodMonths: PeriodDefinition[], periods: Period[], year: number, month: number): number {
     let periodMinutesLimit = 0;
     currentPeriodMonths.forEach(x => {
-      const periodYear = firstMonth > x.month ? year - 1 : year;
+      const periodYear = x.month > month ? year - 1 : year;
       const period = periods.find((y: Period) =>
         y.year === periodYear && y.month === x.month);
       if (period) periodMinutesLimit += period.hours * 60;
     });
-
     return periodMinutesLimit;
   }
 

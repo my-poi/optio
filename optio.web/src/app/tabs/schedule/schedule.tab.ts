@@ -21,9 +21,9 @@ export class ScheduleTab {
   scheduleTableBodyHeight = window.innerHeight - 242;
   year: number;
   month: number;
-  monthlyLimit: number;
-  periodLimit: number;
   currentPeriodMonths: PeriodDefinition[];
+  monthlyMinutesLimit: number;
+  periodMinutesLimit: number;
   schedules: EmployeeSchedule[];
   currentSchedule: EmployeeSchedule[];
   header: EmployeeSchedule;
@@ -48,23 +48,7 @@ export class ScheduleTab {
       this.header = firstSchedule;
       this.selectFirstSchedule(firstSchedule);
       this.setPeriodData();
-      this.test();
       console.log('schedule loaded');
-    });
-  }
-
-  test() {
-    const result = [];
-    const employeeSchedules = this.schedules.filter(x => x.employeeId === 1);
-    console.log(employeeSchedules[0].employeeName);
-    employeeSchedules.forEach(x => {
-      x.sd.forEach(y => {
-        result.push(y);
-      });
-    });
-    result.sort((a, b) => this.globalService.compare(new Date(a.d).getTime(), new Date(b.d).getTime()));
-    result.forEach((x: ScheduleDay) => {
-      console.log(`${x.d} - ${x.h}:${x.m}`);
     });
   }
 
@@ -104,27 +88,29 @@ export class ScheduleTab {
   }
 
   setPeriodData() {
-    let limit = 0;
+    let minutesLimit = 0;
     const monthDefinition = this.dataService.periodDefinitions.find(x => x.month === this.month);
     const periodMonths = this.dataService.periodDefinitions.filter(x => x.period === monthDefinition.period);
 
-    this.monthlyLimit = this.dataService.periods.find(x =>
-      x.year === this.year && x.month === this.month).hours;
+    this.monthlyMinutesLimit = this.dataService.periods.find(x =>
+      x.year === this.year && x.month === this.month).hours * 60;
 
     periodMonths.forEach(x => {
+      const year = x.month > this.month ? this.year - 1 : this.year;
       const periodMonth = this.dataService.periods.find(y =>
-        y.year === this.year && y.month === x.month);
-      limit += periodMonth.hours;
+        y.year === year && y.month === x.month);
+        minutesLimit += periodMonth.hours * 60;
     });
 
-    this.periodLimit = limit;
+    this.periodMinutesLimit = minutesLimit;
 
     this.currentPeriodMonths = this.dataService.periodDefinitions.filter(x =>
       x.period === monthDefinition.period &&
       x.sortOrder <= monthDefinition.sortOrder);
 
-    console.log(this.monthlyLimit);
-    console.log(this.periodLimit);
+    console.log(this.currentPeriodMonths);
+    console.log(this.periodMinutesLimit);
+
     this.currentPeriodMonths.forEach(x => {
       console.log(x.month);
     });
@@ -269,9 +255,11 @@ export class ScheduleTab {
     let days = 0;
 
     this.currentPeriodMonths.forEach(x => {
+      const year = x.month > this.month ? this.year - 1 : this.year;
+
       const periodMonthSchedule = this.schedules.find(y =>
         y.employeeId === employeeSchedule.employeeId &&
-        y.year === this.year &&
+        y.year === year &&
         y.month === x.month);
 
       if (periodMonthSchedule) {
@@ -292,15 +280,15 @@ export class ScheduleTab {
   setMonthlyBackground(employeeSchedule: EmployeeSchedule) {
     const planned = new TimeSpan(0, employeeSchedule.monthlyHours, employeeSchedule.monthlyMinutes);
     employeeSchedule.monthlyBackground = 1;
-    if (planned.totalMinutes() === this.monthlyLimit * 60) employeeSchedule.monthlyBackground = 2;
-    if (planned.totalMinutes() > this.monthlyLimit * 60) employeeSchedule.monthlyBackground = 4;
+    if (planned.totalMinutes() === this.monthlyMinutesLimit) employeeSchedule.monthlyBackground = 2;
+    if (planned.totalMinutes() > this.monthlyMinutesLimit) employeeSchedule.monthlyBackground = 4;
   }
 
   setTotalBackground(employeeSchedule: EmployeeSchedule) {
     const total = new TimeSpan(0, employeeSchedule.totalHours, employeeSchedule.totalMinutes);
     employeeSchedule.totalBackground = 1;
-    if (total.totalMinutes() === this.periodLimit * 60) employeeSchedule.totalBackground = 2;
-    if (total.totalMinutes() > this.periodLimit * 60) employeeSchedule.totalBackground = 4;
+    if (total.totalMinutes() === this.periodMinutesLimit) employeeSchedule.totalBackground = 2;
+    if (total.totalMinutes() > this.periodMinutesLimit) employeeSchedule.totalBackground = 4;
   }
 
   validate() {
