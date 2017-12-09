@@ -24,7 +24,7 @@ export class WorkTimeDatabase {
     return rows;
   }
 
-  async transaction(queryList: {sql: string, values: any}[]) {
+  async transaction(queryList: { sql: string, values: any }[]) {
     const connection = await mysql.createConnection({
       host: config.host,
       user: config.user,
