@@ -9,6 +9,7 @@ import { ScheduleDay } from '../../objects/schedule-day';
 import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { TimeSpan } from '../../objects/time-span';
 import { ShiftDuration } from '../../objects/shift-duration';
+import { filterQueryId } from '@angular/core/src/view/util';
 
 @Component({
   selector: 'app-schedule-tab',
@@ -47,7 +48,23 @@ export class ScheduleTab {
       this.header = firstSchedule;
       this.selectFirstSchedule(firstSchedule);
       this.setPeriodData();
+      this.test();
       console.log('schedule loaded');
+    });
+  }
+
+  test() {
+    const result = [];
+    const employeeSchedules = this.schedules.filter(x => x.employeeId === 1);
+    console.log(employeeSchedules[0].employeeName);
+    employeeSchedules.forEach(x => {
+      x.sd.forEach(y => {
+        result.push(y);
+      });
+    });
+    result.sort((a, b) => this.globalService.compare(new Date(a.d).getTime(), new Date(b.d).getTime()));
+    result.forEach((x: ScheduleDay) => {
+      console.log(`${x.d} - ${x.h}:${x.m}`);
     });
   }
 

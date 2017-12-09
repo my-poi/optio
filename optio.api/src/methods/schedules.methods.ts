@@ -30,12 +30,15 @@ export class SchedulesMethods {
     const companyUnitId = Number(request.body.companyUnitId);
     const year = Number(request.body.year);
     const month = Number(request.body.month);
+
     const companyUnitRows = await this.organizationDatabase.execute(queries['select-company-units'], []);
     let companyUnitIdentifiers: number[] = [];
     const companyUnits = JSON.parse(JSON.stringify(companyUnitRows));
+
     const classificationsRows = await this.organizationDatabase.
       execute(queries['select-classifications'], []);
     const classifications = JSON.parse(JSON.stringify(classificationsRows));
+
     const employeesRows = await this.organizationDatabase.
       execute(queries['select-employees'], []);
     const employees: Employee[] = employeesRows.map(row => {
@@ -130,40 +133,25 @@ export class SchedulesMethods {
     const year = Number(request.params.year);
     const month = Number(request.params.month);
 
-    const currentCompanyUnitScheduleRows = await this.workTimeDatabase.
-      execute(queries['select-company-unit-schedules'], [companyUnitId, year, month]);
-    const currentCompanyUnitSchedules = JSON.parse(JSON.stringify(currentCompanyUnitScheduleRows));
-    const scheduleEmployeeIdentifiers = currentCompanyUnitSchedules.map((x: Schedule) => x.employeeId);
-
+    const scheduleEmployeeIdentifiers: number[] = await this.getScheduleEmployeeIdentifiers(companyUnitId, year, month);
     if (scheduleEmployeeIdentifiers.length === 0) return { success: false };
 
-    const periodDefinitionRows = await this.workTimeDatabase.
-      execute(queries['select-period-definitions'], []);
-    const periodDefinitions = JSON.parse(JSON.stringify(periodDefinitionRows));
-
-    const periodRows = await this.workTimeDatabase.
-      execute(queries['select-periods'], []);
-    const periods = JSON.parse(JSON.stringify(periodRows));
-
-    const currentMonthPeriodDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
-    const currentPeriodMonths = periodDefinitions.
-      filter((x: PeriodDefinition) => x.period === currentMonthPeriodDefinition.period).
-      sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
+    const periodDefinitions: PeriodDefinition[] = await this.getPeriodDefinitions();
+    const periods: Period[] = await this.getPeriods();
+    const currentPeriodMonths: PeriodDefinition[] = this.getCurrentPeriodMonths(periodDefinitions, month);
 
     const firstMonth: number = currentPeriodMonths[0].month;
     const periodStartDate = new Date(year, firstMonth - 1, 1, 0, 0, 0, 0);
+    const periodMinutesLimit = this.getPeriodMinutesLimit(currentPeriodMonths, periods, firstMonth, year);
+
     const from = new Date(year, firstMonth - 1, 1, 0, 0, 0, 0);
     const to = new Date(year, month, 0, 23, 59, 59, 59);
-    if (firstMonth === month) from.setMonth(from.getMonth() - 1);
-    if (firstMonth > month) from.setFullYear(from.getFullYear() - 1);
 
-    let periodMinutesLimit = 0;
-    currentPeriodMonths.forEach((x: PeriodDefinition) => {
-      const periodYear = firstMonth > x.month ? year - 1 : year;
-      const period = periods.find((y: Period) =>
-        y.year === periodYear && y.month === x.month);
-      periodMinutesLimit += period.hours * 60;
-    });
+    if (firstMonth === month) from.setMonth(from.getMonth() - 1);
+    if (firstMonth > month) {
+      periodStartDate.setFullYear(from.getFullYear() - 1);
+      from.setFullYear(from.getFullYear() - 1);
+    }
 
     // console.log('from: ' + from);
     // console.log('to: ' + to);
@@ -203,12 +191,13 @@ export class SchedulesMethods {
         new Date(x.day).getTime() <= scheduleTo.getTime());
       const employeeVacations = vacations.filter((x: Vacation) => x.employeeId === schedule.employeeId);
       const scheduleDays = this.getScheduleDays(schedulePlannedDays, shifts, holidays, employeeVacations);
+
       // console.log('from: ' + scheduleFrom);
       // console.log('to: ' + scheduleTo);
+
       const employeePeriodPlannedDays = plannedDays.filter((plannedDay: PlannedDay) =>
         plannedDay.employeeId === schedule.employeeId &&
-        new Date(plannedDay.day).getTime() >= periodStartDate.getTime() &&
-        new Date(plannedDay.day).getTime() <= to.getTime());
+        new Date(plannedDay.day).getTime() >= periodStartDate.getTime());
 
       const monthlyHours = schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0);
       const monthlyMinutes = schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0);
@@ -241,6 +230,46 @@ export class SchedulesMethods {
     });
 
     return schedules;
+  }
+
+  async getScheduleEmployeeIdentifiers(companyUnitId: number, year: number, month: number) {
+    const currentCompanyUnitScheduleRows = await this.workTimeDatabase.
+      execute(queries['select-company-unit-schedules'], [companyUnitId, year, month]);
+    const currentCompanyUnitSchedules = JSON.parse(JSON.stringify(currentCompanyUnitScheduleRows));
+    return currentCompanyUnitSchedules.map((x: Schedule) => x.employeeId);
+  }
+
+  async getPeriodDefinitions() {
+    const periodDefinitionRows = await this.workTimeDatabase.
+    execute(queries['select-period-definitions'], []);
+    return JSON.parse(JSON.stringify(periodDefinitionRows));
+  }
+
+  async getPeriods() {
+    const periodRows = await this.workTimeDatabase.
+      execute(queries['select-periods'], []);
+    return JSON.parse(JSON.stringify(periodRows));
+  }
+
+  getCurrentPeriodMonths(periodDefinitions: PeriodDefinition[], month: number): PeriodDefinition[] {
+    const currentMonthPeriodDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
+    if (currentMonthPeriodDefinition) {
+      return periodDefinitions.
+      filter((x: PeriodDefinition) => x.period === currentMonthPeriodDefinition.period).
+      sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
+    } else return [];
+  }
+
+  getPeriodMinutesLimit(currentPeriodMonths: PeriodDefinition[], periods: Period[], firstMonth: number, year: number): number {
+    let periodMinutesLimit = 0;
+    currentPeriodMonths.forEach(x => {
+      const periodYear = firstMonth > x.month ? year - 1 : year;
+      const period = periods.find((y: Period) =>
+        y.year === periodYear && y.month === x.month);
+      if (period) periodMinutesLimit += period.hours * 60;
+    });
+
+    return periodMinutesLimit;
   }
 
   getMonthlyDays(plannedDays: PlannedDay[]): number {
