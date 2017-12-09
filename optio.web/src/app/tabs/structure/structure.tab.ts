@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { DisabledButtonsService } from '../../services/disabled-buttons.service';
+import { ButtonsService } from '../../services/buttons.service';
 import { RibbonInfosService } from '../../services/ribbon-infos.service';
 import { CompanyUnit } from '../../objects/company-unit';
 import { Employee } from '../../objects/employee';
@@ -25,7 +25,7 @@ export class StructureTab {
   selectedEmployee: Employee;
 
   constructor(private dataService: DataService,
-    private disabledButtonsService: DisabledButtonsService,
+    private buttonsService: ButtonsService,
     private ribbonInfosService: RibbonInfosService) { }
 
   filterEmployees() {
@@ -42,7 +42,7 @@ export class StructureTab {
     this.deselectEmployee();
     if (this.foundEmployees.length > 0) this.selectEmployee(this.foundEmployees[0]);
     else this.selectedEmployee = null;
-    this.disabledButtonsService.employeeEdit = !this.selectedEmployee;
+    this.buttonsService.employeeEdit = !this.selectedEmployee;
   }
 
   onInitialized(tree) {
@@ -105,14 +105,14 @@ export class StructureTab {
 
   setRibbonButtons() {
     const disabled = this.selectedCompanyUnit.id === 0;
-    this.disabledButtonsService.companyUnitAdd = disabled;
-    this.disabledButtonsService.companyUnitEdit = disabled;
-    this.disabledButtonsService.companyUnitHide = disabled;
-    this.disabledButtonsService.companyUnitUnhide = disabled;
-    this.disabledButtonsService.companyUnitMoveUp = disabled;
-    this.disabledButtonsService.companyUnitMoveDown = disabled;
-    this.disabledButtonsService.employeeAdd = !this.selectedCompanyUnit.isClassified;
-    this.disabledButtonsService.employeeEdit = !this.selectedEmployee;
+    this.buttonsService.companyUnitAdd = disabled;
+    this.buttonsService.companyUnitEdit = disabled;
+    this.buttonsService.companyUnitHide = disabled;
+    this.buttonsService.companyUnitUnhide = disabled;
+    this.buttonsService.companyUnitMoveUp = disabled;
+    this.buttonsService.companyUnitMoveDown = disabled;
+    this.buttonsService.employeeAdd = !this.selectedCompanyUnit.isClassified;
+    this.buttonsService.employeeEdit = !this.selectedEmployee;
   }
 
   droppedEmployee(employeeId: number, nodeId: number) {

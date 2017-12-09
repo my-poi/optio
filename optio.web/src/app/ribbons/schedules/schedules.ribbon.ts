@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { DisabledButtonsService } from '../../services/disabled-buttons.service';
+import { ButtonsService } from '../../services/buttons.service';
 import { RibbonInfosService } from '../../services/ribbon-infos.service';
 
 @Component({
@@ -11,7 +11,7 @@ export class SchedulesRibbon {
   @Output() showTabEvent = new EventEmitter<any>();
   @Output() showShiftsEvent = new EventEmitter();
 
-  constructor(public disabledButtonsService: DisabledButtonsService,
+  constructor(public buttonsService: ButtonsService,
     public ribbonInfosService: RibbonInfosService) { }
 
   showTab(tabName: string, isNew: boolean) {

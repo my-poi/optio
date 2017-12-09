@@ -22,11 +22,11 @@
   <p>Grafik</p>
 </div>
 <div class="ribbon">
-  <button (click)="employeeScheduleMoveUp()" [disabled]="disabledButtonsService.employeeScheduleMoveUp" class="ribbon button" style="background-image: url('assets/icons/arrow-up.png')">
+  <button (click)="employeeScheduleMoveUp()" [disabled]="buttonsService.employeeScheduleMoveUp" class="ribbon button" style="background-image: url('assets/icons/arrow-up.png')">
     <br/>
     <br/> W górę
   </button>
-  <button (click)="employeeScheduleMoveDown()" [disabled]="disabledButtonsService.employeeScheduleMoveDown" class="ribbon button" style="background-image: url('assets/icons/arrow-down.png')">
+  <button (click)="employeeScheduleMoveDown()" [disabled]="buttonsService.employeeScheduleMoveDown" class="ribbon button" style="background-image: url('assets/icons/arrow-down.png')">
     <br/>
     <br/> W dół
   </button>

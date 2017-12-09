@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Http } from '@angular/http';
 import { DataService } from '../../services/data.service';
-import { DisabledButtonsService } from '../../services/disabled-buttons.service';
+import { ButtonsService } from '../../services/buttons.service';
 import { GlobalService } from '../../services/global.service';
 import { RibbonInfosService } from '../../services/ribbon-infos.service';
 import { PeriodDefinition } from '../../objects/period-definition';
@@ -31,7 +31,7 @@ export class ScheduleTab {
 
   constructor(private http: Http,
     private dataService: DataService,
-    private disabledButtonsService: DisabledButtonsService,
+    private buttonsService: ButtonsService,
     private globalService: GlobalService,
     private ribbonInfosService: RibbonInfosService) { }
 
@@ -67,8 +67,8 @@ export class ScheduleTab {
   }
 
   setButtons() {
-    this.disabledButtonsService.employeeScheduleMoveUp = this.currentSchedule.indexOf(this.selectedEmployeeSchedule) === 0;
-    this.disabledButtonsService.employeeScheduleMoveDown =
+    this.buttonsService.employeeScheduleMoveUp = this.currentSchedule.indexOf(this.selectedEmployeeSchedule) === 0;
+    this.buttonsService.employeeScheduleMoveDown =
       this.currentSchedule.indexOf(this.selectedEmployeeSchedule) ===
       this.currentSchedule.length - 1;
   }

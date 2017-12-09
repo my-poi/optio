@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class DisabledButtonsService {
+export class ButtonsService {
   companyUnitAdd = false;
   companyUnitEdit = false;
   companyUnitHide = false;

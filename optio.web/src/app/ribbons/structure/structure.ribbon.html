@@ -1,36 +1,36 @@
 <div class="ribbon">
-    <button (click)="showTab('companyUnit', true)" [disabled]="disabledButtonsService.companyUnitAdd" class="ribbon button" style="background-image: url('assets/icons/folder-add.png')">
+    <button (click)="showTab('companyUnit', true)" [disabled]="buttonsService.companyUnitAdd" class="ribbon button" style="background-image: url('assets/icons/folder-add.png')">
       <br/>
       <br/> Dodaj
     </button>
-    <button (click)="showTab('companyUnit', false)" [disabled]="disabledButtonsService.companyUnitEdit" class="ribbon button" style="background-image: url('assets/icons/folder-edit.png')">
+    <button (click)="showTab('companyUnit', false)" [disabled]="buttonsService.companyUnitEdit" class="ribbon button" style="background-image: url('assets/icons/folder-edit.png')">
       <br/>
       <br/> Edytuj
     </button>
-    <button [disabled]="disabledButtonsService.companyUnitHide" class="ribbon button" style="background-image: url('assets/icons/folder-delete.png')">
+    <button [disabled]="buttonsService.companyUnitHide" class="ribbon button" style="background-image: url('assets/icons/folder-delete.png')">
       <br/>
       <br/> Ukryj
     </button>
-    <button [disabled]="disabledButtonsService.companyUnitUnhide" class="ribbon button" style="background-image: url('assets/icons/folder-error.png')">
+    <button [disabled]="buttonsService.companyUnitUnhide" class="ribbon button" style="background-image: url('assets/icons/folder-error.png')">
       <br/>
       <br/> Odkryj
     </button>
-    <button [disabled]="disabledButtonsService.companyUnitMoveUp" class="ribbon button" style="background-image: url('assets/icons/folder-upload.png')">
+    <button [disabled]="buttonsService.companyUnitMoveUp" class="ribbon button" style="background-image: url('assets/icons/folder-upload.png')">
       <br/>
       <br/> W górę
     </button>
-    <button [disabled]="disabledButtonsService.companyUnitMoveDown" class="ribbon button" style="background-image: url('assets/icons/folder-download.png')">
+    <button [disabled]="buttonsService.companyUnitMoveDown" class="ribbon button" style="background-image: url('assets/icons/folder-download.png')">
       <br/>
       <br/> W dół
     </button>
     <p>Komórki</p>
   </div>
   <div class="ribbon">
-    <button (click)="showTab('employee', true)" [disabled]="disabledButtonsService.employeeAdd" class="ribbon button" style="background-image: url('assets/icons/user-add.png')">
+    <button (click)="showTab('employee', true)" [disabled]="buttonsService.employeeAdd" class="ribbon button" style="background-image: url('assets/icons/user-add.png')">
       <br/>
       <br/> Dodaj
     </button>
-    <button (click)="showTab('employee', false)" [disabled]="disabledButtonsService.employeeEdit" class="ribbon button" style="background-image: url('assets/icons/user-edit.png')">
+    <button (click)="showTab('employee', false)" [disabled]="buttonsService.employeeEdit" class="ribbon button" style="background-image: url('assets/icons/user-edit.png')">
       <br/>
       <br/> Edytuj
     </button>

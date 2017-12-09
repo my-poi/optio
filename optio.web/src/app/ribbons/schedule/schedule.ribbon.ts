@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { DisabledButtonsService } from '../../services/disabled-buttons.service';
+import { ButtonsService } from '../../services/buttons.service';
 import { RibbonInfosService } from '../../services/ribbon-infos.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class ScheduleRibbon {
   @Output() employeeScheduleMoveUpEvent = new EventEmitter<any>();
   @Output() employeeScheduleMoveDownEvent = new EventEmitter<any>();
 
-  constructor(public disabledButtonsService: DisabledButtonsService,
+  constructor(public buttonsService: ButtonsService,
     public ribbonInfosService: RibbonInfosService) {}
 
   validateData(tabName: string) {

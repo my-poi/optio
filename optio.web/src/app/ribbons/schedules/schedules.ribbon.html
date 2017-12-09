@@ -1,9 +1,9 @@
 <div class="ribbon">
-  <button class="ribbon button" [disabled]="disabledButtonsService.schedulesAdd" style="background-image: url('assets/icons/add.png')">
+  <button class="ribbon button" [disabled]="buttonsService.schedulesAdd" style="background-image: url('assets/icons/add.png')">
       <br/>
       <br/> Dodaj
     </button>
-  <button (click)="showTab('schedule', false)" [disabled]="disabledButtonsService.schedulesEdit" class="ribbon button" style="background-image: url('assets/icons/pencil.png')">
+  <button (click)="showTab('schedule', false)" [disabled]="buttonsService.schedulesEdit" class="ribbon button" style="background-image: url('assets/icons/pencil.png')">
       <br/>
       <br/> Edytuj
     </button>
@@ -15,7 +15,7 @@
       <br/>
       <br/> Wymiary
     </button>
-  <button class="ribbon button" [disabled]="disabledButtonsService.schedulesLock" style="background-image: url('assets/icons/unlocked.png')">
+  <button class="ribbon button" [disabled]="buttonsService.schedulesLock" style="background-image: url('assets/icons/unlocked.png')">
       <br/>
       <br/> Zablokuj
     </button>

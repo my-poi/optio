@@ -8,7 +8,7 @@ import { ShiftsModal } from './modals/shifts/shifts.modal';
 import { BrowserService } from './services/browser.service';
 import { LoginService } from './services/login.service';
 import { DataService } from './services/data.service';
-import { DisabledButtonsService } from './services/disabled-buttons.service';
+import { ButtonsService } from './services/buttons.service';
 import { GlobalService } from './services/global.service';
 import { RibbonInfosService } from './services/ribbon-infos.service';
 import { Http } from '@angular/http';
@@ -22,7 +22,7 @@ import { Tab } from './objects/tab';
     BrowserService,
     LoginService,
     DataService,
-    DisabledButtonsService,
+    ButtonsService,
     GlobalService,
     RibbonInfosService
   ],
