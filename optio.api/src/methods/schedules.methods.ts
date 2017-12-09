@@ -209,10 +209,19 @@ export class SchedulesMethods {
         plannedDay.employeeId === schedule.employeeId &&
         new Date(plannedDay.day).getTime() >= periodStartDate.getTime() &&
         new Date(plannedDay.day).getTime() <= to.getTime());
-      const monthlyHours = schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0);
-      const monthlyMinutes = schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0);
-      const totalHours = employeePeriodPlannedDays.map((x: PlannedDay) => x.hours).reduce((a: number, b: number) => a + b, 0);
-      const totalMinutes = employeePeriodPlannedDays.map((x: PlannedDay) => x.minutes).reduce((a: number, b: number) => a + b, 0);
+
+      let monthlyHours = schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0);
+      let monthlyMinutes = schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0);
+      const monthly = new TimeSpan(0, monthlyHours, monthlyMinutes);
+      monthlyHours = monthly.totalHours();
+      monthlyMinutes = monthly.minutes();
+
+      let totalHours = employeePeriodPlannedDays.map((x: PlannedDay) => x.hours).reduce((a: number, b: number) => a + b, 0);
+      let totalMinutes = employeePeriodPlannedDays.map((x: PlannedDay) => x.minutes).reduce((a: number, b: number) => a + b, 0);
+      const total = new TimeSpan(0, totalHours, totalMinutes);
+      totalHours = total.totalHours();
+      totalMinutes = total.minutes();
+
       return new EmployeeSchedule(
         schedule.employeeId,
         `${employee.lastName}\n${employee.firstName}`,

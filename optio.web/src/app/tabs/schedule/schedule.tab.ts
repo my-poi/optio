@@ -150,8 +150,6 @@ export class ScheduleTab {
     setTimeout(() => {
       scheduleDay.m = Number(scheduleDay.m.toString().replace(/\D/g, ''));
 
-      console.log('scheduleDay.m: ' + scheduleDay.m);
-
       if (!scheduleDay.x || scheduleDay.s === 40 || scheduleDay.s === 41 || scheduleDay.s === 42) {
         scheduleDay.m = null;
         return;
