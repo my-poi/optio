@@ -133,14 +133,14 @@ export class ScheduleTab {
 
   setHour(scheduleDay: ScheduleDay) {
     setTimeout(() => {
-      scheduleDay.h = scheduleDay.h.replace(/\D/g, '');
+      scheduleDay.h = Number(scheduleDay.h.toString().replace(/\D/g, ''));
 
       if (!scheduleDay.x || scheduleDay.s === 40 || scheduleDay.s === 41 || scheduleDay.s === 42) {
         scheduleDay.h = null;
         return;
       }
 
-      if (parseInt(scheduleDay.h, 10) < 1 || parseInt(scheduleDay.h, 10) > 12) scheduleDay.h = null;
+      if (scheduleDay.h < 1 || scheduleDay.h > 12) scheduleDay.h = null;
       if (!scheduleDay.h && !scheduleDay.m) this.clearDay(scheduleDay);
       this.validateDailyLimit(scheduleDay);
     });
@@ -148,14 +148,16 @@ export class ScheduleTab {
 
   setMinute(scheduleDay: ScheduleDay) {
     setTimeout(() => {
-      scheduleDay.m = scheduleDay.m.replace(/\D/g, '');
+      scheduleDay.m = Number(scheduleDay.m.toString().replace(/\D/g, ''));
+
+      console.log('scheduleDay.m: ' + scheduleDay.m);
 
       if (!scheduleDay.x || scheduleDay.s === 40 || scheduleDay.s === 41 || scheduleDay.s === 42) {
         scheduleDay.m = null;
         return;
       }
 
-      if (parseInt(scheduleDay.m, 10) < 1 || parseInt(scheduleDay.m, 10) > 59) scheduleDay.m = null;
+      if (scheduleDay.m < 1 || scheduleDay.m > 59) scheduleDay.m = null;
       if (!scheduleDay.h && !scheduleDay.m) this.clearDay(scheduleDay);
       this.validateDailyLimit(scheduleDay);
     });

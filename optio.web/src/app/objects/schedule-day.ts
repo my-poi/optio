@@ -1,7 +1,7 @@
 export interface ScheduleDay {
   d: Date;     // dzień grafiku
-  h: string;   // zaplanowane godziny
-  m: string;   // zaplanowane minuty
+  h: number;   // zaplanowane godziny
+  m: number;   // zaplanowane minuty
   s: number;   // identyfikator zmiany
   x: string;   // symbol zmiany
   v: boolean;  // urlop
