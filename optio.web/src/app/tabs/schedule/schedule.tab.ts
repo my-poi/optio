@@ -283,7 +283,7 @@ export class ScheduleTab {
     if (total.totalMinutes() > this.periodMinutesLimit) employeeSchedule.totalBackground = 4;
   }
 
-  validate() {
+  close() {
     this.saveScheduleIfChanged();
     this.schedules = [];
     this.currentSchedule = [];

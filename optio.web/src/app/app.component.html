@@ -10,7 +10,7 @@
       <app-time-sheets-ribbon [hidden]="activeTabId !== 5"></app-time-sheets-ribbon>
       <app-company-unit-ribbon (validateDataEvent)="companyUnitTab.validate()" (hideTabEvent)="hideTab($event)" [hidden]="activeTabId !== 6"></app-company-unit-ribbon>
       <app-employee-ribbon (validateDataEvent)="employeeTab.validate()" (hideTabEvent)="hideTab($event)" [hidden]="activeTabId !== 7"></app-employee-ribbon>
-      <app-schedule-ribbon (validateDataEvent)="scheduleTab.validate()" (employeeScheduleMoveUpEvent)="scheduleTab.employeeScheduleMoveUp()"
+      <app-schedule-ribbon (validateDataEvent)="scheduleTab.close()" (employeeScheduleMoveUpEvent)="scheduleTab.employeeScheduleMoveUp()"
         (employeeScheduleMoveDownEvent)="scheduleTab.employeeScheduleMoveDown()" [hidden]="activeTabId !== 8">
       </app-schedule-ribbon>
     </td>

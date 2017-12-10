@@ -140,7 +140,7 @@
                 <input type="text" [(ngModel)]="s.sd[30] && s.sd[30].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[30])" [ngClass]="{'free': s.sd[30] && s.sd[30].bt === 1, 'comment': s.sd[30] && s.sd[30].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td rowspan="3" style="width: 85px; min-width: 85px; text-align: center; border-left: 1px solid #d4d5d5" [ngClass]="{size: s.monthlyBackground === 2, 'error': s.monthlyBackground === 4}">{{s.monthlyHours}}:{{("00" + s.monthlyMinutes).slice(-2)}}/{{s.monthlyDays}}</td>
-              <td rowspan="3" style="width: 105px; min-width: 85px; text-align: center; border-radius: 0 5px 5px 0" [ngClass]="{size: s.totalBackground === 2, 'error': s.totalBackground === 4}">{{s.totalHours}}:{{("00" + s.totalMinutes).slice(-2)}}/{{s.totalDays}}</td>
+              <td rowspan="3" style="width: 105px; min-width: 105px; text-align: center; border-radius: 0 5px 5px 0" [ngClass]="{size: s.totalBackground === 2, 'error': s.totalBackground === 4}">{{s.totalHours}}:{{("00" + s.totalMinutes).slice(-2)}}/{{s.totalDays}}</td>
             </tr>
             <tr>
               <td>
