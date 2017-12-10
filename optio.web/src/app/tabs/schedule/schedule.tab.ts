@@ -103,7 +103,7 @@ export class ScheduleTab {
       const year = x.month > this.month ? this.year - 1 : this.year;
       const period = this.dataService.periods.find(y =>
         y.year === year && y.month === x.month);
-        minutesLimit += period.hours * 60;
+      minutesLimit += period.hours * 60;
     });
 
     this.periodMinutesLimit = minutesLimit;
@@ -297,8 +297,8 @@ export class ScheduleTab {
     const index = array.indexOf(element);
     const newIndex = index + delta;
     if (newIndex < 0 || newIndex === array.length) return;
-    const indexes = [index, newIndex].sort();
-    array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]);
+    array[index] = array[newIndex];
+    array[newIndex] = element;
   }
 
   employeeScheduleMoveUp() {
