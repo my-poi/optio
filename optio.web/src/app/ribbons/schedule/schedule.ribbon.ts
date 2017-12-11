@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { ButtonsService } from '../../services/buttons.service';
-import { RibbonInfosService } from '../../services/ribbon-infos.service';
+import { InfosService } from '../../services/infos.service';
 
 @Component({
   selector: 'app-schedule-ribbon',
@@ -13,7 +13,7 @@ export class ScheduleRibbon {
   @Output() employeeScheduleMoveDownEvent = new EventEmitter<any>();
 
   constructor(public buttonsService: ButtonsService,
-    public ribbonInfosService: RibbonInfosService) {}
+    public infosService: InfosService) {}
 
   validateData(tabName: string) {
     this.validateDataEvent.emit({tabName});

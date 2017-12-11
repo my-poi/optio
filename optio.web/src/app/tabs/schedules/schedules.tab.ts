@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CalendarService } from '../../services/calendar.service';
 import { DataService } from '../../services/data.service';
 import { ButtonsService } from '../../services/buttons.service';
-import { RibbonInfosService } from '../../services/ribbon-infos.service';
+import { InfosService } from '../../services/infos.service';
 import { CalendarItem } from '../../objects/calendar-item';
 import { CompanyUnitSchedule } from '../../objects/company-unit-schedule';
 
@@ -25,7 +25,7 @@ export class SchedulesTab {
   constructor(public calendarService: CalendarService,
     private dataService: DataService,
     private buttonsService: ButtonsService,
-    private ribbonInfosService: RibbonInfosService) {}
+    private infosService: InfosService) {}
 
   onInitialized(tree) {
     const currentYear = new Date().getFullYear();
@@ -40,7 +40,7 @@ export class SchedulesTab {
     this.selectedCalendarItem = node.data;
     this.deselectSchedule();
     this.loadSchedules();
-    this.ribbonInfosService.schedulesInfo = '';
+    this.infosService.schedulesInfo = '';
   }
 
   loadSchedules() {

@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { ButtonsService } from '../../services/buttons.service';
-import { RibbonInfosService } from '../../services/ribbon-infos.service';
+import { InfosService } from '../../services/infos.service';
 
 @Component({
   selector: 'app-schedules-ribbon',
@@ -12,7 +12,7 @@ export class SchedulesRibbon {
   @Output() showShiftsEvent = new EventEmitter();
 
   constructor(public buttonsService: ButtonsService,
-    public ribbonInfosService: RibbonInfosService) { }
+    public infosService: InfosService) { }
 
   showTab(tabName: string, isNew: boolean) {
     this.showTabEvent.emit({tabName, isNew});

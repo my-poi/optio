@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class RibbonInfosService {
+export class InfosService {
   structureInfo = '';
   schedulesInfo = '';
   scheduleInfo = '';

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { ButtonsService } from '../../services/buttons.service';
-import { RibbonInfosService } from '../../services/ribbon-infos.service';
+import { InfosService } from '../../services/infos.service';
 import { CompanyUnit } from '../../objects/company-unit';
 import { Employee } from '../../objects/employee';
 import { EmployeesFilter } from '../../objects/employees-filter';
@@ -26,7 +26,7 @@ export class StructureTab {
 
   constructor(private dataService: DataService,
     private buttonsService: ButtonsService,
-    private ribbonInfosService: RibbonInfosService) { }
+    private infosService: InfosService) { }
 
   filterEmployees() {
     const result = this.allEmployees.filter(x => {
@@ -117,7 +117,7 @@ export class StructureTab {
 
   droppedEmployee(employeeId: number, nodeId: number) {
     const info = 'id przeciąganego pracownika: ' + employeeId + '\n' + 'id komórki: ' + nodeId;
-    this.ribbonInfosService.structureInfo = info;
+    this.infosService.structureInfo = info;
   }
 }
 

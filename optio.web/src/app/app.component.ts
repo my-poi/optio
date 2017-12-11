@@ -10,7 +10,7 @@ import { LoginService } from './services/login.service';
 import { DataService } from './services/data.service';
 import { ButtonsService } from './services/buttons.service';
 import { GlobalService } from './services/global.service';
-import { RibbonInfosService } from './services/ribbon-infos.service';
+import { InfosService } from './services/infos.service';
 import { Http } from '@angular/http';
 import { CompanyUnit } from './objects/company-unit';
 import { Employee } from './objects/employee';
@@ -24,7 +24,7 @@ import { Tab } from './objects/tab';
     DataService,
     ButtonsService,
     GlobalService,
-    RibbonInfosService
+    InfosService
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

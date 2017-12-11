@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { DataService } from '../../services/data.service';
 import { ButtonsService } from '../../services/buttons.service';
 import { GlobalService } from '../../services/global.service';
-import { RibbonInfosService } from '../../services/ribbon-infos.service';
+import { InfosService } from '../../services/infos.service';
 import { PeriodDefinition } from '../../objects/period-definition';
 import { ScheduleDay } from '../../objects/schedule-day';
 import { EmployeeSchedule } from '../../objects/employee-schedule';
@@ -34,7 +34,7 @@ export class ScheduleTab {
     private dataService: DataService,
     private buttonsService: ButtonsService,
     private globalService: GlobalService,
-    private ribbonInfosService: RibbonInfosService) { }
+    private infosService: InfosService) { }
 
   load(companyUnitId: number, year: number, month: number) {
     this.year = year;
@@ -63,7 +63,7 @@ export class ScheduleTab {
     if (this.selectedEmployeeSchedule.employeeId !== employeeSchedule.employeeId) this.saveScheduleIfChanged();
     this.selectedEmployeeSchedule = employeeSchedule;
     this.setOriginalCopy(employeeSchedule);
-    this.ribbonInfosService.scheduleInfo = employeeSchedule.employeeName;
+    this.infosService.scheduleInfo = employeeSchedule.employeeName;
     this.setButtons();
   }
 
@@ -79,11 +79,11 @@ export class ScheduleTab {
       this.dataService.updateSchedule(this.selectedEmployeeSchedule, (response) => console.log(response));
   }
 
-  isChanged(employeeSchedule) {
+  isChanged(employeeSchedule: EmployeeSchedule) {
     return !this.globalService.equals(employeeSchedule, this.originalEmployeeSchedule);
   }
 
-  setOriginalCopy(employeeSchedule) {
+  setOriginalCopy(employeeSchedule: EmployeeSchedule) {
     this.originalEmployeeSchedule = JSON.parse(JSON.stringify(employeeSchedule));
   }
 
