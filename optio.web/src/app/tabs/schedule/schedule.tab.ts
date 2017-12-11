@@ -9,7 +9,6 @@ import { ScheduleDay } from '../../objects/schedule-day';
 import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { TimeSpan } from '../../objects/time-span';
 import { ShiftDuration } from '../../objects/shift-duration';
-import { filterQueryId } from '@angular/core/src/view/util';
 
 @Component({
   selector: 'app-schedule-tab',
