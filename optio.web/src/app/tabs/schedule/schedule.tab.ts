@@ -283,16 +283,6 @@ export class ScheduleTab {
     if (total.totalMinutes() > this.periodMinutesLimit) employeeSchedule.totalBackground = 4;
   }
 
-  close() {
-    this.saveScheduleIfChanged();
-    this.schedules = [];
-    this.currentSchedule = [];
-    this.header = null;
-    this.selectedEmployeeSchedule = null;
-    this.originalEmployeeSchedule = null;
-    this.hideTabEvent.emit({ tabName: 'schedule' });
-  }
-
   move(array: any[], element: any, delta: number) {
     const index = array.indexOf(element);
     const newIndex = index + delta;
@@ -309,5 +299,15 @@ export class ScheduleTab {
   employeeScheduleMoveDown() {
     this.move(this.currentSchedule, this.selectedEmployeeSchedule, 1);
     this.setButtons();
+  }
+
+  close() {
+    this.saveScheduleIfChanged();
+    this.schedules = [];
+    this.currentSchedule = [];
+    this.header = null;
+    this.selectedEmployeeSchedule = null;
+    this.originalEmployeeSchedule = null;
+    this.hideTabEvent.emit({ tabName: 'schedule' });
   }
 }
