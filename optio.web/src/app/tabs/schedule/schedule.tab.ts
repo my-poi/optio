@@ -286,7 +286,7 @@ export class ScheduleTab {
   move(array: any[], element: any, delta: number) {
     const index = array.indexOf(element);
     const newIndex = index + delta;
-    if (newIndex < 0 || newIndex === array.length) return;
+    if (newIndex < 0 || newIndex >= array.length) return;
     array[index] = array[newIndex];
     array[newIndex] = element;
   }
