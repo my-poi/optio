@@ -9,6 +9,7 @@ import { ScheduleDay } from '../../objects/schedule-day';
 import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { TimeSpan } from '../../objects/time-span';
 import { ShiftDuration } from '../../objects/shift-duration';
+import { TimeSheetEmployee } from '../../objects/time-sheet-employee';
 
 @Component({
   selector: 'app-schedule-tab',
@@ -28,6 +29,8 @@ export class ScheduleTab {
   header: EmployeeSchedule;
   selectedEmployeeSchedule: EmployeeSchedule;
   originalEmployeeSchedule: EmployeeSchedule;
+  selectedScheduleDay: ScheduleDay;
+  employeeScheduleDays: ScheduleDay[];
 
   constructor(private http: Http,
     private dataService: DataService,
@@ -53,6 +56,7 @@ export class ScheduleTab {
 
   selectFirstSchedule(firstSchedule: EmployeeSchedule) {
     this.selectedEmployeeSchedule = firstSchedule;
+    this.selectEmployeeScheduleDays();
     this.setOriginalCopy(firstSchedule);
     this.setButtons();
   }
@@ -61,9 +65,22 @@ export class ScheduleTab {
     if (this.selectedEmployeeSchedule.employeeId === employeeSchedule.employeeId) return;
     if (this.selectedEmployeeSchedule.employeeId !== employeeSchedule.employeeId) this.saveScheduleIfChanged();
     this.selectedEmployeeSchedule = employeeSchedule;
+    this.selectEmployeeScheduleDays();
     this.setOriginalCopy(employeeSchedule);
-    this.infosService.scheduleInfo = employeeSchedule.employeeName;
     this.setButtons();
+  }
+
+  selectDay(scheduleDay: ScheduleDay) {
+    this.infosService.scheduleInfo = scheduleDay.e;
+  }
+
+  selectEmployeeScheduleDays() {
+    this.employeeScheduleDays = [];
+    const employeeSchedules = this.schedules.filter(x => x.employeeId === this.selectedEmployeeSchedule.employeeId);
+    const scheduleDays = employeeSchedules.map(x => x.sd);
+    scheduleDays.forEach((x: ScheduleDay[]) => {
+      x.forEach(day => this.employeeScheduleDays.push(day));
+    });
   }
 
   setButtons() {
@@ -112,31 +129,34 @@ export class ScheduleTab {
     this.setHour(scheduleDay);
     this.setSummaryData(employeeId);
     this.setUpdatedBy(scheduleDay);
+    this.validateDailyBreak(scheduleDay);
   }
 
   minuteChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setMinute(scheduleDay);
     this.setSummaryData(employeeId);
     this.setUpdatedBy(scheduleDay);
+    this.validateDailyBreak(scheduleDay);
   }
 
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setShift(scheduleDay);
     this.setSummaryData(employeeId);
     this.setUpdatedBy(scheduleDay);
+    this.validateDailyBreak(scheduleDay);
   }
 
   setHour(scheduleDay: ScheduleDay) {
     setTimeout(() => {
       scheduleDay.h = Number(scheduleDay.h.toString().replace(/\D/g, ''));
 
-      if (!scheduleDay.x || scheduleDay.s === 40 || scheduleDay.s === 41 || scheduleDay.s === 42) {
+      if (!scheduleDay.x || scheduleDay.s >= 40) {
         scheduleDay.h = null;
         return;
       }
 
       if (scheduleDay.h < 1 || scheduleDay.h > 12) scheduleDay.h = null;
-      if (!scheduleDay.h && !scheduleDay.m) this.clearDay(scheduleDay);
+      this.checkDayHasTimeValue(scheduleDay);
       this.validateDailyLimit(scheduleDay);
     });
   }
@@ -145,15 +165,66 @@ export class ScheduleTab {
     setTimeout(() => {
       scheduleDay.m = Number(scheduleDay.m.toString().replace(/\D/g, ''));
 
-      if (!scheduleDay.x || scheduleDay.s === 40 || scheduleDay.s === 41 || scheduleDay.s === 42) {
+      if (!scheduleDay.x || scheduleDay.s >= 40) {
         scheduleDay.m = null;
         return;
       }
 
       if (scheduleDay.m < 1 || scheduleDay.m > 59) scheduleDay.m = null;
-      if (!scheduleDay.h && !scheduleDay.m) this.clearDay(scheduleDay);
+      this.checkDayHasTimeValue(scheduleDay);
       this.validateDailyLimit(scheduleDay);
     });
+  }
+
+  checkDayHasTimeValue(scheduleDay: ScheduleDay) {
+    if (!scheduleDay.h && !scheduleDay.m) this.clearDay(scheduleDay);
+  }
+
+  validateDailyLimit(scheduleDay: ScheduleDay) {
+    const planned = new TimeSpan(0, scheduleDay.h, scheduleDay.m);
+    if (planned.totalMinutes() <= 0 || planned.totalMinutes() > 720) this.clearDay(scheduleDay);
+  }
+
+  validateDailyBreak(scheduleDay: ScheduleDay) {
+    if (!scheduleDay.s) return;
+
+    const currentDay = new Date(scheduleDay.d);
+    const previousDay = new Date(currentDay);
+    previousDay.setDate(previousDay.getDate() - 1);
+
+    const previousScheduleDay = this.employeeScheduleDays.find(x =>
+      new Date(x.d).getTime() === previousDay.getTime());
+
+    if (!previousScheduleDay) return;
+    if (!previousScheduleDay.s) return;
+
+    const previousWorkDayShift = this.dataService.shifts.find(x => x.id === previousScheduleDay.s);
+    const previousStartHours = Number(previousWorkDayShift.current.start.substring(0, 2));
+    const previousStartMinutes = Number(previousWorkDayShift.current.start.substring(3, 5));
+    const previousWorkDayStartingTime = new TimeSpan(0, previousStartHours, previousStartMinutes);
+
+    const currentWorkDayShift = this.dataService.shifts.find(x => x.id === scheduleDay.s);
+    const currentStartHours = Number(currentWorkDayShift.current.start.substring(0, 2));
+    const currentStartMinutes = Number(currentWorkDayShift.current.start.substring(3, 5));
+    const currentWorkDayStartingTime = new TimeSpan(0, currentStartHours, currentStartMinutes);
+    const minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
+
+    console.log(currentWorkDayStartingTime.totalMinutes());
+    console.log(previousWorkDayStartingTime.totalMinutes());
+    console.log(minutesDifference);
+
+    const headerDay = this.header.sd.find(x =>
+      new Date(x.d).getTime() === currentDay.getTime());
+    if (minutesDifference < 0) {
+      scheduleDay.bx = 3;
+      scheduleDay.e += '- naruszono dobę pracowniczą';
+    } else {
+      if (scheduleDay.v) scheduleDay.bx = 2;
+      if (headerDay.bx === 1) scheduleDay.bx = 1;
+      scheduleDay.e = '';
+    }
+
+    this.infosService.scheduleInfo = scheduleDay.e;
   }
 
   setShift(scheduleDay) {
@@ -170,7 +241,7 @@ export class ScheduleTab {
         return;
       }
 
-      if (shift.id === 40 || shift.id === 41 || shift.id === 42) {
+      if (shift.id >= 40) {
         scheduleDay.h = null;
         scheduleDay.m = null;
       }
@@ -200,11 +271,6 @@ export class ScheduleTab {
 
   getShiftValidToDate(validTo): Date {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
-  }
-
-  validateDailyLimit(scheduleDay) {
-    const planned = new TimeSpan(0, scheduleDay.h, scheduleDay.m);
-    if (planned.totalMinutes() <= 0 || planned.totalMinutes() > 720) this.clearDay(scheduleDay);
   }
 
   clearDay(scheduleDay: ScheduleDay) {

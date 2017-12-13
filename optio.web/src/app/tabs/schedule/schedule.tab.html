@@ -239,97 +239,97 @@
             </tr>
             <tr class="schedule-bottom">
               <td>
-                <input type="text" [(ngModel)]="s.sd[0].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[0])" (focus)="select(s)" [ngClass]="{'free': s.sd[0].bx === 1, 'vacation': s.sd[0].bx === 2, 'error': s.sd[0].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[0].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[0])" (focus)="selectDay(s.sd[0]); select(s)" [ngClass]="{'free': s.sd[0].bx === 1, 'vacation': s.sd[0].bx === 2, 'error': s.sd[0].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[1].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[1])" [ngClass]="{'free': s.sd[1].bx === 1, 'vacation': s.sd[1].bx === 2, 'error': s.sd[1].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[1].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[1])" (focus)="selectDay(s.sd[1])" [ngClass]="{'free': s.sd[1].bx === 1, 'vacation': s.sd[1].bx === 2, 'error': s.sd[1].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[2].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[2])" [ngClass]="{'free': s.sd[2].bx === 1, 'vacation': s.sd[2].bx === 2, 'error': s.sd[2].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[2].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[2])" (focus)="selectDay(s.sd[2])" [ngClass]="{'free': s.sd[2].bx === 1, 'vacation': s.sd[2].bx === 2, 'error': s.sd[2].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[3].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[3])" [ngClass]="{'free': s.sd[3].bx === 1, 'vacation': s.sd[3].bx === 2, 'error': s.sd[3].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[3].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[3])" (focus)="selectDay(s.sd[3])" [ngClass]="{'free': s.sd[3].bx === 1, 'vacation': s.sd[3].bx === 2, 'error': s.sd[3].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[4].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[4])" [ngClass]="{'free': s.sd[4].bx === 1, 'vacation': s.sd[4].bx === 2, 'error': s.sd[4].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[4].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[4])" (focus)="selectDay(s.sd[4])" [ngClass]="{'free': s.sd[4].bx === 1, 'vacation': s.sd[4].bx === 2, 'error': s.sd[4].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[5].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[5])" [ngClass]="{'free': s.sd[5].bx === 1, 'vacation': s.sd[5].bx === 2, 'error': s.sd[5].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[5].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[5])" (focus)="selectDay(s.sd[5])" [ngClass]="{'free': s.sd[5].bx === 1, 'vacation': s.sd[5].bx === 2, 'error': s.sd[5].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[6].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[6])" [ngClass]="{'free': s.sd[6].bx === 1, 'vacation': s.sd[6].bx === 2, 'error': s.sd[6].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[6].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[6])" (focus)="selectDay(s.sd[6])" [ngClass]="{'free': s.sd[6].bx === 1, 'vacation': s.sd[6].bx === 2, 'error': s.sd[6].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[7].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[7])" [ngClass]="{'free': s.sd[7].bx === 1, 'vacation': s.sd[7].bx === 2, 'error': s.sd[7].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[7].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[7])" (focus)="selectDay(s.sd[7])" [ngClass]="{'free': s.sd[7].bx === 1, 'vacation': s.sd[7].bx === 2, 'error': s.sd[7].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[8].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[8])" [ngClass]="{'free': s.sd[8].bx === 1, 'vacation': s.sd[8].bx === 2, 'error': s.sd[8].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[8].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[8])" (focus)="selectDay(s.sd[8])" [ngClass]="{'free': s.sd[8].bx === 1, 'vacation': s.sd[8].bx === 2, 'error': s.sd[8].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[9].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[9])" [ngClass]="{'free': s.sd[9].bx === 1, 'vacation': s.sd[9].bx === 2, 'error': s.sd[9].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[9].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[9])" (focus)="selectDay(s.sd[9])" [ngClass]="{'free': s.sd[9].bx === 1, 'vacation': s.sd[9].bx === 2, 'error': s.sd[9].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[10].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[10])" [ngClass]="{'free': s.sd[10].bx === 1, 'vacation': s.sd[10].bx === 2, 'error': s.sd[10].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[10].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[10])" (focus)="selectDay(s.sd[10])" [ngClass]="{'free': s.sd[10].bx === 1, 'vacation': s.sd[10].bx === 2, 'error': s.sd[10].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[11].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[11])" [ngClass]="{'free': s.sd[11].bx === 1, 'vacation': s.sd[11].bx === 2, 'error': s.sd[11].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[11].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[11])" (focus)="selectDay(s.sd[11])" [ngClass]="{'free': s.sd[11].bx === 1, 'vacation': s.sd[11].bx === 2, 'error': s.sd[11].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[12].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[12])" [ngClass]="{'free': s.sd[12].bx === 1, 'vacation': s.sd[12].bx === 2, 'error': s.sd[12].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[12].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[12])" (focus)="selectDay(s.sd[12])" [ngClass]="{'free': s.sd[12].bx === 1, 'vacation': s.sd[12].bx === 2, 'error': s.sd[12].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[13].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[13])" [ngClass]="{'free': s.sd[13].bx === 1, 'vacation': s.sd[13].bx === 2, 'error': s.sd[13].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[13].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[13])" (focus)="selectDay(s.sd[13])" [ngClass]="{'free': s.sd[13].bx === 1, 'vacation': s.sd[13].bx === 2, 'error': s.sd[13].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[14].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[14])" [ngClass]="{'free': s.sd[14].bx === 1, 'vacation': s.sd[14].bx === 2, 'error': s.sd[14].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[14].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[14])" (focus)="selectDay(s.sd[14])" [ngClass]="{'free': s.sd[14].bx === 1, 'vacation': s.sd[14].bx === 2, 'error': s.sd[14].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[15].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[15])" [ngClass]="{'free': s.sd[15].bx === 1, 'vacation': s.sd[15].bx === 2, 'error': s.sd[15].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[15].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[15])" (focus)="selectDay(s.sd[15])" [ngClass]="{'free': s.sd[15].bx === 1, 'vacation': s.sd[15].bx === 2, 'error': s.sd[15].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[16].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[16])" [ngClass]="{'free': s.sd[16].bx === 1, 'vacation': s.sd[16].bx === 2, 'error': s.sd[16].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[16].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[16])" (focus)="selectDay(s.sd[16])" [ngClass]="{'free': s.sd[16].bx === 1, 'vacation': s.sd[16].bx === 2, 'error': s.sd[16].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[17].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[17])" [ngClass]="{'free': s.sd[17].bx === 1, 'vacation': s.sd[17].bx === 2, 'error': s.sd[17].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[17].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[17])" (focus)="selectDay(s.sd[17])" [ngClass]="{'free': s.sd[17].bx === 1, 'vacation': s.sd[17].bx === 2, 'error': s.sd[17].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[18].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[18])" [ngClass]="{'free': s.sd[18].bx === 1, 'vacation': s.sd[18].bx === 2, 'error': s.sd[18].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[18].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[18])" (focus)="selectDay(s.sd[18])" [ngClass]="{'free': s.sd[18].bx === 1, 'vacation': s.sd[18].bx === 2, 'error': s.sd[18].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[19].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[19])" [ngClass]="{'free': s.sd[19].bx === 1, 'vacation': s.sd[19].bx === 2, 'error': s.sd[19].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[19].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[19])" (focus)="selectDay(s.sd[19])" [ngClass]="{'free': s.sd[19].bx === 1, 'vacation': s.sd[19].bx === 2, 'error': s.sd[19].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[20].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[20])" [ngClass]="{'free': s.sd[20].bx === 1, 'vacation': s.sd[20].bx === 2, 'error': s.sd[20].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[20].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[20])" (focus)="selectDay(s.sd[20])" [ngClass]="{'free': s.sd[20].bx === 1, 'vacation': s.sd[20].bx === 2, 'error': s.sd[20].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[21].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[21])" [ngClass]="{'free': s.sd[21].bx === 1, 'vacation': s.sd[21].bx === 2, 'error': s.sd[21].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[21].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[21])" (focus)="selectDay(s.sd[21])" [ngClass]="{'free': s.sd[21].bx === 1, 'vacation': s.sd[21].bx === 2, 'error': s.sd[21].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[22].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[22])" [ngClass]="{'free': s.sd[22].bx === 1, 'vacation': s.sd[22].bx === 2, 'error': s.sd[22].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[22].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[22])" (focus)="selectDay(s.sd[22])" [ngClass]="{'free': s.sd[22].bx === 1, 'vacation': s.sd[22].bx === 2, 'error': s.sd[22].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[23].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[23])" [ngClass]="{'free': s.sd[23].bx === 1, 'vacation': s.sd[23].bx === 2, 'error': s.sd[23].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[23].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[23])" (focus)="selectDay(s.sd[23])" [ngClass]="{'free': s.sd[23].bx === 1, 'vacation': s.sd[23].bx === 2, 'error': s.sd[23].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[24].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[24])" [ngClass]="{'free': s.sd[24].bx === 1, 'vacation': s.sd[24].bx === 2, 'error': s.sd[24].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[24].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[24])" (focus)="selectDay(s.sd[24])" [ngClass]="{'free': s.sd[24].bx === 1, 'vacation': s.sd[24].bx === 2, 'error': s.sd[24].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[25].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[25])" [ngClass]="{'free': s.sd[25].bx === 1, 'vacation': s.sd[25].bx === 2, 'error': s.sd[25].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[25].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[25])" (focus)="selectDay(s.sd[25])" [ngClass]="{'free': s.sd[25].bx === 1, 'vacation': s.sd[25].bx === 2, 'error': s.sd[25].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[26].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[26])" [ngClass]="{'free': s.sd[26].bx === 1, 'vacation': s.sd[26].bx === 2, 'error': s.sd[26].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[26].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[26])" (focus)="selectDay(s.sd[26])" [ngClass]="{'free': s.sd[26].bx === 1, 'vacation': s.sd[26].bx === 2, 'error': s.sd[26].bx === 3}" spellcheck="false">
               </td>
               <td>
-                <input type="text" [(ngModel)]="s.sd[27].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[27])" (focus)="select(s)" [ngClass]="{'free': s.sd[27].bx === 1, 'vacation': s.sd[27].bx === 2, 'error': s.sd[27].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[27].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[27])" (focus)="selectDay(s.sd[27]); select(s)" [ngClass]="{'free': s.sd[27].bx === 1, 'vacation': s.sd[27].bx === 2, 'error': s.sd[27].bx === 3}" spellcheck="false">
               </td>
               <td [ngStyle]="!s.column29 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[28] && s.sd[28].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[28])" (focus)="select(s)" [ngClass]="{'free': s.sd[28] && s.sd[28].bx === 1, 'vacation': s.sd[28] && s.sd[28].bx === 2, 'error': s.sd[28] && s.sd[28].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[28] && s.sd[28].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[28])" (focus)="selectDay(s.sd[28]); select(s)" [ngClass]="{'free': s.sd[28] && s.sd[28].bx === 1, 'vacation': s.sd[28] && s.sd[28].bx === 2, 'error': s.sd[28] && s.sd[28].bx === 3}" spellcheck="false">
               </td>
               <td [ngStyle]="!s.column30 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[29] && s.sd[29].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[29])" (focus)="select(s)" [ngClass]="{'free': s.sd[29] && s.sd[29].bx === 1, 'vacation': s.sd[29] && s.sd[29].bx === 2, 'error': s.sd[29] && s.sd[29].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[29] && s.sd[29].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[29])" (focus)="selectDay(s.sd[29]); select(s)" [ngClass]="{'free': s.sd[29] && s.sd[29].bx === 1, 'vacation': s.sd[29] && s.sd[29].bx === 2, 'error': s.sd[29] && s.sd[29].bx === 3}" spellcheck="false">
               </td>
               <td [ngStyle]="!s.column31 && {'display': 'none'}">
-                <input type="text" [(ngModel)]="s.sd[30] && s.sd[30].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[30])" (focus)="select(s)" [ngClass]="{'free': s.sd[30] && s.sd[30].bx === 1, 'vacation': s.sd[30] && s.sd[30].bx === 2, 'error': s.sd[30] && s.sd[30].bx === 3}" spellcheck="false">
+                <input type="text" [(ngModel)]="s.sd[30] && s.sd[30].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[30])" (focus)="selectDay(s.sd[30]); select(s)" [ngClass]="{'free': s.sd[30] && s.sd[30].bx === 1, 'vacation': s.sd[30] && s.sd[30].bx === 2, 'error': s.sd[30] && s.sd[30].bx === 3}" spellcheck="false">
               </td>
             </tr>
           </table>

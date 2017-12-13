@@ -10,4 +10,5 @@ export interface ScheduleDay {
   bx: number;  // tło pola zmiany
   ub: number;  // aktualizował (userId)
   u: Date;     // data aktualizacji
+  e: string;   // błędy
 }
