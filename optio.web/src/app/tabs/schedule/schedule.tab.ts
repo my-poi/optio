@@ -126,53 +126,58 @@ export class ScheduleTab {
   }
 
   hourChanged(employeeId: number, scheduleDay: ScheduleDay) {
-    this.setHour(scheduleDay);
-    this.setSummaryData(employeeId);
-    this.setUpdatedBy(scheduleDay);
-    this.validateDailyBreak(scheduleDay);
+    this.setHour(scheduleDay, () => {
+      this.checkDayHasTimeValue(scheduleDay);
+      this.validateDailyLimit(scheduleDay);
+      this.setSummaryData(employeeId);
+      this.setUpdatedBy(scheduleDay);
+    });
   }
 
   minuteChanged(employeeId: number, scheduleDay: ScheduleDay) {
-    this.setMinute(scheduleDay);
-    this.setSummaryData(employeeId);
-    this.setUpdatedBy(scheduleDay);
-    this.validateDailyBreak(scheduleDay);
+    this.setMinute(scheduleDay, () => {
+      this.checkDayHasTimeValue(scheduleDay);
+      this.validateDailyLimit(scheduleDay);
+      this.setSummaryData(employeeId);
+      this.setUpdatedBy(scheduleDay);
+    });
   }
 
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
-    this.setShift(scheduleDay);
-    this.setSummaryData(employeeId);
-    this.setUpdatedBy(scheduleDay);
-    this.validateDailyBreak(scheduleDay);
+    this.setShift(scheduleDay, () => {
+      this.validateDailyBreak(scheduleDay);
+      this.setSummaryData(employeeId);
+      this.setUpdatedBy(scheduleDay);
+    });
   }
 
-  setHour(scheduleDay: ScheduleDay) {
+  setHour(scheduleDay: ScheduleDay, callback) {
     setTimeout(() => {
       scheduleDay.h = Number(scheduleDay.h.toString().replace(/\D/g, ''));
 
-      if (!scheduleDay.x || scheduleDay.s >= 40) {
+      if (!scheduleDay.s || scheduleDay.s >= 40) {
         scheduleDay.h = null;
+        callback();
         return;
       }
 
       if (scheduleDay.h < 1 || scheduleDay.h > 12) scheduleDay.h = null;
-      this.checkDayHasTimeValue(scheduleDay);
-      this.validateDailyLimit(scheduleDay);
+      callback();
     });
   }
 
-  setMinute(scheduleDay: ScheduleDay) {
+  setMinute(scheduleDay: ScheduleDay, callback) {
     setTimeout(() => {
       scheduleDay.m = Number(scheduleDay.m.toString().replace(/\D/g, ''));
 
-      if (!scheduleDay.x || scheduleDay.s >= 40) {
+      if (!scheduleDay.s || scheduleDay.s >= 40) {
         scheduleDay.m = null;
+        callback();
         return;
       }
 
       if (scheduleDay.m < 1 || scheduleDay.m > 59) scheduleDay.m = null;
-      this.checkDayHasTimeValue(scheduleDay);
-      this.validateDailyLimit(scheduleDay);
+      callback();
     });
   }
 
@@ -186,9 +191,11 @@ export class ScheduleTab {
   }
 
   validateDailyBreak(scheduleDay: ScheduleDay) {
+    const currentDay = new Date(scheduleDay.d);
+    this.clearBackgroundAndErrors(scheduleDay, currentDay);
+
     if (!scheduleDay.s) return;
 
-    const currentDay = new Date(scheduleDay.d);
     const previousDay = new Date(currentDay);
     previousDay.setDate(previousDay.getDate() - 1);
 
@@ -209,28 +216,29 @@ export class ScheduleTab {
     const currentWorkDayStartingTime = new TimeSpan(0, currentStartHours, currentStartMinutes);
     const minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
 
-    console.log(currentWorkDayStartingTime.totalMinutes());
-    console.log(previousWorkDayStartingTime.totalMinutes());
-    console.log(minutesDifference);
-
-    const headerDay = this.header.sd.find(x =>
-      new Date(x.d).getTime() === currentDay.getTime());
     if (minutesDifference < 0) {
       scheduleDay.bx = 3;
       scheduleDay.e += '- naruszono dobę pracowniczą';
-    } else {
-      if (scheduleDay.v) scheduleDay.bx = 2;
-      if (headerDay.bx === 1) scheduleDay.bx = 1;
-      scheduleDay.e = '';
+      this.infosService.scheduleInfo = scheduleDay.e;
     }
+  }
 
+  clearBackgroundAndErrors(scheduleDay: ScheduleDay, currentDay: Date) {
+    const headerDay = this.header.sd.find(x =>
+      new Date(x.d).getTime() === currentDay.getTime());
+
+    scheduleDay.bx = 0;
+    scheduleDay.e = '';
+    if (headerDay.bx === 1) scheduleDay.bx = 1;
+    if (scheduleDay.v) scheduleDay.bx = 2;
     this.infosService.scheduleInfo = scheduleDay.e;
   }
 
-  setShift(scheduleDay) {
+  setShift(scheduleDay, callback) {
     setTimeout(() => {
       if (!scheduleDay.x) {
         this.clearDay(scheduleDay);
+        callback();
         return;
       }
 
@@ -238,6 +246,7 @@ export class ScheduleTab {
 
       if (!shift) {
         this.clearDay(scheduleDay);
+        callback();
         return;
       }
 
@@ -250,12 +259,12 @@ export class ScheduleTab {
 
       if (shift.id <= 20) {
         const shiftDuration: ShiftDuration = this.getShiftDuration(shift.durations, scheduleDay.d);
-        scheduleDay.s = null;
         scheduleDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : null;
         scheduleDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : null;
       }
 
       scheduleDay.s = shift.id;
+      callback();
     });
   }
 
