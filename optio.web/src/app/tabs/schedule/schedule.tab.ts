@@ -192,7 +192,7 @@ export class ScheduleTab {
 
   validateDailyBreak(scheduleDay: ScheduleDay) {
     const currentDay = new Date(scheduleDay.d);
-    this.clearBackgroundAndErrors(scheduleDay, currentDay);
+    this.clearDayErrors(scheduleDay, currentDay);
 
     if (!scheduleDay.s) return;
 
@@ -223,7 +223,7 @@ export class ScheduleTab {
     }
   }
 
-  clearBackgroundAndErrors(scheduleDay: ScheduleDay, currentDay: Date) {
+  clearDayErrors(scheduleDay: ScheduleDay, currentDay: Date) {
     const headerDay = this.header.sd.find(x =>
       new Date(x.d).getTime() === currentDay.getTime());
 
