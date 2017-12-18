@@ -28,8 +28,7 @@ export class ScheduleValidator {
     this.clearDayErrors(scheduleDay);
     this.validateScheduleDayDailyBreak(scheduleDay, employeeScheduleDays);
 
-    const currentDay = new Date(scheduleDay.d);
-    const nextDay = new Date(currentDay);
+    const nextDay = new Date(scheduleDay.d);
     nextDay.setDate(nextDay.getDate() + 1);
     const nextScheduleDay = employeeScheduleDays.find(x =>
       new Date(x.d).getTime() === nextDay.getTime());
