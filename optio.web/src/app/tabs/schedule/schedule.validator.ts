@@ -26,24 +26,33 @@ export class ScheduleValidator {
 
   validateDailyBreak(
     scheduleDay: ScheduleDay,
-    header: EmployeeSchedule,
     employeeScheduleDays: ScheduleDay[]) {
-    employeeScheduleDays.forEach(x =>
-      this.validateScheduleDayDailyBreak(
-        x,
-        header,
-        employeeScheduleDays));
+    employeeScheduleDays.forEach(x => {
+      this.clearDayErrors(x);
+      this.validateScheduleDayDailyBreak(x, employeeScheduleDays);
+    });
+    this.infosService.scheduleInfo = scheduleDay.e;
+  }
+
+  clearDayErrors(scheduleDay: ScheduleDay) {
+    const weekDay = new Date(scheduleDay.d).getDay() === 6 || new Date(scheduleDay.d).getDay() === 0;
+    let holiday = false;
+    if (!weekDay) holiday = this.dataService.holidays.find(h =>
+      new Date(h.dayOff).getTime() ===
+      new Date(scheduleDay.d).getTime()) !== undefined;
+
+    scheduleDay.e = '';
+    scheduleDay.bx = 0;
+    if (weekDay || holiday) scheduleDay.bx = 1;
+    if (scheduleDay.v) scheduleDay.bx = 2;
   }
 
   validateScheduleDayDailyBreak(
     scheduleDay: ScheduleDay,
-    header: EmployeeSchedule,
     employeeScheduleDays: ScheduleDay[]) {
-    const currentDay = new Date(scheduleDay.d);
-    this.clearDayErrors(scheduleDay, currentDay, header);
-
     if (!scheduleDay.s) return;
 
+    const currentDay = new Date(scheduleDay.d);
     const previousDay = new Date(currentDay);
     previousDay.setDate(previousDay.getDate() - 1);
 
@@ -80,18 +89,5 @@ export class ScheduleValidator {
 
   getShiftValidToDate(validTo): Date {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
-  }
-
-  clearDayErrors(scheduleDay: ScheduleDay, currentDay: Date, header: EmployeeSchedule) {
-    const headerDay = header.sd.find(x =>
-      new Date(x.d).getTime() === currentDay.getTime());
-
-    if (headerDay) {
-      scheduleDay.bx = 0;
-      scheduleDay.e = '';
-      if (headerDay.bx === 1) scheduleDay.bx = 1;
-      if (scheduleDay.v) scheduleDay.bx = 2;
-      this.infosService.scheduleInfo = scheduleDay.e;
-    }
   }
 }
