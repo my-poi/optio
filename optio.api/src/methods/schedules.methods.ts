@@ -420,7 +420,7 @@ export class SchedulesMethods {
   }
 
   getShiftBackground(errors: string, vacation: boolean, weekDay: boolean, holiday: boolean): number {
-    if (errors) return 4;
+    if (errors) return 3;
     if (vacation) return 2;
     if (weekDay) return 1;
     if (holiday) return 1;
