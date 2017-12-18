@@ -32,7 +32,7 @@ export class ScheduleTab {
   originalEmployeeSchedule: EmployeeSchedule;
   selectedScheduleDay: ScheduleDay;
   employeeScheduleDays: ScheduleDay[];
-  validator = new ScheduleValidator();
+  validator = new ScheduleValidator(this.dataService, this.infosService);
 
   constructor(private http: Http,
     private dataService: DataService,
@@ -147,7 +147,7 @@ export class ScheduleTab {
 
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setShift(scheduleDay, () => {
-      this.validator.validateDailyBreak(scheduleDay, this.dataService, this.infosService, this.header, this.employeeScheduleDays);
+      this.validator.validateDailyBreak(scheduleDay, this.header, this.employeeScheduleDays);
       this.setSummaryData(employeeId);
       this.setUpdatedBy(scheduleDay);
     });
