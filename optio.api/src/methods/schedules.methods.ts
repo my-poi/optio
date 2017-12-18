@@ -191,12 +191,12 @@ export class SchedulesMethods {
         new Date(x.day).getTime() >= scheduleFrom.getTime() &&
         new Date(x.day).getTime() <= scheduleTo.getTime());
       const employeeVacations = vacations.filter((x: Vacation) => x.employeeId === schedule.employeeId);
-      const scheduleDays = this.getScheduleDays(schedulePlannedDays, shifts, holidays, employeeVacations);
+      const scheduleDays = this.getScheduleDays(schedulePlannedDays, plannedDays, shifts, holidays, employeeVacations);
 
       // console.log('from: ' + scheduleFrom);
       // console.log('to: ' + scheduleTo);
 
-      const employeePeriodPlannedDays = plannedDays.filter((plannedDay: PlannedDay) =>
+      const employeePeriodPlannedDays: PlannedDay[] = plannedDays.filter((plannedDay: PlannedDay) =>
         plannedDay.employeeId === schedule.employeeId &&
         new Date(plannedDay.day).getTime() >= periodStartDate.getTime());
 
@@ -304,7 +304,12 @@ export class SchedulesMethods {
     return result;
   }
 
-  getScheduleDays(schedulePlannedDays: PlannedDay[], shifts: Shift[], holidays: Holiday[], employeeVacations: Vacation[]): ScheduleDay[] {
+  getScheduleDays(
+    schedulePlannedDays: PlannedDay[],
+    plannedDays: PlannedDay[],
+    shifts: Shift[],
+    holidays: Holiday[],
+    employeeVacations: Vacation[]): ScheduleDay[] {
     const results: ScheduleDay[] = schedulePlannedDays.map(plannedDay => {
       const shift = shifts.find((s: Shift) => s.id === plannedDay.shiftId);
       const day = new Date(plannedDay.day);
@@ -312,7 +317,7 @@ export class SchedulesMethods {
       let holiday = false;
       if (!weekDay) holiday = holidays.find(h => new Date(h.dayOff).getTime() === day.getTime()) !== undefined;
       const vacation = this.hasVacation(day, employeeVacations);
-      const errors = this.hasErrors(plannedDay, schedulePlannedDays, shifts);
+      const errors = this.hasErrors(plannedDay, plannedDays, shifts);
       return new ScheduleDay(
         plannedDay.day,
         plannedDay.hours,
@@ -341,16 +346,16 @@ export class SchedulesMethods {
 
   hasErrors(
     plannedDay: PlannedDay,
-    schedulePlannedDays: PlannedDay[],
+    plannedDays: PlannedDay[],
     shifts: Shift[]): string {
     let errors = '';
-    errors = this.validateScheduleDayDailyBreak(plannedDay, schedulePlannedDays, shifts);
+    errors = this.validateScheduleDayDailyBreak(plannedDay, plannedDays, shifts);
     return errors;
   }
 
   validateScheduleDayDailyBreak(
     plannedDay: PlannedDay,
-    schedulePlannedDays: PlannedDay[],
+    plannedDays: PlannedDay[],
     shifts: Shift[]): string {
     const currentDay = new Date(plannedDay.day);
     let previousWorkDayStartingTime;
@@ -361,8 +366,7 @@ export class SchedulesMethods {
     const previousDay = new Date(currentDay);
     previousDay.setDate(previousDay.getDate() - 1);
 
-    const previousPlannedDay = schedulePlannedDays.find(x =>
-      new Date(x.day).getTime() === previousDay.getTime());
+    const previousPlannedDay = plannedDays.find(x => new Date(x.day).getTime() === previousDay.getTime());
 
     if (!previousPlannedDay) return '';
     if (!previousPlannedDay.shiftId) return '';
