@@ -183,7 +183,7 @@ export class ScheduleTab {
     });
   }
 
-  setShift(scheduleDay, callback) {
+  setShift(scheduleDay: ScheduleDay, callback) {
     setTimeout(() => {
       if (!scheduleDay.x) {
         this.clearDay(scheduleDay);
