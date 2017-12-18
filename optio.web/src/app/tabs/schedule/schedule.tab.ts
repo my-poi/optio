@@ -10,6 +10,7 @@ import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { TimeSpan } from '../../objects/time-span';
 import { ShiftDuration } from '../../objects/shift-duration';
 import { TimeSheetEmployee } from '../../objects/time-sheet-employee';
+import { ScheduleValidator } from './schedule.validator';
 
 @Component({
   selector: 'app-schedule-tab',
@@ -31,6 +32,7 @@ export class ScheduleTab {
   originalEmployeeSchedule: EmployeeSchedule;
   selectedScheduleDay: ScheduleDay;
   employeeScheduleDays: ScheduleDay[];
+  validator = new ScheduleValidator();
 
   constructor(private http: Http,
     private dataService: DataService,
@@ -127,8 +129,8 @@ export class ScheduleTab {
 
   hourChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setHour(scheduleDay, () => {
-      this.checkDayHasTimeValue(scheduleDay);
-      this.validateDailyLimit(scheduleDay);
+      this.validator.validateHasDayTimeValue(scheduleDay);
+      this.validator.validateDailyLimit(scheduleDay);
       this.setSummaryData(employeeId);
       this.setUpdatedBy(scheduleDay);
     });
@@ -136,8 +138,8 @@ export class ScheduleTab {
 
   minuteChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setMinute(scheduleDay, () => {
-      this.checkDayHasTimeValue(scheduleDay);
-      this.validateDailyLimit(scheduleDay);
+      this.validator.validateHasDayTimeValue(scheduleDay);
+      this.validator.validateDailyLimit(scheduleDay);
       this.setSummaryData(employeeId);
       this.setUpdatedBy(scheduleDay);
     });
@@ -145,7 +147,7 @@ export class ScheduleTab {
 
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setShift(scheduleDay, () => {
-      this.validateDailyBreak(scheduleDay);
+      this.validator.validateDailyBreak(scheduleDay, this.dataService, this.infosService, this.header, this.employeeScheduleDays);
       this.setSummaryData(employeeId);
       this.setUpdatedBy(scheduleDay);
     });
@@ -179,59 +181,6 @@ export class ScheduleTab {
       if (scheduleDay.m < 1 || scheduleDay.m > 59) scheduleDay.m = null;
       callback();
     });
-  }
-
-  checkDayHasTimeValue(scheduleDay: ScheduleDay) {
-    if (!scheduleDay.h && !scheduleDay.m) this.clearDay(scheduleDay);
-  }
-
-  validateDailyLimit(scheduleDay: ScheduleDay) {
-    const planned = new TimeSpan(0, scheduleDay.h, scheduleDay.m);
-    if (planned.totalMinutes() <= 0 || planned.totalMinutes() > 720) this.clearDay(scheduleDay);
-  }
-
-  validateDailyBreak(scheduleDay: ScheduleDay) {
-    const currentDay = new Date(scheduleDay.d);
-    this.clearDayErrors(scheduleDay, currentDay);
-
-    if (!scheduleDay.s) return;
-
-    const previousDay = new Date(currentDay);
-    previousDay.setDate(previousDay.getDate() - 1);
-
-    const previousScheduleDay = this.employeeScheduleDays.find(x =>
-      new Date(x.d).getTime() === previousDay.getTime());
-
-    if (!previousScheduleDay) return;
-    if (!previousScheduleDay.s) return;
-
-    const previousWorkDayShift = this.dataService.shifts.find(x => x.id === previousScheduleDay.s);
-    const previousStartHours = Number(previousWorkDayShift.current.start.substring(0, 2));
-    const previousStartMinutes = Number(previousWorkDayShift.current.start.substring(3, 5));
-    const previousWorkDayStartingTime = new TimeSpan(0, previousStartHours, previousStartMinutes);
-
-    const currentWorkDayShift = this.dataService.shifts.find(x => x.id === scheduleDay.s);
-    const currentStartHours = Number(currentWorkDayShift.current.start.substring(0, 2));
-    const currentStartMinutes = Number(currentWorkDayShift.current.start.substring(3, 5));
-    const currentWorkDayStartingTime = new TimeSpan(0, currentStartHours, currentStartMinutes);
-    const minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
-
-    if (minutesDifference < 0) {
-      scheduleDay.bx = 3;
-      scheduleDay.e += '- naruszono dobę pracowniczą';
-      this.infosService.scheduleInfo = scheduleDay.e;
-    }
-  }
-
-  clearDayErrors(scheduleDay: ScheduleDay, currentDay: Date) {
-    const headerDay = this.header.sd.find(x =>
-      new Date(x.d).getTime() === currentDay.getTime());
-
-    scheduleDay.bx = 0;
-    scheduleDay.e = '';
-    if (headerDay.bx === 1) scheduleDay.bx = 1;
-    if (scheduleDay.v) scheduleDay.bx = 2;
-    this.infosService.scheduleInfo = scheduleDay.e;
   }
 
   setShift(scheduleDay, callback) {
