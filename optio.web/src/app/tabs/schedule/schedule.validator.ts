@@ -84,7 +84,7 @@ export class ScheduleValidator {
 
     if (minutesDifference < 0) {
       scheduleDay.bx = 3;
-      scheduleDay.e += '- naruszono dobę pracowniczą';
+      scheduleDay.e += '- naruszono dobę pracowniczą\n';
       this.infosService.scheduleInfo = scheduleDay.e;
     }
   }
@@ -104,47 +104,94 @@ export class ScheduleValidator {
   validateWeekBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[], option: number) {
     // Walidacja w obrębie siedmiu dni:
     // option 1 - w dowolnym miejscu grafiku
-    // option 2 - rozpoczynając od pierwszego dnia okresu rozliczeniowego
+    // option 2 - z pierwszym dniem okresu rozliczeniowego
 
-    const weekBreakStart = new TimeSpan();
-    const startDay = new Date(scheduleDay.d);
-    startDay.setDate(startDay.getDate() - 7);
-    // let testedDay = new Date(scheduleDay.d);
-    // testedDay.setDate(testedDay.getDate() - 6);
+    let result = false;
+    const testedDay = new Date(scheduleDay.d);
+    testedDay.setDate(testedDay.getDate() - 6);
 
-    const firstScheduleDay = employeeScheduleDays.find(x =>
-      new Date(x.d).getTime() === startDay.getTime());
+    for (let i = 1; i <= 7; i++) {
+      const employeeScheduleDay = employeeScheduleDays.find(x =>
+        new Date(x.d).getTime() === testedDay.getTime());
 
-    if (firstScheduleDay && firstScheduleDay.s >= 1 && firstScheduleDay.s <= 20) {
-      const firstScheduleDayShift = this.dataService.shifts.find(x => x.id === firstScheduleDay.s);
-      const firstScheduleDayShiftDuration = this.getShiftDuration(firstScheduleDay.d, firstScheduleDayShift.durations);
-      console.log(firstScheduleDayShiftDuration);
-      const firstScheduleDayStartHours = Number(firstScheduleDayShiftDuration.start.substring(0, 2));
-      const firstScheduleDayStartMinutes = Number(firstScheduleDayShiftDuration.start.substring(3, 5));
-      const firstScheduleDayShiftStart = new TimeSpan(0, firstScheduleDayStartHours, firstScheduleDayStartMinutes);
-      firstScheduleDayShiftStart.addHours(firstScheduleDay.h);
-      firstScheduleDayShiftStart.addMinutes(firstScheduleDay.m);
-      let firstScheduleDayShiftEndMinutes = firstScheduleDayShiftStart.totalMinutes();
-      if (firstScheduleDayShiftEndMinutes > 1440) {
-        firstScheduleDayShiftEndMinutes -= 1440;
-        weekBreakStart.addMinutes(firstScheduleDayShiftEndMinutes);
-        console.log(weekBreakStart.totalMinutes());
+      const breakStart = new Date(testedDay);
+      breakStart.setHours(0, 0, 0);
+      if (!result) {
+        this.detectBeforeDayShiftEnd(testedDay, breakStart, employeeScheduleDays);
+        result = this.validateSevenDaysWeekBreak(testedDay, breakStart, employeeScheduleDays);
       }
+      testedDay.setDate(testedDay.getDate() + 1);
     }
 
-    // for (let i = 1; i < 8; i++) {
-    //   const employeeScheduleDay = employeeScheduleDays.find(x =>
-    //     new Date(x.d).getTime() === testedDay.getTime());
+    if (!result) {
+      scheduleDay.bx = 3;
+      scheduleDay.e += '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n';
+      this.infosService.scheduleInfo = scheduleDay.e;
+    }
 
+    console.log(result);
+  }
 
-      
+  detectBeforeDayShiftEnd(testedDay: Date, breakStart: Date, employeeScheduleDays: ScheduleDay[]) {
+    const beforeDay = new Date(testedDay);
+    beforeDay.setDate(beforeDay.getDate() - 1);
 
-    //   console.log(employeeScheduleDay.d);
-    //   testedDay.setDate(testedDay.getDate() + 1);
-    //   if (i === 7) {
-    //     testedDay = new Date(scheduleDay.d);
-    //     testedDay.setDate(testedDay.getDate() - 6);
-    //   }
-    // }
+    const beforeScheduleDay = employeeScheduleDays.find(x =>
+      new Date(x.d).getTime() === beforeDay.getTime());
+
+    if (beforeScheduleDay && beforeScheduleDay.s >= 1 && beforeScheduleDay.s <= 20) {
+      const beforeScheduleDayShift = this.dataService.shifts.find(x => x.id === beforeScheduleDay.s);
+      const beforeScheduleDayShiftDuration = this.getShiftDuration(beforeScheduleDay.d, beforeScheduleDayShift.durations);
+      const beforeScheduleDayStartHours = Number(beforeScheduleDayShiftDuration.start.substring(0, 2));
+      const beforeScheduleDayStartMinutes = Number(beforeScheduleDayShiftDuration.start.substring(3, 5));
+      const beforeScheduleDayShiftStart = new TimeSpan(0, beforeScheduleDayStartHours, beforeScheduleDayStartMinutes);
+      beforeScheduleDayShiftStart.addHours(beforeScheduleDay.h);
+      beforeScheduleDayShiftStart.addMinutes(beforeScheduleDay.m);
+      let beforeScheduleDayShiftEndMinutes = beforeScheduleDayShiftStart.totalMinutes();
+      if (beforeScheduleDayShiftEndMinutes > 1440) {
+        beforeScheduleDayShiftEndMinutes -= 1440;
+        breakStart.setMinutes(beforeScheduleDayShiftEndMinutes);
+      }
+    }
+  }
+
+  validateSevenDaysWeekBreak(testedDay: Date, breakStart: Date, employeeScheduleDays: ScheduleDay[]) {
+    const day = new Date(testedDay);
+
+    for (let i = 1; i <= 7; i++) {
+      const scheduleDay = employeeScheduleDays.find(x =>
+        new Date(x.d).getTime() === day.getTime());
+
+      if (scheduleDay.s) {
+        const scheduleDayShift = this.dataService.shifts.find(x => x.id === scheduleDay.s);
+        const scheduleDayShiftDuration = this.getShiftDuration(scheduleDay.d, scheduleDayShift.durations);
+        const scheduleDayStartHours = Number(scheduleDayShiftDuration.start.substring(0, 2));
+        const scheduleDayStartMinutes = Number(scheduleDayShiftDuration.start.substring(3, 5));
+
+        // sprawdź czy jest 35 godzin
+        const newStart = new Date(scheduleDay.d);
+        newStart.setHours(scheduleDayStartHours, scheduleDayStartMinutes, 0);
+        const difference = newStart.getTime() - breakStart.getTime();
+        const resultInMinutes = Math.round(difference / 60000);
+
+        if (resultInMinutes >= 2100) return true;
+
+        // ustaw nowy początek przerwy
+        breakStart = new Date(scheduleDay.d);
+        breakStart.setHours(scheduleDayStartHours + scheduleDay.h, scheduleDayStartMinutes + scheduleDay.m, 0);
+      } else {
+        const newStart = new Date(scheduleDay.d);
+        newStart.setDate(newStart.getDate() + 1);
+        newStart.setHours(0, 0, 0);
+        const difference = newStart.getTime() - breakStart.getTime();
+        const resultInMinutes = Math.round(difference / 60000);
+        // console.log(scheduleDay.d + ' ' + resultInMinutes);
+        if (resultInMinutes >= 2100) return true;
+      }
+
+      day.setDate(day.getDate() + 1);
+    }
+
+    return false;
   }
 }
