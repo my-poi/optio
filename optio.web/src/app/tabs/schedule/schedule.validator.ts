@@ -24,11 +24,21 @@ export class ScheduleValidator {
     scheduleDay.x = null;
   }
 
-  validateDailyBreak(employeeScheduleDays: ScheduleDay[], scheduleDay: ScheduleDay) {
-    employeeScheduleDays.forEach(x => {
-      this.clearDayErrors(x);
-      this.validateScheduleDayDailyBreak(x, employeeScheduleDays);
-    });
+  validateDailyBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
+    this.clearDayErrors(scheduleDay);
+    this.validateScheduleDayDailyBreak(scheduleDay, employeeScheduleDays);
+
+    const currentDay = new Date(scheduleDay.d);
+    const nextDay = new Date(currentDay);
+    nextDay.setDate(nextDay.getDate() + 1);
+    const nextScheduleDay = employeeScheduleDays.find(x =>
+      new Date(x.d).getTime() === nextDay.getTime());
+
+    if (nextScheduleDay) {
+      this.clearDayErrors(nextScheduleDay);
+      this.validateScheduleDayDailyBreak(nextScheduleDay, employeeScheduleDays);
+    }
+
     this.infosService.scheduleInfo = scheduleDay.e;
   }
 
@@ -60,13 +70,13 @@ export class ScheduleValidator {
     if (!previousScheduleDay.s) return;
 
     const previousWorkDayShift = this.dataService.shifts.find(x => x.id === previousScheduleDay.s);
-    const previousWorkDayShiftDuration = this.getShiftDuration(previousWorkDayShift.durations, previousDay);
+    const previousWorkDayShiftDuration = this.getShiftDuration(previousDay, previousWorkDayShift.durations);
     const previousStartHours = Number(previousWorkDayShiftDuration.start.substring(0, 2));
     const previousStartMinutes = Number(previousWorkDayShiftDuration.start.substring(3, 5));
     const previousWorkDayStartingTime = new TimeSpan(0, previousStartHours, previousStartMinutes);
 
     const currentWorkDayShift = this.dataService.shifts.find(x => x.id === scheduleDay.s);
-    const currentWorkDayShiftDuration = this.getShiftDuration(currentWorkDayShift.durations, previousDay);
+    const currentWorkDayShiftDuration = this.getShiftDuration(currentDay, currentWorkDayShift.durations);
     const currentStartHours = Number(currentWorkDayShiftDuration.start.substring(0, 2));
     const currentStartMinutes = Number(currentWorkDayShiftDuration.start.substring(3, 5));
     const currentWorkDayStartingTime = new TimeSpan(0, currentStartHours, currentStartMinutes);
@@ -79,9 +89,12 @@ export class ScheduleValidator {
     }
   }
 
-  getShiftDuration(durations: ShiftDuration[], day: Date): ShiftDuration {
-    const dayTime = new Date(day).getTime();
-    return durations.find(x => dayTime >= new Date(x.validFrom).getTime() && dayTime <= this.getShiftValidToDate(x.validTo).getTime());
+  getShiftDuration(day: Date, durations: ShiftDuration[]): ShiftDuration {
+    const dayTime = day.getTime();
+    const duration = durations.find(x =>
+      dayTime >= new Date(x.validFrom).getTime() &&
+      dayTime <= this.getShiftValidToDate(x.validTo).getTime());
+    return duration;
   }
 
   getShiftValidToDate(validTo): Date {

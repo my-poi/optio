@@ -370,7 +370,7 @@ export class SchedulesMethods {
     const previousWorkDayShift = shifts.find(x => x.id === previousPlannedDay.shiftId);
     if (previousWorkDayShift) {
       if (previousWorkDayShift.durations) {
-        const previousWorkDayShiftDuration = this.getShiftDuration(previousWorkDayShift.durations, previousDay);
+        const previousWorkDayShiftDuration = this.getShiftDuration(previousDay, previousWorkDayShift.durations);
         if (previousWorkDayShiftDuration) {
           const previousStartHours = Number(previousWorkDayShiftDuration.start.substring(0, 2));
           const previousStartMinutes = Number(previousWorkDayShiftDuration.start.substring(3, 5));
@@ -382,7 +382,7 @@ export class SchedulesMethods {
     const currentWorkDayShift = shifts.find(x => x.id === plannedDay.shiftId);
     if (currentWorkDayShift) {
       if (currentWorkDayShift.durations) {
-        const currentWorkDayShiftDuration = this.getShiftDuration(currentWorkDayShift.durations, previousDay);
+        const currentWorkDayShiftDuration = this.getShiftDuration(currentDay, currentWorkDayShift.durations);
         if (currentWorkDayShiftDuration) {
           const currentStartHours = Number(currentWorkDayShiftDuration.start.substring(0, 2));
           const currentStartMinutes = Number(currentWorkDayShiftDuration.start.substring(3, 5));
@@ -400,7 +400,7 @@ export class SchedulesMethods {
     else return '';
   }
 
-  getShiftDuration(durations: ShiftDuration[], day: Date) {
+  getShiftDuration(day: Date, durations: ShiftDuration[]) {
     const dayTime = new Date(day).getTime();
     const duration = durations.find(x =>
       dayTime >= new Date(x.validFrom).getTime() &&

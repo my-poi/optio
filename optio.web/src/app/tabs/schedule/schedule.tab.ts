@@ -147,7 +147,7 @@ export class ScheduleTab {
 
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setShift(scheduleDay, () => {
-      this.validator.validateDailyBreak(this.employeeScheduleDays, scheduleDay);
+      this.validator.validateDailyBreak(scheduleDay, this.employeeScheduleDays);
       this.setSummaryData(employeeId);
       this.setUpdatedBy(scheduleDay);
     });
@@ -207,7 +207,7 @@ export class ScheduleTab {
       if (shift.id === 42) scheduleDay.x = 'D5';
 
       if (shift.id <= 20) {
-        const shiftDuration: ShiftDuration = this.getShiftDuration(shift.durations, scheduleDay.d);
+        const shiftDuration: ShiftDuration = this.getShiftDuration(scheduleDay.d, shift.durations);
         scheduleDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : null;
         scheduleDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : null;
       }
@@ -222,9 +222,12 @@ export class ScheduleTab {
     scheduleDay.u = new Date();
   }
 
-  getShiftDuration(durations: ShiftDuration[], day: Date): ShiftDuration {
+  getShiftDuration(day: Date, durations: ShiftDuration[]): ShiftDuration {
     const dayTime = new Date(day).getTime();
-    return durations.find(x => dayTime >= new Date(x.validFrom).getTime() && dayTime <= this.getShiftValidToDate(x.validTo).getTime());
+    const duration = durations.find(x =>
+      dayTime >= new Date(x.validFrom).getTime() &&
+      dayTime <= this.getShiftValidToDate(x.validTo).getTime());
+    return duration;
   }
 
   getShiftValidToDate(validTo): Date {
