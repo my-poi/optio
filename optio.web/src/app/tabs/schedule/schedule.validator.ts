@@ -128,8 +128,6 @@ export class ScheduleValidator {
       scheduleDay.e += '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n';
       this.infosService.scheduleInfo = scheduleDay.e;
     }
-
-    console.log(result);
   }
 
   detectBeforeDayShiftEnd(testedDay: Date, breakStart: Date, employeeScheduleDays: ScheduleDay[]) {
@@ -168,7 +166,6 @@ export class ScheduleValidator {
         const scheduleDayStartHours = Number(scheduleDayShiftDuration.start.substring(0, 2));
         const scheduleDayStartMinutes = Number(scheduleDayShiftDuration.start.substring(3, 5));
 
-        // sprawdź czy jest 35 godzin
         const newStart = new Date(scheduleDay.d);
         newStart.setHours(scheduleDayStartHours, scheduleDayStartMinutes, 0);
         const difference = newStart.getTime() - breakStart.getTime();
@@ -176,7 +173,6 @@ export class ScheduleValidator {
 
         if (resultInMinutes >= 2100) return true;
 
-        // ustaw nowy początek przerwy
         breakStart = new Date(scheduleDay.d);
         breakStart.setHours(scheduleDayStartHours + scheduleDay.h, scheduleDayStartMinutes + scheduleDay.m, 0);
       } else {
@@ -185,7 +181,6 @@ export class ScheduleValidator {
         newStart.setHours(0, 0, 0);
         const difference = newStart.getTime() - breakStart.getTime();
         const resultInMinutes = Math.round(difference / 60000);
-        // console.log(scheduleDay.d + ' ' + resultInMinutes);
         if (resultInMinutes >= 2100) return true;
       }
 
