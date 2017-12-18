@@ -6,9 +6,9 @@ export interface ScheduleDay {
   x: string;   // symbol zmiany
   v: boolean;  // urlop
   c: string;   // komentarz do dnia grafiku
+  e: string;   // błędy
   bt: number;  // tło pól czasu (godzin i minut)
   bx: number;  // tło pola zmiany
   ub: number;  // aktualizował (userId)
   u: Date;     // data aktualizacji
-  e: string;   // błędy
 }

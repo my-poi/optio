@@ -2,6 +2,7 @@ import { DataService } from '../../services/data.service';
 import { InfosService } from '../../services/infos.service';
 import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { ScheduleDay } from '../../objects/schedule-day';
+import { ShiftDuration } from '../../objects/shift-duration';
 import { TimeSpan } from '../../objects/time-span';
 
 export class ScheduleValidator {
@@ -53,13 +54,15 @@ export class ScheduleValidator {
     if (!previousScheduleDay.s) return;
 
     const previousWorkDayShift = this.dataService.shifts.find(x => x.id === previousScheduleDay.s);
-    const previousStartHours = Number(previousWorkDayShift.current.start.substring(0, 2));
-    const previousStartMinutes = Number(previousWorkDayShift.current.start.substring(3, 5));
+    const previousWorkDayShiftDuration = this.getShiftDuration(previousWorkDayShift.durations, previousDay);
+    const previousStartHours = Number(previousWorkDayShiftDuration.start.substring(0, 2));
+    const previousStartMinutes = Number(previousWorkDayShiftDuration.start.substring(3, 5));
     const previousWorkDayStartingTime = new TimeSpan(0, previousStartHours, previousStartMinutes);
 
     const currentWorkDayShift = this.dataService.shifts.find(x => x.id === scheduleDay.s);
-    const currentStartHours = Number(currentWorkDayShift.current.start.substring(0, 2));
-    const currentStartMinutes = Number(currentWorkDayShift.current.start.substring(3, 5));
+    const currentWorkDayShiftDuration = this.getShiftDuration(currentWorkDayShift.durations, previousDay);
+    const currentStartHours = Number(currentWorkDayShiftDuration.start.substring(0, 2));
+    const currentStartMinutes = Number(currentWorkDayShiftDuration.start.substring(3, 5));
     const currentWorkDayStartingTime = new TimeSpan(0, currentStartHours, currentStartMinutes);
     const minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
 
@@ -68,6 +71,15 @@ export class ScheduleValidator {
       scheduleDay.e += '- naruszono dobę pracowniczą';
       this.infosService.scheduleInfo = scheduleDay.e;
     }
+  }
+
+  getShiftDuration(durations: ShiftDuration[], day: Date): ShiftDuration {
+    const dayTime = new Date(day).getTime();
+    return durations.find(x => dayTime >= new Date(x.validFrom).getTime() && dayTime <= this.getShiftValidToDate(x.validTo).getTime());
+  }
+
+  getShiftValidToDate(validTo): Date {
+    return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
   clearDayErrors(scheduleDay: ScheduleDay, currentDay: Date, header: EmployeeSchedule) {

@@ -19,11 +19,14 @@ import { Period } from '../objects/period';
 import { TimeSpan } from '../objects/time-span';
 import { EmployeesMethods } from './employees.methods';
 import { json } from 'body-parser';
+import { ShiftsMethods } from './shifts.methods';
+import { ShiftDuration } from '../objects/shift-duration';
 
 export class SchedulesMethods {
   constructor(
     private organizationDatabase: OrganizationDatabase,
-    private workTimeDatabase: WorkTimeDatabase) { }
+    private workTimeDatabase: WorkTimeDatabase,
+    private shiftsMethods: ShiftsMethods) { }
 
   async addSchedule(request: Request) {
     const userId = Number(request.body.decoded.userId);
@@ -160,9 +163,7 @@ export class SchedulesMethods {
       query(queries['select-employees-by-id'], [[scheduleEmployeeIdentifiers]]);
     const scheduleEmployees = JSON.parse(JSON.stringify(scheduleEmployeeRows));
 
-    const shiftRows = await this.workTimeDatabase.
-      execute(queries['select-shifts'], []);
-    const shifts = JSON.parse(JSON.stringify(shiftRows));
+    const shifts = await this.shiftsMethods.getShifts();
 
     const employeeScheduleRows = await this.workTimeDatabase.
       query(queries['select-employee-schedules'], [[scheduleEmployeeIdentifiers], from, to]);
@@ -311,6 +312,7 @@ export class SchedulesMethods {
       let holiday = false;
       if (!weekDay) holiday = holidays.find(h => new Date(h.dayOff).getTime() === day.getTime()) !== undefined;
       const vacation = this.hasVacation(day, employeeVacations);
+      const errors = this.hasErrors(plannedDay, schedulePlannedDays, shifts);
       return new ScheduleDay(
         plannedDay.day,
         plannedDay.hours,
@@ -319,8 +321,9 @@ export class SchedulesMethods {
         shift ? shift.sign : '',
         vacation,
         plannedDay.comment,
+        errors,
         this.getTimeBackground(plannedDay.comment, weekDay, holiday),
-        this.getShiftBackground(vacation, weekDay, holiday),
+        this.getShiftBackground(errors, vacation, weekDay, holiday),
         plannedDay.updatedBy,
         plannedDay.updated);
     });
@@ -336,6 +339,79 @@ export class SchedulesMethods {
     return result !== undefined;
   }
 
+  hasErrors(
+    plannedDay: PlannedDay,
+    schedulePlannedDays: PlannedDay[],
+    shifts: Shift[]): string {
+    let errors = '';
+    errors = this.validateScheduleDayDailyBreak(plannedDay, schedulePlannedDays, shifts);
+    return errors;
+  }
+
+  validateScheduleDayDailyBreak(
+    plannedDay: PlannedDay,
+    schedulePlannedDays: PlannedDay[],
+    shifts: Shift[]): string {
+    const currentDay = new Date(plannedDay.day);
+    let previousWorkDayStartingTime;
+    let currentWorkDayStartingTime;
+
+    if (!plannedDay.shiftId) return '';
+
+    const previousDay = new Date(currentDay);
+    previousDay.setDate(previousDay.getDate() - 1);
+
+    const previousPlannedDay = schedulePlannedDays.find(x =>
+      new Date(x.day).getTime() === previousDay.getTime());
+
+    if (!previousPlannedDay) return '';
+    if (!previousPlannedDay.shiftId) return '';
+
+    const previousWorkDayShift = shifts.find(x => x.id === previousPlannedDay.shiftId);
+    if (previousWorkDayShift) {
+      if (previousWorkDayShift.durations) {
+        const previousWorkDayShiftDuration = this.getShiftDuration(previousWorkDayShift.durations, previousDay);
+        if (previousWorkDayShiftDuration) {
+          const previousStartHours = Number(previousWorkDayShiftDuration.start.substring(0, 2));
+          const previousStartMinutes = Number(previousWorkDayShiftDuration.start.substring(3, 5));
+          previousWorkDayStartingTime = new TimeSpan(0, previousStartHours, previousStartMinutes);
+        }
+      }
+    }
+
+    const currentWorkDayShift = shifts.find(x => x.id === plannedDay.shiftId);
+    if (currentWorkDayShift) {
+      if (currentWorkDayShift.durations) {
+        const currentWorkDayShiftDuration = this.getShiftDuration(currentWorkDayShift.durations, previousDay);
+        if (currentWorkDayShiftDuration) {
+          const currentStartHours = Number(currentWorkDayShiftDuration.start.substring(0, 2));
+          const currentStartMinutes = Number(currentWorkDayShiftDuration.start.substring(3, 5));
+          currentWorkDayStartingTime = new TimeSpan(0, currentStartHours, currentStartMinutes);
+        }
+      }
+    }
+
+    let minutesDifference = 0;
+
+    if (previousWorkDayStartingTime && currentWorkDayStartingTime)
+      minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
+
+    if (minutesDifference < 0) return '- naruszono dobę pracowniczą';
+    else return '';
+  }
+
+  getShiftDuration(durations: ShiftDuration[], day: Date) {
+    const dayTime = new Date(day).getTime();
+    const duration = durations.find(x =>
+      dayTime >= new Date(x.validFrom).getTime() &&
+      dayTime <= this.getShiftValidToDate(x.validTo).getTime());
+    return duration;
+  }
+
+  getShiftValidToDate(validTo: Date): Date {
+    return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
+  }
+
   getTimeBackground(comment: string, weekDay: boolean, holiday: boolean): number {
     if (comment) return 2;
     if (weekDay) return 1;
@@ -343,7 +419,8 @@ export class SchedulesMethods {
     return 0;
   }
 
-  getShiftBackground(vacation: boolean, weekDay: boolean, holiday: boolean): number {
+  getShiftBackground(errors: string, vacation: boolean, weekDay: boolean, holiday: boolean): number {
+    if (errors) return 4;
     if (vacation) return 2;
     if (weekDay) return 1;
     if (holiday) return 1;

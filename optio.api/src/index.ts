@@ -50,8 +50,8 @@ const holidayTypesMethods = new HolidayTypesMethods(workTimeDatabase);
 const holidaysMethods = new HolidaysMethods(workTimeDatabase);
 const periodDefinitionsMethods = new PeriodDefinitionsMethods(workTimeDatabase);
 const periodsMethods = new PeriodsMethods(workTimeDatabase);
-const schedulesMethods = new SchedulesMethods(organizationDatabase, workTimeDatabase);
 const shiftsMethods = new ShiftsMethods(workTimeDatabase);
+const schedulesMethods = new SchedulesMethods(organizationDatabase, workTimeDatabase, shiftsMethods);
 const tokensMethods = new TokensMethods();
 const vacationsMethods = new VacationsMethods(workTimeDatabase);
 // Public routers
