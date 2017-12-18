@@ -24,9 +24,7 @@ export class ScheduleValidator {
     scheduleDay.x = null;
   }
 
-  validateDailyBreak(
-    scheduleDay: ScheduleDay,
-    employeeScheduleDays: ScheduleDay[]) {
+  validateDailyBreak(employeeScheduleDays: ScheduleDay[], scheduleDay: ScheduleDay) {
     employeeScheduleDays.forEach(x => {
       this.clearDayErrors(x);
       this.validateScheduleDayDailyBreak(x, employeeScheduleDays);
@@ -35,11 +33,12 @@ export class ScheduleValidator {
   }
 
   clearDayErrors(scheduleDay: ScheduleDay) {
-    const weekDay = new Date(scheduleDay.d).getDay() === 6 || new Date(scheduleDay.d).getDay() === 0;
+    const day = new Date(scheduleDay.d);
+    const weekDay = day.getDay() === 6 || day.getDay() === 0;
     let holiday = false;
     if (!weekDay) holiday = this.dataService.holidays.find(h =>
       new Date(h.dayOff).getTime() ===
-      new Date(scheduleDay.d).getTime()) !== undefined;
+      day.getTime()) !== undefined;
 
     scheduleDay.e = '';
     scheduleDay.bx = 0;
@@ -47,9 +46,7 @@ export class ScheduleValidator {
     if (scheduleDay.v) scheduleDay.bx = 2;
   }
 
-  validateScheduleDayDailyBreak(
-    scheduleDay: ScheduleDay,
-    employeeScheduleDays: ScheduleDay[]) {
+  validateScheduleDayDailyBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
     if (!scheduleDay.s) return;
 
     const currentDay = new Date(scheduleDay.d);
