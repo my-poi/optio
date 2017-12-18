@@ -366,7 +366,9 @@ export class SchedulesMethods {
     const previousDay = new Date(currentDay);
     previousDay.setDate(previousDay.getDate() - 1);
 
-    const previousPlannedDay = plannedDays.find(x => new Date(x.day).getTime() === previousDay.getTime());
+    const previousPlannedDay = plannedDays.find(x =>
+      x.employeeId === plannedDay.employeeId &&
+      new Date(x.day).getTime() === previousDay.getTime());
 
     if (!previousPlannedDay) return '';
     if (!previousPlannedDay.shiftId) return '';
