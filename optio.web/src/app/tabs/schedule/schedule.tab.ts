@@ -52,6 +52,7 @@ export class ScheduleTab {
       this.header = firstSchedule;
       this.selectFirstSchedule(firstSchedule);
       this.setPeriodData();
+      this.infosService.scheduleInfo = '';
       console.log('schedule loaded');
     });
   }
@@ -73,7 +74,8 @@ export class ScheduleTab {
   }
 
   selectDay(scheduleDay: ScheduleDay) {
-    this.infosService.scheduleInfo = scheduleDay.e;
+    const errors = scheduleDay.e.map(x => x.error);
+    this.infosService.scheduleInfo = errors.join('\n');
   }
 
   selectEmployeeScheduleDays() {
@@ -148,7 +150,7 @@ export class ScheduleTab {
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setShift(scheduleDay, () => {
       this.validator.validateDailyBreak(scheduleDay, this.employeeScheduleDays);
-      this.validator.validateWeekBreak(this.year, this.month, this.employeeScheduleDays, 1);
+      this.validator.validateWeekBreak(this.year, this.month, scheduleDay, this.employeeScheduleDays, 1);
       this.setSummaryData(employeeId);
       this.setUpdatedBy(scheduleDay);
     });

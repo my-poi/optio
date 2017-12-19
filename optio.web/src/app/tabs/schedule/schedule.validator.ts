@@ -8,12 +8,17 @@ import { startTimeRange } from '@angular/core/src/profile/wtf_impl';
 
 export class ScheduleValidator {
   private scheduleDayErrors = [
-    {'id': 1, 'error': '- naruszono dobę pracowniczą\n'},
-    {'id': 2, 'error': '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n'},
-    {'id': 3, 'error': '- przekroczono limit 48 godzin pracy w tygodniu\n'}
+    {'id': 1, 'error': '- naruszono dobę pracowniczą'},
+    {'id': 2, 'error': '- nie zaplanowano 35 godzinnej przerwy tygodniowej'},
+    {'id': 3, 'error': '- przekroczono limit 48 godzin pracy w tygodniu'}
   ];
 
   constructor(private dataService: DataService, private infosService: InfosService) { }
+
+  showErrors(scheduleDay: ScheduleDay) {
+    const errors = scheduleDay.e.map(x => x.error);
+    this.infosService.scheduleInfo = errors.join('\n');
+  }
 
   validateHasDayTimeValue(scheduleDay: ScheduleDay) {
     if (!scheduleDay.h && !scheduleDay.m) this.clearDay(scheduleDay);
@@ -32,7 +37,7 @@ export class ScheduleValidator {
   }
 
   validateDailyBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
-    this.clearDayError(scheduleDay, '- naruszono dobę pracowniczą\n');
+    this.clearDayError(scheduleDay, 1);
     this.validateScheduleDayDailyBreak(scheduleDay, employeeScheduleDays);
 
     const nextDay = new Date(scheduleDay.d);
@@ -41,15 +46,16 @@ export class ScheduleValidator {
       new Date(x.d).getTime() === nextDay.getTime());
 
     if (nextScheduleDay) {
-      this.clearDayError(nextScheduleDay, '- naruszono dobę pracowniczą\n');
+      this.clearDayError(nextScheduleDay, 1);
       this.validateScheduleDayDailyBreak(nextScheduleDay, employeeScheduleDays);
     }
 
-    this.infosService.scheduleInfo = scheduleDay.e;
+    this.showErrors(scheduleDay);
   }
 
-  clearDayError(scheduleDay: ScheduleDay, error: string) {
-    if (scheduleDay.e.includes(error)) {
+  clearDayError(scheduleDay: ScheduleDay, errorId: number) {
+    const error = scheduleDay.e.find(x => x.id === errorId);
+    if (error) {
       const day = new Date(scheduleDay.d);
       const weekDay = day.getDay() === 6 || day.getDay() === 0;
       let holiday = false;
@@ -57,7 +63,8 @@ export class ScheduleValidator {
         new Date(h.dayOff).getTime() ===
         day.getTime()) !== undefined;
 
-      scheduleDay.e = '';
+      const i = scheduleDay.e.indexOf(error);
+      scheduleDay.e.splice(i, 1);
       scheduleDay.bx = 0;
       if (weekDay || holiday) scheduleDay.bx = 1;
       if (scheduleDay.v) scheduleDay.bx = 2;
@@ -92,8 +99,8 @@ export class ScheduleValidator {
 
     if (minutesDifference < 0) {
       scheduleDay.bx = 3;
-      scheduleDay.e += '- naruszono dobę pracowniczą\n';
-      this.infosService.scheduleInfo = scheduleDay.e;
+      scheduleDay.e.push(this.scheduleDayErrors[0]);
+      this.showErrors(scheduleDay);
     }
   }
 
@@ -109,7 +116,7 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateWeekBreak(year: number, month: number, employeeScheduleDays: ScheduleDay[], option: number) {
+  validateWeekBreak(year: number, month: number, scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[], option: number) {
     // Walidacja w obrębie siedmiu dni:
     // option 1 - w dowolnym miejscu grafiku
     // option 2 - z pierwszym dniem okresu rozliczeniowego
@@ -118,7 +125,7 @@ export class ScheduleValidator {
     const daysInMonth = new Date(year, month, 0).getDate();
 
     for (let i = 1; i <= daysInMonth; i++) {
-      this.validateSevenDaysWeekBreak(checkedDay, employeeScheduleDays);
+      this.validateSevenDaysWeekBreak(checkedDay, scheduleDay, employeeScheduleDays);
       checkedDay.setDate(checkedDay.getDate() + 1);
     }
   }
@@ -146,13 +153,14 @@ export class ScheduleValidator {
     }
   }
 
-  validateSevenDaysWeekBreak(checkedDay: Date, employeeScheduleDays: ScheduleDay[]) {
+  validateSevenDaysWeekBreak(checkedDay: Date, scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
     let result = false;
     const testedDay = new Date(checkedDay);
     testedDay.setDate(testedDay.getDate() - 6);
     let breakStart = new Date(testedDay);
     this.detectBeforeDayShiftEnd(testedDay, breakStart, employeeScheduleDays);
 
+    // sprawdzić!
     const checkedScheduleDay = employeeScheduleDays.find(x => {
       const y = checkedDay.getFullYear();
       const m = String(checkedDay.getMonth() + 1);
@@ -160,24 +168,23 @@ export class ScheduleValidator {
       return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
     });
 
-    this.clearDayError(checkedScheduleDay, '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n');
+    this.clearDayError(checkedScheduleDay, 2);
     console.log('checkedScheduleDay: ' + checkedScheduleDay.d);
 
     for (let i = 1; i <= 7; i++) {
-      const scheduleDay = employeeScheduleDays.find(x => {
+      const testedScheduleDay = employeeScheduleDays.find(x => {
         const y = testedDay.getFullYear();
         const m = String(testedDay.getMonth() + 1);
         const d = String(testedDay.getDate());
         return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
       });
 
-      if (scheduleDay) {
-        console.log(scheduleDay.d);
-        const newStart = new Date(scheduleDay.d);
+      if (testedScheduleDay) {
+        const newStart = new Date(testedScheduleDay.d);
 
-        if (scheduleDay.s) {
-          const scheduleDayShift = this.dataService.shifts.find(x => x.id === scheduleDay.s);
-          const scheduleDayShiftDuration = this.getShiftDuration(scheduleDay.d, scheduleDayShift.durations);
+        if (testedScheduleDay.s) {
+          const scheduleDayShift = this.dataService.shifts.find(x => x.id === testedScheduleDay.s);
+          const scheduleDayShiftDuration = this.getShiftDuration(testedScheduleDay.d, scheduleDayShift.durations);
           const scheduleDayStartHours = Number(scheduleDayShiftDuration.start.substring(0, 2));
           const scheduleDayStartMinutes = Number(scheduleDayShiftDuration.start.substring(3, 5));
 
@@ -189,8 +196,8 @@ export class ScheduleValidator {
             result = true;
           }
 
-          breakStart = new Date(scheduleDay.d);
-          breakStart.setHours(scheduleDayStartHours + scheduleDay.h, scheduleDayStartMinutes + scheduleDay.m, 0);
+          breakStart = new Date(testedScheduleDay.d);
+          breakStart.setHours(scheduleDayStartHours + testedScheduleDay.h, scheduleDayStartMinutes + testedScheduleDay.m, 0);
         } else {
           newStart.setDate(newStart.getDate() + 1);
           const difference = newStart.getTime() - breakStart.getTime();
@@ -206,7 +213,8 @@ export class ScheduleValidator {
 
     if (!result) {
       checkedScheduleDay.bx = 3;
-      checkedScheduleDay.e += '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n';
+      checkedScheduleDay.e.push(this.scheduleDayErrors[1]);
+      if (scheduleDay.d === checkedScheduleDay.d) this.showErrors(checkedScheduleDay);
     }
   }
 }

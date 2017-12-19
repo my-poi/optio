@@ -25,9 +25,9 @@ import { ScheduleDayError } from '../objects/schedule-day-error';
 
 export class SchedulesMethods {
   private scheduleDayErrors = [
-    {'id': 1, 'error': '- naruszono dobę pracowniczą\n'},
-    {'id': 2, 'error': '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n'},
-    {'id': 3, 'error': '- przekroczono limit 48 godzin pracy w tygodniu\n'}
+    {'id': 1, 'error': '- naruszono dobę pracowniczą'},
+    {'id': 2, 'error': '- nie zaplanowano 35 godzinnej przerwy tygodniowej'},
+    {'id': 3, 'error': '- przekroczono limit 48 godzin pracy w tygodniu'}
   ];
 
   constructor(
