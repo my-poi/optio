@@ -21,8 +21,15 @@ import { EmployeesMethods } from './employees.methods';
 import { json } from 'body-parser';
 import { ShiftsMethods } from './shifts.methods';
 import { ShiftDuration } from '../objects/shift-duration';
+import { ScheduleDayError } from '../objects/schedule-day-error';
 
 export class SchedulesMethods {
+  private scheduleDayErrors = [
+    {'id': 1, 'error': '- naruszono dobę pracowniczą\n'},
+    {'id': 2, 'error': '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n'},
+    {'id': 3, 'error': '- przekroczono limit 48 godzin pracy w tygodniu\n'}
+  ];
+
   constructor(
     private organizationDatabase: OrganizationDatabase,
     private workTimeDatabase: WorkTimeDatabase,
@@ -347,21 +354,22 @@ export class SchedulesMethods {
   hasErrors(
     plannedDay: PlannedDay,
     plannedDays: PlannedDay[],
-    shifts: Shift[]): string {
-    let errors = '';
-    errors = this.validateScheduleDayDailyBreak(plannedDay, plannedDays, shifts);
+    shifts: Shift[]) {
+    const errors: ScheduleDayError[] = [];
+    const dailyBreakError = this.validateScheduleDayDailyBreak(plannedDay, plannedDays, shifts);
+    if (dailyBreakError) errors.push(this.scheduleDayErrors[0]);
     return errors;
   }
 
   validateScheduleDayDailyBreak(
     plannedDay: PlannedDay,
     plannedDays: PlannedDay[],
-    shifts: Shift[]): string {
+    shifts: Shift[]): boolean {
     const currentDay = new Date(plannedDay.day);
     let previousWorkDayStartingTime;
     let currentWorkDayStartingTime;
 
-    if (!plannedDay.shiftId) return '';
+    if (!plannedDay.shiftId) return false;
 
     const previousDay = new Date(currentDay);
     previousDay.setDate(previousDay.getDate() - 1);
@@ -370,8 +378,8 @@ export class SchedulesMethods {
       x.employeeId === plannedDay.employeeId &&
       new Date(x.day).getTime() === previousDay.getTime());
 
-    if (!previousPlannedDay) return '';
-    if (!previousPlannedDay.shiftId) return '';
+    if (!previousPlannedDay) return false;
+    if (!previousPlannedDay.shiftId) return false;
 
     const previousWorkDayShift = shifts.find(x => x.id === previousPlannedDay.shiftId);
     if (previousWorkDayShift) {
@@ -402,8 +410,8 @@ export class SchedulesMethods {
     if (previousWorkDayStartingTime && currentWorkDayStartingTime)
       minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
 
-    if (minutesDifference < 0) return '- naruszono dobę pracowniczą';
-    else return '';
+    if (minutesDifference < 0) return true;
+    else return false;
   }
 
   getShiftDuration(day: Date, durations: ShiftDuration[]) {
@@ -425,8 +433,8 @@ export class SchedulesMethods {
     return 0;
   }
 
-  getShiftBackground(errors: string, vacation: boolean, weekDay: boolean, holiday: boolean): number {
-    if (errors) return 3;
+  getShiftBackground(errors: ScheduleDayError[], vacation: boolean, weekDay: boolean, holiday: boolean): number {
+    if (errors.length > 0) return 3;
     if (vacation) return 2;
     if (weekDay) return 1;
     if (holiday) return 1;

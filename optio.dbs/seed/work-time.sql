@@ -1,5 +1,9 @@
 USE OptioWorkTime;
 
+-- INSERT INTO ScheduleDayErrors VALUES (1, '- naruszono dobę pracowniczą\n');
+-- INSERT INTO ScheduleDayErrors VALUES (2, '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n');
+-- INSERT INTO ScheduleDayErrors VALUES (3, '- przekroczono limit 48 godzin pracy w tygodniu\n');
+
 INSERT INTO Shifts VALUES (1, 'I', 1);
 INSERT INTO Shifts VALUES (2, 'II', 1);
 INSERT INTO Shifts VALUES (3, 'III', 1);

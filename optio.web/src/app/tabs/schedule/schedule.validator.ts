@@ -7,6 +7,12 @@ import { TimeSpan } from '../../objects/time-span';
 import { startTimeRange } from '@angular/core/src/profile/wtf_impl';
 
 export class ScheduleValidator {
+  private scheduleDayErrors = [
+    {'id': 1, 'error': '- naruszono dobę pracowniczą\n'},
+    {'id': 2, 'error': '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n'},
+    {'id': 3, 'error': '- przekroczono limit 48 godzin pracy w tygodniu\n'}
+  ];
+
   constructor(private dataService: DataService, private infosService: InfosService) { }
 
   validateHasDayTimeValue(scheduleDay: ScheduleDay) {
@@ -26,7 +32,7 @@ export class ScheduleValidator {
   }
 
   validateDailyBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
-    this.clearDayErrors(scheduleDay);
+    this.clearDayError(scheduleDay, '- naruszono dobę pracowniczą\n');
     this.validateScheduleDayDailyBreak(scheduleDay, employeeScheduleDays);
 
     const nextDay = new Date(scheduleDay.d);
@@ -35,25 +41,27 @@ export class ScheduleValidator {
       new Date(x.d).getTime() === nextDay.getTime());
 
     if (nextScheduleDay) {
-      this.clearDayErrors(nextScheduleDay);
+      this.clearDayError(nextScheduleDay, '- naruszono dobę pracowniczą\n');
       this.validateScheduleDayDailyBreak(nextScheduleDay, employeeScheduleDays);
     }
 
     this.infosService.scheduleInfo = scheduleDay.e;
   }
 
-  clearDayErrors(scheduleDay: ScheduleDay) {
-    const day = new Date(scheduleDay.d);
-    const weekDay = day.getDay() === 6 || day.getDay() === 0;
-    let holiday = false;
-    if (!weekDay) holiday = this.dataService.holidays.find(h =>
-      new Date(h.dayOff).getTime() ===
-      day.getTime()) !== undefined;
+  clearDayError(scheduleDay: ScheduleDay, error: string) {
+    if (scheduleDay.e.includes(error)) {
+      const day = new Date(scheduleDay.d);
+      const weekDay = day.getDay() === 6 || day.getDay() === 0;
+      let holiday = false;
+      if (!weekDay) holiday = this.dataService.holidays.find(h =>
+        new Date(h.dayOff).getTime() ===
+        day.getTime()) !== undefined;
 
-    scheduleDay.e = '';
-    scheduleDay.bx = 0;
-    if (weekDay || holiday) scheduleDay.bx = 1;
-    if (scheduleDay.v) scheduleDay.bx = 2;
+      scheduleDay.e = '';
+      scheduleDay.bx = 0;
+      if (weekDay || holiday) scheduleDay.bx = 1;
+      if (scheduleDay.v) scheduleDay.bx = 2;
+    }
   }
 
   validateScheduleDayDailyBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
@@ -101,32 +109,17 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateWeekBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[], option: number) {
+  validateWeekBreak(year: number, month: number, employeeScheduleDays: ScheduleDay[], option: number) {
     // Walidacja w obrębie siedmiu dni:
     // option 1 - w dowolnym miejscu grafiku
     // option 2 - z pierwszym dniem okresu rozliczeniowego
 
-    let result = false;
-    const testedDay = new Date(scheduleDay.d);
-    testedDay.setDate(testedDay.getDate() - 6);
+    const checkedDay = new Date(year, month - 1, 1);
+    const daysInMonth = new Date(year, month, 0).getDate();
 
-    for (let i = 1; i <= 7; i++) {
-      const employeeScheduleDay = employeeScheduleDays.find(x =>
-        new Date(x.d).getTime() === testedDay.getTime());
-
-      const breakStart = new Date(testedDay);
-      breakStart.setHours(0, 0, 0);
-      if (!result) {
-        this.detectBeforeDayShiftEnd(testedDay, breakStart, employeeScheduleDays);
-        result = this.validateSevenDaysWeekBreak(testedDay, breakStart, employeeScheduleDays);
-      }
-      testedDay.setDate(testedDay.getDate() + 1);
-    }
-
-    if (!result) {
-      scheduleDay.bx = 3;
-      scheduleDay.e += '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n';
-      this.infosService.scheduleInfo = scheduleDay.e;
+    for (let i = 1; i <= daysInMonth; i++) {
+      this.validateSevenDaysWeekBreak(checkedDay, employeeScheduleDays);
+      checkedDay.setDate(checkedDay.getDate() + 1);
     }
   }
 
@@ -153,40 +146,67 @@ export class ScheduleValidator {
     }
   }
 
-  validateSevenDaysWeekBreak(testedDay: Date, breakStart: Date, employeeScheduleDays: ScheduleDay[]) {
-    const day = new Date(testedDay);
+  validateSevenDaysWeekBreak(checkedDay: Date, employeeScheduleDays: ScheduleDay[]) {
+    let result = false;
+    const testedDay = new Date(checkedDay);
+    testedDay.setDate(testedDay.getDate() - 6);
+    let breakStart = new Date(testedDay);
+    this.detectBeforeDayShiftEnd(testedDay, breakStart, employeeScheduleDays);
+
+    const checkedScheduleDay = employeeScheduleDays.find(x => {
+      const y = checkedDay.getFullYear();
+      const m = String(checkedDay.getMonth() + 1);
+      const d = String(checkedDay.getDate());
+      return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+    });
+
+    this.clearDayError(checkedScheduleDay, '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n');
+    console.log('checkedScheduleDay: ' + checkedScheduleDay.d);
 
     for (let i = 1; i <= 7; i++) {
-      const scheduleDay = employeeScheduleDays.find(x =>
-        new Date(x.d).getTime() === day.getTime());
+      const scheduleDay = employeeScheduleDays.find(x => {
+        const y = testedDay.getFullYear();
+        const m = String(testedDay.getMonth() + 1);
+        const d = String(testedDay.getDate());
+        return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+      });
 
-      if (scheduleDay.s) {
-        const scheduleDayShift = this.dataService.shifts.find(x => x.id === scheduleDay.s);
-        const scheduleDayShiftDuration = this.getShiftDuration(scheduleDay.d, scheduleDayShift.durations);
-        const scheduleDayStartHours = Number(scheduleDayShiftDuration.start.substring(0, 2));
-        const scheduleDayStartMinutes = Number(scheduleDayShiftDuration.start.substring(3, 5));
-
+      if (scheduleDay) {
+        console.log(scheduleDay.d);
         const newStart = new Date(scheduleDay.d);
-        newStart.setHours(scheduleDayStartHours, scheduleDayStartMinutes, 0);
-        const difference = newStart.getTime() - breakStart.getTime();
-        const resultInMinutes = Math.round(difference / 60000);
 
-        if (resultInMinutes >= 2100) return true;
+        if (scheduleDay.s) {
+          const scheduleDayShift = this.dataService.shifts.find(x => x.id === scheduleDay.s);
+          const scheduleDayShiftDuration = this.getShiftDuration(scheduleDay.d, scheduleDayShift.durations);
+          const scheduleDayStartHours = Number(scheduleDayShiftDuration.start.substring(0, 2));
+          const scheduleDayStartMinutes = Number(scheduleDayShiftDuration.start.substring(3, 5));
 
-        breakStart = new Date(scheduleDay.d);
-        breakStart.setHours(scheduleDayStartHours + scheduleDay.h, scheduleDayStartMinutes + scheduleDay.m, 0);
-      } else {
-        const newStart = new Date(scheduleDay.d);
-        newStart.setDate(newStart.getDate() + 1);
-        newStart.setHours(0, 0, 0);
-        const difference = newStart.getTime() - breakStart.getTime();
-        const resultInMinutes = Math.round(difference / 60000);
-        if (resultInMinutes >= 2100) return true;
+          newStart.setHours(scheduleDayStartHours, scheduleDayStartMinutes, 0);
+          const difference = newStart.getTime() - breakStart.getTime();
+          const resultInMinutes = Math.round(difference / 60000);
+
+          if (resultInMinutes >= 2100) {
+            result = true;
+          }
+
+          breakStart = new Date(scheduleDay.d);
+          breakStart.setHours(scheduleDayStartHours + scheduleDay.h, scheduleDayStartMinutes + scheduleDay.m, 0);
+        } else {
+          newStart.setDate(newStart.getDate() + 1);
+          const difference = newStart.getTime() - breakStart.getTime();
+          const resultInMinutes = Math.round(difference / 60000);
+          if (resultInMinutes >= 2100) {
+            result = true;
+          }
+        }
       }
 
-      day.setDate(day.getDate() + 1);
+      testedDay.setDate(testedDay.getDate() + 1);
     }
 
-    return false;
+    if (!result) {
+      checkedScheduleDay.bx = 3;
+      checkedScheduleDay.e += '- nie zaplanowano 35 godzinnej przerwy tygodniowej\n';
+    }
   }
 }

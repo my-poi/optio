@@ -192,3 +192,10 @@ CREATE TABLE Vacations (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
+-- CREATE TABLE ScheduleDayErrors (
+--   id TINYINT NOT NULL,
+--   error VARCHAR(100) NOT NULL
+--   PRIMARY KEY (id),
+--   UNIQUE KEY Name (error)
+-- );
