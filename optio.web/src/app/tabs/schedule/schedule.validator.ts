@@ -139,8 +139,8 @@ export class ScheduleValidator {
     day.setDate(day.getDate() - 6);
 
     hasBreak1 = this.validateSevenDaysWeekBreak(day, employeeScheduleDays);
-    console.log('1 sprawdzenie: ' + hasBreak1);
     hasBreak2 = this.validateSevenDaysWeekBreak(new Date(scheduleDay.d), employeeScheduleDays);
+    console.log('1 sprawdzenie: ' + hasBreak1);
     console.log('2 sprawdzenie: ' + hasBreak2);
 
     if (!hasBreak1 || !hasBreak2) {
@@ -178,13 +178,12 @@ export class ScheduleValidator {
           const resultInMinutes = Math.round(difference / 60000);
 
           console.log(
+            'Zaplanowano zmianę:' + '\n' +
+            'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm') + '\n' +
             'testedScheduleDay: ' + testedScheduleDay.d + '\n' +
-            'resultInMinutes: ' + resultInMinutes + '\n' +
-            'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm'));
+            'resultInHours: ' + resultInMinutes / 60);
 
-          if (resultInMinutes >= 2100) {
-            return true;
-          }
+          if (resultInMinutes >= 2100) return true;
 
           breakStart = new Date(testedScheduleDay.d);
           breakStart.setHours(scheduleDayStartHours + testedScheduleDay.h, scheduleDayStartMinutes + testedScheduleDay.m, 0);
@@ -193,13 +192,13 @@ export class ScheduleValidator {
           const difference = newStart.getTime() - breakStart.getTime();
           const resultInMinutes = Math.round(difference / 60000);
 
-          if (resultInMinutes >= 2100) {
-            console.log(
-              'testedScheduleDay: ' + testedScheduleDay.d + '\n' +
-              'resultInMinutes: ' + resultInMinutes + '\n' +
-              'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm'));
-            return true;
-          }
+          console.log(
+            'Dzień wolny: ' + '\n' +
+            'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm') + '\n' +
+            'testedScheduleDay: ' + testedScheduleDay.d + '\n' +
+            'resultInHours: ' + resultInMinutes / 60);
+
+          if (resultInMinutes >= 2100) return true;
         }
       }
 
