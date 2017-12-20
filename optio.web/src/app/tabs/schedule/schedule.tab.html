@@ -1,6 +1,42 @@
 <div class="schedule" style="margin: 10px; background-color: #fff">
   <table>
     <thead class="schedule-header">
+      <tr style="height: 3px">
+        <td></td>
+        <td [ngClass]="{'week': header?.sd[0].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[1].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[2].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[3].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[4].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[5].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[6].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[7].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[8].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[9].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[10].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[11].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[12].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[13].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[14].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[15].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[16].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[17].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[18].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[19].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[20].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[21].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[22].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[23].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[24].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[25].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[26].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[27].bw === 1}"></td>
+        <td [ngClass]="{'week': header?.sd[28] && header?.sd[28].bw === 1}" [ngStyle]="!header?.column29 && {'display': 'none'}"></td>
+        <td [ngClass]="{'week': header?.sd[29] && header?.sd[29].bw === 1}" [ngStyle]="!header?.column30 && {'display': 'none'}"></td>
+        <td [ngClass]="{'week': header?.sd[30] && header?.sd[30].bw === 1}" [ngStyle]="!header?.column31 && {'display': 'none'}"></td>
+        <td></td>
+        <td></td>
+      </tr>
       <tr>
         <th style="width: 131px; min-width: 131px; border: none"></th>
         <th [ngClass]="{'free': header?.sd[0].bt === 1}">1</th>
@@ -42,6 +78,7 @@
       <tr *ngFor="let s of currentSchedule" (mousedown)="select(s)">
         <td style="border: none; padding-top: 10px">
           <table>
+            
             <tr>
               <td rowspan="3" style="min-width: 131px; max-width: 131px; text-align: right">
                 <div style="white-space: pre; cursor: pointer; padding: 25px 15px 25px 25px; border-radius: 5px 0 0 5px" [ngClass]="{'selected': s === selectedEmployeeSchedule}">{{s.employeeName}}</div>
