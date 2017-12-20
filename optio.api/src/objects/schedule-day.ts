@@ -11,6 +11,7 @@ export class ScheduleDay {
   e: ScheduleDayError[];
   bt: number;  // tło pól czasu (godzin i minut)
   bx: number;  // tło pola zmiany
+  bw: number;  // tło tygodni
   ub: number;  // aktualizował (userId)
   u: Date;     // data aktualizacji
 
@@ -25,6 +26,7 @@ export class ScheduleDay {
     errors: ScheduleDayError[],
     timeBackground: number,
     shiftBackground: number,
+    weekBackground: number,
     updatedBy: number,
     updated: Date) {
       this.d = day;
@@ -37,6 +39,7 @@ export class ScheduleDay {
       this.e = errors;
       this.bt = timeBackground;
       this.bx = shiftBackground;
+      this.bw = weekBackground;
       this.ub = updatedBy;
       this.u = updated;
   }
