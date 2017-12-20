@@ -119,29 +119,32 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateWeekBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[], option: number) {
-    // Walidacja w obrębie siedmiu dni:
-    // option 1 - w dowolnym miejscu grafiku
-    // option 2 - z pierwszym dniem okresu rozliczeniowego
+  validateWeekBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
+
+    // 1. Ustalić tygodnie w okresie rozliczeniowym!
 
     console.log('s: ' + scheduleDay.s);
 
-    if (!scheduleDay.s || scheduleDay.s >= 40) {
-      this.clearDayError(scheduleDay, 2);
-      this.showErrors(scheduleDay);
-      console.log('wyjście');
-      return;
-    }
+    // if (scheduleDay.s >= 40) {
+    //   this.clearDayError(scheduleDay, 2);
+    //   this.showErrors(scheduleDay);
+    //   console.log('wyjście');
+    //   return;
+    // }
 
-    let hasBreak1 = false;
-    let hasBreak2 = false;
     const day = new Date(scheduleDay.d);
     day.setDate(day.getDate() - 6);
+    let hasBreak1 = false;
+    let hasBreak2 = false;
 
     hasBreak1 = this.validateSevenDaysWeekBreak(day, employeeScheduleDays);
     hasBreak2 = this.validateSevenDaysWeekBreak(new Date(scheduleDay.d), employeeScheduleDays);
+
     console.log('1 sprawdzenie: ' + hasBreak1);
     console.log('2 sprawdzenie: ' + hasBreak2);
+
+    if (hasBreak1) this.clearWeekBreakErrors(day, employeeScheduleDays);
+    if (hasBreak2) this.clearWeekBreakErrors(new Date(scheduleDay.d), employeeScheduleDays);
 
     if (!hasBreak1 || !hasBreak2) {
       this.clearDayError(scheduleDay, 2);
@@ -151,15 +154,29 @@ export class ScheduleValidator {
     }
   }
 
+  clearWeekBreakErrors(day: Date, employeeScheduleDays: ScheduleDay[]) {
+    for (let i = 1; i <= 7; i++) {
+      const scheduleDay = employeeScheduleDays.find(x => {
+        const y = day.getFullYear();
+        const m = String(day.getMonth() + 1);
+        const d = String(day.getDate());
+        return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+      });
+      this.clearDayError(scheduleDay, 2);
+      day.setDate(day.getDate() + 1);
+    }
+  }
+
   validateSevenDaysWeekBreak(day: Date, employeeScheduleDays: ScheduleDay[]): boolean {
-    let breakStart = this.getBreakStart(day, employeeScheduleDays);
+    const testedDay = new Date(day);
+    let breakStart = this.getBreakStart(testedDay, employeeScheduleDays);
     console.log('breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm'));
 
     for (let i = 1; i <= 7; i++) {
       const testedScheduleDay = employeeScheduleDays.find(x => {
-        const y = day.getFullYear();
-        const m = String(day.getMonth() + 1);
-        const d = String(day.getDate());
+        const y = testedDay.getFullYear();
+        const m = String(testedDay.getMonth() + 1);
+        const d = String(testedDay.getDate());
         return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
       });
 
@@ -202,7 +219,7 @@ export class ScheduleValidator {
         }
       }
 
-      day.setDate(day.getDate() + 1);
+      testedDay.setDate(testedDay.getDate() + 1);
     }
 
     return false;
