@@ -120,8 +120,8 @@ export class ScheduleValidator {
   }
 
   validateWeekBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[], periodStartDate: Date) {
-    const weekDaysRange = this.getWeekDaysRange(scheduleDay.d, periodStartDate);
-    console.log(weekDaysRange.from + '\n' + weekDaysRange.to);
+    const firstWeekDay = this.getfirstWeekDay(scheduleDay.d, periodStartDate);
+    console.log(firstWeekDay);
 
     // if (scheduleDay.s >= 40) {
     //   this.clearDayError(scheduleDay, 2);
@@ -152,19 +152,16 @@ export class ScheduleValidator {
     // }
   }
 
-  getWeekDaysRange(day: Date, periodStartDate: Date) {
+  getfirstWeekDay(day: Date, periodStartDate: Date) {
     const from = new Date(day);
     from.setHours(0, 0, 0);
-    const to = new Date(day);
-    to.setHours(0, 0, 0);
     const testedDay = new Date(day);
     testedDay.setHours(0, 0, 0);
     const timeDifference = testedDay.getTime() - periodStartDate.getTime();
     const daysDifference = timeDifference / 86400000;
     const remainder = daysDifference % 7;
     from.setDate(from.getDate() - remainder);
-    to.setDate(to.getDate() + 6 - remainder);
-    return {from: from, to: to};
+    return from;
   }
 
   clearWeekBreakErrors(day: Date, employeeScheduleDays: ScheduleDay[]) {
