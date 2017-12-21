@@ -120,9 +120,6 @@ export class ScheduleValidator {
   }
 
   validateWeekBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[], periodStartDate: Date) {
-
-    // console.log('s: ' + scheduleDay.s);
-
     const weekDaysRange = this.getWeekDaysRange(scheduleDay.d, periodStartDate);
     console.log(weekDaysRange.from + '\n' + weekDaysRange.to);
 
