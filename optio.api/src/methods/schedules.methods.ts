@@ -198,7 +198,7 @@ export class SchedulesMethods {
         new Date(x.day).getTime() >= scheduleFrom.getTime() &&
         new Date(x.day).getTime() <= scheduleTo.getTime());
       const employeeVacations = vacations.filter((x: Vacation) => x.employeeId === schedule.employeeId);
-      const scheduleDays = this.getScheduleDays(schedulePlannedDays, plannedDays, shifts, holidays, employeeVacations, periodStartDate);
+      const scheduleDays = this.getScheduleDays(schedulePlannedDays, plannedDays, shifts, holidays, employeeVacations);
 
       // console.log('from: ' + scheduleFrom);
       // console.log('to: ' + scheduleTo);
@@ -316,8 +316,7 @@ export class SchedulesMethods {
     plannedDays: PlannedDay[],
     shifts: Shift[],
     holidays: Holiday[],
-    employeeVacations: Vacation[],
-    periodStartDate: Date): ScheduleDay[] {
+    employeeVacations: Vacation[]): ScheduleDay[] {
     const results: ScheduleDay[] = schedulePlannedDays.map(plannedDay => {
       const shift = shifts.find((s: Shift) => s.id === plannedDay.shiftId);
       const day = new Date(plannedDay.day);
@@ -337,7 +336,6 @@ export class SchedulesMethods {
         errors,
         this.getTimeBackground(plannedDay.comment, weekDay, holiday),
         this.getShiftBackground(errors, vacation, weekDay, holiday),
-        this.getWeekBackground(day, periodStartDate),
         plannedDay.updatedBy,
         plannedDay.updated);
     });
@@ -441,14 +439,6 @@ export class SchedulesMethods {
     if (weekDay) return 1;
     if (holiday) return 1;
     return 0;
-  }
-
-  getWeekBackground(day: Date, periodStartDate: Date) {
-    const timeDifference = day.getTime() - periodStartDate.getTime();
-    const daysDifference = timeDifference / 86400000;
-    const remainder = daysDifference % 14;
-    if (remainder <= 6) return 0;
-    return 1;
   }
 
   getFormattedDate(date: Date): string {
