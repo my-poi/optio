@@ -145,7 +145,10 @@ export class ScheduleTab {
     this.header.column31 = firstSchedule.column31;
     this.header.hd = [];
     firstSchedule.sd.forEach(x => {
-      this.header.hd.push(new ScheduleHeaderDay(x.d, this.getWeekBackground(x.d), x.bt));
+      this.header.hd.push(new ScheduleHeaderDay(
+        x.d,
+        this.getWeekBackground(x.d),
+        this.getDayBackground(new Date(x.d))));
     });
   }
 
@@ -155,6 +158,15 @@ export class ScheduleTab {
     const remainder = daysDifference % 14;
     if (remainder <= 7) return 0;
     return 1;
+  }
+
+  getDayBackground(day: Date) {
+    const weekDay = day.getDay() === 6 || day.getDay() === 0;
+    let holiday = false;
+    if (!weekDay) holiday = this.dataService.holidays.find(h => new Date(h.dayOff).getTime() === day.getTime()) !== undefined;
+    if (weekDay) return 1;
+    if (holiday) return 1;
+    return 0;
   }
 
   hourChanged(employeeId: number, scheduleDay: ScheduleDay) {
