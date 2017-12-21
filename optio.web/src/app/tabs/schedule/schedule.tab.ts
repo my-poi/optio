@@ -5,6 +5,8 @@ import { ButtonsService } from '../../services/buttons.service';
 import { GlobalService } from '../../services/global.service';
 import { InfosService } from '../../services/infos.service';
 import { PeriodDefinition } from '../../objects/period-definition';
+import { ScheduleHeader } from '../../objects/schedule-header';
+import { ScheduleHeaderDay } from '../../objects/schedule-header-day';
 import { ScheduleDay } from '../../objects/schedule-day';
 import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { TimeSpan } from '../../objects/time-span';
@@ -23,11 +25,12 @@ export class ScheduleTab {
   year: number;
   month: number;
   currentPeriodMonths: PeriodDefinition[];
+  periodStartDate: Date;
   monthlyMinutesLimit: number;
   periodMinutesLimit: number;
   schedules: EmployeeSchedule[];
   currentSchedule: EmployeeSchedule[];
-  header: EmployeeSchedule;
+  header: ScheduleHeader;
   selectedEmployeeSchedule: EmployeeSchedule;
   originalEmployeeSchedule: EmployeeSchedule;
   selectedScheduleDay: ScheduleDay;
@@ -49,9 +52,9 @@ export class ScheduleTab {
         filter(x => x.year === this.year && x.month === this.month).
         sort((a: EmployeeSchedule, b: EmployeeSchedule) => this.globalService.compare(a.sortOrder, b.sortOrder));
       const firstSchedule = this.currentSchedule[0];
-      this.header = firstSchedule;
       this.selectFirstSchedule(firstSchedule);
       this.setPeriodData();
+      this.setHeader(firstSchedule);
       this.infosService.scheduleInfo = '';
       console.log('schedule loaded');
     });
@@ -117,7 +120,9 @@ export class ScheduleTab {
 
     this.currentPeriodMonths = this.dataService.periodDefinitions.filter(x =>
       x.period === monthDefinition.period &&
-      x.sortOrder <= monthDefinition.sortOrder);
+      x.sortOrder <= monthDefinition.sortOrder).
+      sort((a: PeriodDefinition, b: PeriodDefinition) =>
+        this.globalService.compare(a.sortOrder, b.sortOrder));
 
     periodMonths.forEach(x => {
       const year = x.month > this.month ? this.year - 1 : this.year;
@@ -127,6 +132,29 @@ export class ScheduleTab {
     });
 
     this.periodMinutesLimit = minutesLimit;
+
+    const firstMonth: number = this.currentPeriodMonths[0].month;
+    this.periodStartDate = new Date(this.year, firstMonth - 1, 1, 0, 0, 0);
+    if (firstMonth > this.month) this.periodStartDate.setFullYear(this.periodStartDate.getFullYear() - 1);
+  }
+
+  setHeader(firstSchedule: EmployeeSchedule) {
+    this.header = new ScheduleHeader();
+    this.header.column29 = firstSchedule.column29;
+    this.header.column30 = firstSchedule.column30;
+    this.header.column31 = firstSchedule.column31;
+    this.header.hd = [];
+    firstSchedule.sd.forEach(x => {
+      this.header.hd.push(new ScheduleHeaderDay(x.d, this.getWeekBackground(x.d), x.bt));
+    });
+  }
+
+  getWeekBackground(day: Date) {
+    const timeDifference = new Date(day).getTime() - this.periodStartDate.getTime();
+    const daysDifference = timeDifference / 86400000;
+    const remainder = daysDifference % 14;
+    if (remainder <= 7) return 0;
+    return 1;
   }
 
   hourChanged(employeeId: number, scheduleDay: ScheduleDay) {

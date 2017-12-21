@@ -11,7 +11,6 @@ export interface ScheduleDay {
   e: ScheduleDayError[];
   bt: number;  // tło pól czasu (godzin i minut)
   bx: number;  // tło pola zmiany
-  bw: number;  // tło tygodni
   ub: number;  // aktualizował (userId)
   u: Date;     // data aktualizacji
 }
