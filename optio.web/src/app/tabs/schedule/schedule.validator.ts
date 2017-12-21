@@ -119,11 +119,12 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateWeekBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
+  validateWeekBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[], periodStartDate: Date) {
 
-    // 1. Ustalić tygodnie w okresie rozliczeniowym!
+    // console.log('s: ' + scheduleDay.s);
 
-    console.log('s: ' + scheduleDay.s);
+    const weekDaysRange = this.getWeekDaysRange(scheduleDay.d, periodStartDate);
+    console.log(weekDaysRange.from + '\n' + weekDaysRange.to);
 
     // if (scheduleDay.s >= 40) {
     //   this.clearDayError(scheduleDay, 2);
@@ -132,26 +133,41 @@ export class ScheduleValidator {
     //   return;
     // }
 
-    const day = new Date(scheduleDay.d);
-    day.setDate(day.getDate() - 6);
-    let hasBreak1 = false;
-    let hasBreak2 = false;
+    // const day = new Date(scheduleDay.d);
+    // day.setDate(day.getDate() - 6);
+    // let hasBreak1 = false;
+    // let hasBreak2 = false;
 
-    hasBreak1 = this.validateSevenDaysWeekBreak(day, employeeScheduleDays);
-    hasBreak2 = this.validateSevenDaysWeekBreak(new Date(scheduleDay.d), employeeScheduleDays);
+    // hasBreak1 = this.validateSevenDaysWeekBreak(day, employeeScheduleDays);
+    // hasBreak2 = this.validateSevenDaysWeekBreak(new Date(scheduleDay.d), employeeScheduleDays);
 
-    console.log('1 sprawdzenie: ' + hasBreak1);
-    console.log('2 sprawdzenie: ' + hasBreak2);
+    // console.log('1 sprawdzenie: ' + hasBreak1);
+    // console.log('2 sprawdzenie: ' + hasBreak2);
 
-    if (hasBreak1) this.clearWeekBreakErrors(day, employeeScheduleDays);
-    if (hasBreak2) this.clearWeekBreakErrors(new Date(scheduleDay.d), employeeScheduleDays);
+    // if (hasBreak1) this.clearWeekBreakErrors(day, employeeScheduleDays);
+    // if (hasBreak2) this.clearWeekBreakErrors(new Date(scheduleDay.d), employeeScheduleDays);
 
-    if (!hasBreak1 || !hasBreak2) {
-      this.clearDayError(scheduleDay, 2);
-      scheduleDay.bx = 3;
-      scheduleDay.e.push(this.scheduleDayErrors[1]);
-      this.showErrors(scheduleDay);
-    }
+    // if (!hasBreak1 || !hasBreak2) {
+    //   this.clearDayError(scheduleDay, 2);
+    //   scheduleDay.bx = 3;
+    //   scheduleDay.e.push(this.scheduleDayErrors[1]);
+    //   this.showErrors(scheduleDay);
+    // }
+  }
+
+  getWeekDaysRange(day: Date, periodStartDate: Date) {
+    const from = new Date(day);
+    from.setHours(0, 0, 0);
+    const to = new Date(day);
+    to.setHours(0, 0, 0);
+    const testedDay = new Date(day);
+    testedDay.setHours(0, 0, 0);
+    const timeDifference = testedDay.getTime() - periodStartDate.getTime();
+    const daysDifference = timeDifference / 86400000;
+    const remainder = daysDifference % 7;
+    from.setDate(from.getDate() - remainder);
+    to.setDate(to.getDate() + 6 - remainder);
+    return {from: from, to: to};
   }
 
   clearWeekBreakErrors(day: Date, employeeScheduleDays: ScheduleDay[]) {

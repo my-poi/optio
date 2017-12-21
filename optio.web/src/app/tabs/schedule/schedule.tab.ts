@@ -148,22 +148,25 @@ export class ScheduleTab {
       this.header.hd.push(new ScheduleHeaderDay(
         x.d,
         this.getWeekBackground(x.d),
-        this.getDayBackground(new Date(x.d))));
+        this.getDayBackground(x.d)));
     });
   }
 
   getWeekBackground(day: Date) {
-    const timeDifference = new Date(day).getTime() - this.periodStartDate.getTime();
+    const testedDay = new Date(day);
+    testedDay.setHours(0, 0, 0);
+    const timeDifference = testedDay.getTime() - this.periodStartDate.getTime();
     const daysDifference = timeDifference / 86400000;
     const remainder = daysDifference % 14;
-    if (remainder <= 7) return 0;
+    if (remainder <= 6) return 0;
     return 1;
   }
 
   getDayBackground(day: Date) {
-    const weekDay = day.getDay() === 6 || day.getDay() === 0;
+    const testedDay = new Date(day);
+    const weekDay = testedDay.getDay() === 6 || testedDay.getDay() === 0;
     let holiday = false;
-    if (!weekDay) holiday = this.dataService.holidays.find(h => new Date(h.dayOff).getTime() === day.getTime()) !== undefined;
+    if (!weekDay) holiday = this.dataService.holidays.find(h => new Date(h.dayOff).getTime() === testedDay.getTime()) !== undefined;
     if (weekDay) return 1;
     if (holiday) return 1;
     return 0;
@@ -190,7 +193,7 @@ export class ScheduleTab {
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setShift(scheduleDay, () => {
       this.validator.validateDailyBreak(scheduleDay, this.employeeScheduleDays);
-      this.validator.validateWeekBreak(scheduleDay, this.employeeScheduleDays);
+      this.validator.validateWeekBreak(scheduleDay, this.employeeScheduleDays, this.periodStartDate);
       this.setSummaryData(employeeId);
       this.setUpdatedBy(scheduleDay);
     });
