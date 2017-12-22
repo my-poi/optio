@@ -190,7 +190,6 @@ export class SchedulesMethods {
 
     const schedules = employeeSchedules.map((schedule: Schedule) => {
       const employee: Employee = scheduleEmployees.find((x: Employee) => x.id === schedule.employeeId);
-      const daysInMonth = new Date(schedule.year, schedule.month, 0).getDate();
       const scheduleFrom = new Date(schedule.year, schedule.month - 1, 1, 0, 0, 0);
       const scheduleTo = new Date(schedule.year, schedule.month, 0, 23, 59, 59);
       const schedulePlannedDays: PlannedDay[] = plannedDays.filter((x: PlannedDay) =>
@@ -221,9 +220,6 @@ export class SchedulesMethods {
         schedule.year,
         schedule.month,
         schedule.sortOrder,
-        29 <= daysInMonth,
-        30 <= daysInMonth,
-        31 === daysInMonth,
         monthlyTime.totalHours(),
         monthlyTime.minutes(),
         this.getMonthlyDays(schedulePlannedDays),

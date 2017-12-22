@@ -24,6 +24,9 @@ export class ScheduleTab {
   scheduleTableBodyHeight = window.innerHeight - 242;
   year: number;
   month: number;
+  column29 = false;
+  column30 = false;
+  column31 = false;
   currentPeriodMonths: PeriodDefinition[];
   periodStartDate: Date;
   monthlyMinutesLimit: number;
@@ -46,6 +49,10 @@ export class ScheduleTab {
   load(companyUnitId: number, year: number, month: number) {
     this.year = year;
     this.month = month;
+    const daysInMonth = new Date(this.year, this.month, 0).getDate();
+    this.column29 = daysInMonth < 29;
+    this.column30 = daysInMonth < 30;
+    this.column31 = daysInMonth < 31;
     this.dataService.loadSchedule(companyUnitId, year, month, (results) => {
       this.schedules = results;
       this.currentSchedule = this.schedules.
@@ -140,9 +147,6 @@ export class ScheduleTab {
 
   setHeader(firstSchedule: EmployeeSchedule) {
     this.header = new ScheduleHeader();
-    this.header.column29 = firstSchedule.column29;
-    this.header.column30 = firstSchedule.column30;
-    this.header.column31 = firstSchedule.column31;
     this.header.hd = [];
     firstSchedule.sd.forEach(x => {
       this.header.hd.push(new ScheduleHeaderDay(

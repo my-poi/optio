@@ -6,9 +6,6 @@ export class EmployeeSchedule {
   year: number;
   month: number;
   sortOrder: number;
-  column29: boolean;
-  column30: boolean;
-  column31: boolean;
   monthlyHours: number;
   monthlyMinutes: number;
   monthlyDays: number;
@@ -27,9 +24,6 @@ export class EmployeeSchedule {
     year: number,
     month: number,
     sortOrder: number,
-    column29: boolean,
-    column30: boolean,
-    column31: boolean,
     monthlyHours: number,
     monthlyMinutes: number,
     monthlyDays: number,
@@ -46,9 +40,6 @@ export class EmployeeSchedule {
       this.year = year;
       this.month = month;
       this.sortOrder = sortOrder;
-      this.column29 = column29;
-      this.column30 = column30;
-      this.column31 = column31;
       this.monthlyHours = monthlyHours;
       this.monthlyMinutes = monthlyMinutes;
       this.monthlyDays = monthlyDays;

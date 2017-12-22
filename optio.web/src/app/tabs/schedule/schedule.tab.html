@@ -31,9 +31,9 @@
         <td [ngClass]="{'week': header?.hd[25].bw === 1}"></td>
         <td [ngClass]="{'week': header?.hd[26].bw === 1}"></td>
         <td [ngClass]="{'week': header?.hd[27].bw === 1}"></td>
-        <td [ngClass]="{'week': header?.hd[28] && header?.hd[28].bw === 1}" [ngStyle]="!header?.column29 && {'display': 'none'}"></td>
-        <td [ngClass]="{'week': header?.hd[29] && header?.hd[29].bw === 1}" [ngStyle]="!header?.column30 && {'display': 'none'}"></td>
-        <td [ngClass]="{'week': header?.hd[30] && header?.hd[30].bw === 1}" [ngStyle]="!header?.column31 && {'display': 'none'}"></td>
+        <td [ngClass]="{'week': header?.hd[28] && header?.hd[28].bw === 1}" [hidden]="column29"></td>
+        <td [ngClass]="{'week': header?.hd[29] && header?.hd[29].bw === 1}" [hidden]="column30"></td>
+        <td [ngClass]="{'week': header?.hd[30] && header?.hd[30].bw === 1}" [hidden]="column31"></td>
         <td></td>
         <td></td>
       </tr>
@@ -67,9 +67,9 @@
         <th [ngClass]="{'free': header?.hd[25].bd === 1}">26</th>
         <th [ngClass]="{'free': header?.hd[26].bd === 1}">27</th>
         <th [ngClass]="{'free': header?.hd[27].bd === 1}">28</th>
-        <th [ngClass]="{'free': header?.hd[28] && header.hd[28].bd === 1}" [ngStyle]="!header?.column29 && {'display': 'none'}">29</th>
-        <th [ngClass]="{'free': header?.hd[29] && header.hd[29].bd === 1}" [ngStyle]="!header?.column30 && {'display': 'none'}">30</th>
-        <th [ngClass]="{'free': header?.hd[30] && header.hd[30].bd === 1}" [ngStyle]="!header?.column31 && {'display': 'none'}">31</th>
+        <th [ngClass]="{'free': header?.hd[28] && header.hd[28].bd === 1}" [hidden]="column29">29</th>
+        <th [ngClass]="{'free': header?.hd[29] && header.hd[29].bd === 1}" [hidden]="column30">30</th>
+        <th [ngClass]="{'free': header?.hd[30] && header.hd[30].bd === 1}" [hidden]="column31">31</th>
       </tr>
     </thead>
   </table>
@@ -167,13 +167,13 @@
               <td>
                 <input type="text" [(ngModel)]="s.sd[27].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[27])" [ngClass]="{'free': s.sd[27].bt === 1, 'comment': s.sd[27].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column29 && {'display': 'none'}">
+              <td [hidden]="column29">
                 <input type="text" [(ngModel)]="s.sd[28] && s.sd[28].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[28])" [ngClass]="{'free': s.sd[28] && s.sd[28].bt === 1, 'comment': s.sd[28] && s.sd[28].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column30 && {'display': 'none'}">
+              <td [hidden]="column30">
                 <input type="text" [(ngModel)]="s.sd[29] && s.sd[29].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[29])" [ngClass]="{'free': s.sd[29] && s.sd[29].bt === 1, 'comment': s.sd[29] && s.sd[29].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column31 && {'display': 'none'}">
+              <td [hidden]="column31">
                 <input type="text" [(ngModel)]="s.sd[30] && s.sd[30].h" (ngModelChange)="hourChanged(s.employeeId, s.sd[30])" [ngClass]="{'free': s.sd[30] && s.sd[30].bt === 1, 'comment': s.sd[30] && s.sd[30].bt === 2}" maxlength="2" tabindex="-1">
               </td>
               <td rowspan="3" style="width: 85px; min-width: 85px; text-align: center; border-left: 1px solid #d4d5d5" [ngClass]="{size: s.monthlyBackground === 2, 'error': s.monthlyBackground === 4}">{{s.monthlyHours}}:{{("00" + s.monthlyMinutes).slice(-2)}}/{{s.monthlyDays}}</td>
@@ -264,13 +264,13 @@
               <td>
                 <input type="text" [(ngModel)]="s.sd[27].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[27])" [ngClass]="{'free': s.sd[27].bt === 1, 'comment': s.sd[27].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column29 && {'display': 'none'}">
+              <td [hidden]="column29">
                 <input type="text" [(ngModel)]="s.sd[28] && s.sd[28].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[28])" [ngClass]="{'free': s.sd[28] && s.sd[28].bt === 1, 'comment': s.sd[28] && s.sd[28].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column30 && {'display': 'none'}">
+              <td [hidden]="column30">
                 <input type="text" [(ngModel)]="s.sd[29] && s.sd[29].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[29])" [ngClass]="{'free': s.sd[29] && s.sd[29].bt === 1, 'comment': s.sd[29] && s.sd[29].bt === 2}" maxlength="2" tabindex="-1">
               </td>
-              <td [ngStyle]="!s.column31 && {'display': 'none'}">
+              <td [hidden]="column31">
                 <input type="text" [(ngModel)]="s.sd[30] && s.sd[30].m" (ngModelChange)="minuteChanged(s.employeeId, s.sd[30])" [ngClass]="{'free': s.sd[30] && s.sd[30].bt === 1, 'comment': s.sd[30] && s.sd[30].bt === 2}" maxlength="2" tabindex="-1">
               </td>
             </tr>
@@ -359,13 +359,13 @@
               <td>
                 <input type="text" [(ngModel)]="s.sd[27].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[27])" (focus)="selectDay(s.sd[27]); select(s)" [ngClass]="{'free': s.sd[27].bx === 1, 'vacation': s.sd[27].bx === 2, 'error': s.sd[27].bx === 3}" spellcheck="false">
               </td>
-              <td [ngStyle]="!s.column29 && {'display': 'none'}">
+              <td [hidden]="column29">
                 <input type="text" [(ngModel)]="s.sd[28] && s.sd[28].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[28])" (focus)="selectDay(s.sd[28]); select(s)" [ngClass]="{'free': s.sd[28] && s.sd[28].bx === 1, 'vacation': s.sd[28] && s.sd[28].bx === 2, 'error': s.sd[28] && s.sd[28].bx === 3}" spellcheck="false">
               </td>
-              <td [ngStyle]="!s.column30 && {'display': 'none'}">
+              <td [hidden]="column30">
                 <input type="text" [(ngModel)]="s.sd[29] && s.sd[29].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[29])" (focus)="selectDay(s.sd[29]); select(s)" [ngClass]="{'free': s.sd[29] && s.sd[29].bx === 1, 'vacation': s.sd[29] && s.sd[29].bx === 2, 'error': s.sd[29] && s.sd[29].bx === 3}" spellcheck="false">
               </td>
-              <td [ngStyle]="!s.column31 && {'display': 'none'}">
+              <td [hidden]="column31">
                 <input type="text" [(ngModel)]="s.sd[30] && s.sd[30].x" (ngModelChange)="shiftChanged(s.employeeId, s.sd[30])" (focus)="selectDay(s.sd[30]); select(s)" [ngClass]="{'free': s.sd[30] && s.sd[30].bx === 1, 'vacation': s.sd[30] && s.sd[30].bx === 2, 'error': s.sd[30] && s.sd[30].bx === 3}" spellcheck="false">
               </td>
             </tr>

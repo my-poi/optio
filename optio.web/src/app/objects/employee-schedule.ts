@@ -6,9 +6,6 @@ export interface EmployeeSchedule {
   year: number;
   month: number;
   sortOrder: number;
-  column29: boolean;
-  column30: boolean;
-  column31: boolean;
   monthlyHours: number;
   monthlyMinutes: number;
   monthlyDays: number;
