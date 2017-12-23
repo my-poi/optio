@@ -130,6 +130,17 @@ export class ScheduleValidator {
     }
   }
 
+  validateWeekHourlyLimit(year: number, month: number, employeeScheduleDays: ScheduleDay[], periodStartDate: Date) {
+    const firstMonthDay = new Date(year, month - 1, 1, 0, 0, 0);
+    const firstWeekDay = this.getfirstWeekDay(firstMonthDay, periodStartDate);
+
+    for (let i = 1; i <= 6; i++) {
+      if (i !== 1 && firstWeekDay.getMonth() + 1 !== month) return;
+      this.validateSevenDaysWeekHourlyLimit(firstWeekDay, employeeScheduleDays);
+      firstWeekDay.setDate(firstWeekDay.getDate() + 7);
+    }
+  }
+
   getfirstWeekDay(day: Date, periodStartDate: Date) {
     const testedDay = new Date(day);
     testedDay.setHours(0, 0, 0);
@@ -196,6 +207,29 @@ export class ScheduleValidator {
       if (!result) {
         lastScheduleDay.bx = 3;
         lastScheduleDay.e.push(this.scheduleDayErrors[1]);
+      }
+    });
+  }
+
+  validateSevenDaysWeekHourlyLimit(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]) {
+    const testedDay = new Date(firstWeekDay);
+
+    this.getTestedScheduleDays(firstWeekDay, employeeScheduleDays, (testedScheduleDays) => {
+      if (!testedScheduleDays) return;
+
+      const result = new TimeSpan();
+
+      testedScheduleDays.forEach((testedScheduleDay: ScheduleDay) => {
+        result.addHours(testedScheduleDay.h);
+        result.addMinutes(testedScheduleDay.m);
+      });
+
+      const lastScheduleDay = testedScheduleDays.pop();
+      this.clearDayError(lastScheduleDay, 3);
+
+      if (result.totalMinutes() > 2880) {
+        lastScheduleDay.bx = 3;
+        lastScheduleDay.e.push(this.scheduleDayErrors[2]);
       }
     });
   }

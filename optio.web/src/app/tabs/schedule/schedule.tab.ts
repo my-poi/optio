@@ -174,28 +174,29 @@ export class ScheduleTab {
   hourChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setHour(scheduleDay, () => {
       this.validator.validateHasDayTimeValue(scheduleDay);
-      this.validator.validateDailyLimit(scheduleDay);
-      this.setSummaryData(employeeId);
-      this.setUpdatedBy(scheduleDay);
+      this.validateAndSetRestData(employeeId, scheduleDay);
     });
   }
 
   minuteChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setMinute(scheduleDay, () => {
       this.validator.validateHasDayTimeValue(scheduleDay);
-      this.validator.validateDailyLimit(scheduleDay);
-      this.setSummaryData(employeeId);
-      this.setUpdatedBy(scheduleDay);
+      this.validateAndSetRestData(employeeId, scheduleDay);
     });
   }
 
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setShift(scheduleDay, () => {
-      this.validator.validateDailyBreak(scheduleDay, this.employeeScheduleDays);
-      this.validator.validateWeekBreak(this.year, this.month, this.employeeScheduleDays, this.periodStartDate);
-      this.setSummaryData(employeeId);
-      this.setUpdatedBy(scheduleDay);
+      this.validateAndSetRestData(employeeId, scheduleDay);
     });
+  }
+
+  validateAndSetRestData(employeeId: number, scheduleDay: ScheduleDay) {
+    this.validator.validateDailyBreak(scheduleDay, this.employeeScheduleDays);
+    this.validator.validateWeekBreak(this.year, this.month, this.employeeScheduleDays, this.periodStartDate);
+    this.validator.validateWeekHourlyLimit(this.year, this.month, this.employeeScheduleDays, this.periodStartDate);
+    this.setSummaryData(employeeId);
+    this.setUpdatedBy(scheduleDay);
   }
 
   setHour(scheduleDay: ScheduleDay, callback) {
