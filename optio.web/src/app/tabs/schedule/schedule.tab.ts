@@ -192,7 +192,7 @@ export class ScheduleTab {
   shiftChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setShift(scheduleDay, () => {
       this.validator.validateDailyBreak(scheduleDay, this.employeeScheduleDays);
-      this.validator.validateWeekBreak(scheduleDay, this.employeeScheduleDays, this.periodStartDate);
+      this.validator.validateWeekBreak(this.year, this.month, this.employeeScheduleDays, this.periodStartDate);
       this.setSummaryData(employeeId);
       this.setUpdatedBy(scheduleDay);
     });

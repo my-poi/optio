@@ -119,15 +119,14 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateWeekBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[], periodStartDate: Date) {
-    const firstWeekDay = this.getfirstWeekDay(scheduleDay.d, periodStartDate);
-    const hasBreak = this.validateSevenDaysWeekBreak(firstWeekDay, employeeScheduleDays);
-    console.log('hasBreak: ' + hasBreak);
+  validateWeekBreak(year: number, month: number, employeeScheduleDays: ScheduleDay[], periodStartDate: Date) {
+    const firstMonthDay = new Date(year, month - 1, 1, 0, 0, 0);
+    const firstWeekDay = this.getfirstWeekDay(firstMonthDay, periodStartDate);
 
-    if (!hasBreak) {
-      scheduleDay.bx = 3;
-      scheduleDay.e.push(this.scheduleDayErrors[1]);
-      this.showErrors(scheduleDay);
+    for (let i = 1; i <= 6; i++) {
+      if (i !== 1 && firstWeekDay.getMonth() + 1 !== month) return;
+      this.validateSevenDaysWeekBreak(firstWeekDay, employeeScheduleDays);
+      firstWeekDay.setDate(firstWeekDay.getDate() + 7);
     }
   }
 
@@ -143,11 +142,67 @@ export class ScheduleValidator {
     return firstWeekDay;
   }
 
-  validateSevenDaysWeekBreak(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]): boolean {
+  validateSevenDaysWeekBreak(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]) {
     const testedDay = new Date(firstWeekDay);
+
+    this.getTestedScheduleDays(testedDay, employeeScheduleDays, (testedScheduleDays) => {
+      if (!testedScheduleDays) return;
+
+      let breakStart = this.getBreakStart(testedDay, employeeScheduleDays);
+      let result = false;
+
+      testedScheduleDays.forEach(testedScheduleDay => {
+        const newStart = new Date(testedScheduleDay.d);
+        newStart.setHours(0, 0, 0);
+
+        if (testedScheduleDay.s) {
+          const scheduleDayShift = this.dataService.shifts.find(x => x.id === testedScheduleDay.s);
+          const scheduleDayShiftDuration = this.getShiftDuration(testedScheduleDay.d, scheduleDayShift.durations);
+          const scheduleDayStartHours = Number(scheduleDayShiftDuration.start.substring(0, 2));
+          const scheduleDayStartMinutes = Number(scheduleDayShiftDuration.start.substring(3, 5));
+
+          newStart.setHours(scheduleDayStartHours, scheduleDayStartMinutes, 0);
+          const difference = newStart.getTime() - breakStart.getTime();
+          const resultInMinutes = Math.round(difference / 60000);
+
+          // console.log(
+          //   'Zaplanowano zmianę:' + '\n' +
+          //   'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm') + '\n' +
+          //   'testedScheduleDay: ' + testedScheduleDay.d + '\n' +
+          //   'resultInMinutes: ' + resultInMinutes);
+
+          if (resultInMinutes >= 2100) result = true;
+
+          breakStart = new Date(testedScheduleDay.d);
+          breakStart.setHours(scheduleDayStartHours + testedScheduleDay.h, scheduleDayStartMinutes + testedScheduleDay.m, 0);
+        } else {
+          newStart.setDate(newStart.getDate() + 1);
+          const difference = newStart.getTime() - breakStart.getTime();
+          const resultInMinutes = Math.round(difference / 60000);
+
+          // console.log(
+          //   'Dzień wolny: ' + '\n' +
+          //   'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm') + '\n' +
+          //   'testedScheduleDay: ' + testedScheduleDay.d + '\n' +
+          //   'resultInMinutes: ' + resultInMinutes);
+
+          if (resultInMinutes >= 2100) result = true;
+        }
+      });
+
+      const lastScheduleDay = testedScheduleDays.pop();
+      this.clearDayError(lastScheduleDay, 2);
+
+      if (!result) {
+        lastScheduleDay.bx = 3;
+        lastScheduleDay.e.push(this.scheduleDayErrors[1]);
+        this.showErrors(lastScheduleDay);
+      }
+    });
+  }
+
+  getTestedScheduleDays(testedDay: Date, employeeScheduleDays: ScheduleDay[], callback) {
     const testedScheduleDays: ScheduleDay[] = [];
-    let breakStart = this.getBreakStart(testedDay, employeeScheduleDays);
-    let result = false;
 
     for (let i = 1; i <= 7; i++) {
       const testedScheduleDay = employeeScheduleDays.find(x => {
@@ -157,54 +212,12 @@ export class ScheduleValidator {
         return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
       });
 
-      if (!testedScheduleDay) return true;
+      if (!testedScheduleDay) return callback(null);
       testedScheduleDays.push(testedScheduleDay);
       testedDay.setDate(testedDay.getDate() + 1);
     }
 
-    testedScheduleDays.forEach(x => this.clearDayError(x, 2));
-
-    testedScheduleDays.forEach(testedScheduleDay => {
-      const newStart = new Date(testedScheduleDay.d);
-      newStart.setHours(0, 0, 0);
-
-      if (testedScheduleDay.s) {
-        const scheduleDayShift = this.dataService.shifts.find(x => x.id === testedScheduleDay.s);
-        const scheduleDayShiftDuration = this.getShiftDuration(testedScheduleDay.d, scheduleDayShift.durations);
-        const scheduleDayStartHours = Number(scheduleDayShiftDuration.start.substring(0, 2));
-        const scheduleDayStartMinutes = Number(scheduleDayShiftDuration.start.substring(3, 5));
-
-        newStart.setHours(scheduleDayStartHours, scheduleDayStartMinutes, 0);
-        const difference = newStart.getTime() - breakStart.getTime();
-        const resultInMinutes = Math.round(difference / 60000);
-
-        console.log(
-          'Zaplanowano zmianę:' + '\n' +
-          'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm') + '\n' +
-          'testedScheduleDay: ' + testedScheduleDay.d + '\n' +
-          'resultInMinutes: ' + resultInMinutes);
-
-        if (resultInMinutes >= 2100) result = true;
-
-        breakStart = new Date(testedScheduleDay.d);
-        breakStart.setHours(scheduleDayStartHours + testedScheduleDay.h, scheduleDayStartMinutes + testedScheduleDay.m, 0);
-      } else {
-        newStart.setDate(newStart.getDate() + 1);
-        const difference = newStart.getTime() - breakStart.getTime();
-        const resultInMinutes = Math.round(difference / 60000);
-
-        console.log(
-          'Dzień wolny: ' + '\n' +
-          'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm') + '\n' +
-          'testedScheduleDay: ' + testedScheduleDay.d + '\n' +
-          'resultInMinutes: ' + resultInMinutes);
-
-          if (resultInMinutes >= 2100) result = true;
-      }
-    });
-
-    console.log('return result');
-    return result;
+    callback(testedScheduleDays);
   }
 
   getBreakStart(day: Date, employeeScheduleDays: ScheduleDay[]): Date {
