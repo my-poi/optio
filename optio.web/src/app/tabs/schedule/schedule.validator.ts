@@ -145,7 +145,7 @@ export class ScheduleValidator {
   validateSevenDaysWeekBreak(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]) {
     const testedDay = new Date(firstWeekDay);
 
-    this.getTestedScheduleDays(testedDay, employeeScheduleDays, (testedScheduleDays) => {
+    this.getTestedScheduleDays(firstWeekDay, employeeScheduleDays, (testedScheduleDays) => {
       if (!testedScheduleDays) return;
 
       let breakStart = this.getBreakStart(testedDay, employeeScheduleDays);
@@ -196,20 +196,20 @@ export class ScheduleValidator {
       if (!result) {
         lastScheduleDay.bx = 3;
         lastScheduleDay.e.push(this.scheduleDayErrors[1]);
-        this.showErrors(lastScheduleDay);
       }
     });
   }
 
-  getTestedScheduleDays(testedDay: Date, employeeScheduleDays: ScheduleDay[], callback) {
+  getTestedScheduleDays(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[], callback) {
     const testedScheduleDays: ScheduleDay[] = [];
+    const testedDay = new Date(firstWeekDay);
 
     for (let i = 1; i <= 7; i++) {
-      const testedScheduleDay = employeeScheduleDays.find(x => {
+      const testedScheduleDay = employeeScheduleDays.find(scheduleDay => {
         const y = testedDay.getFullYear();
         const m = String(testedDay.getMonth() + 1);
         const d = String(testedDay.getDate());
-        return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+        return scheduleDay.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
       });
 
       if (!testedScheduleDay) return callback(null);
