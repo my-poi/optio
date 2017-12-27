@@ -83,18 +83,6 @@ export class ScheduleValidator {
     return hasWeekHourlyLimit;
   }
 
-  // getFirstWeekDay(day: Date, periodStartDate: Date) {
-  //   const testedDay = new Date(day);
-  //   testedDay.setHours(0, 0, 0);
-  //   const timeDifference = testedDay.getTime() - periodStartDate.getTime();
-  //   const daysDifference = timeDifference / 86400000;
-  //   const remainder = daysDifference % 7;
-  //   const firstWeekDay = new Date(day);
-  //   firstWeekDay.setHours(0, 0, 0);
-  //   firstWeekDay.setDate(firstWeekDay.getDate() - remainder);
-  //   return firstWeekDay;
-  // }
-
   validateSevenDaysWeekBreak(firstWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]) {
     const testedPlannedDays = this.getTestedPlannedDays(firstWeekDay, employeePlannedDays);
 
