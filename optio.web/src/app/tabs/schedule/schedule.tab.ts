@@ -79,6 +79,10 @@ export class ScheduleTab {
   }
 
   selectDay(scheduleDay: ScheduleDay) {
+    this.showErrors(scheduleDay);
+  }
+
+  showErrors(scheduleDay: ScheduleDay) {
     const errors = scheduleDay.e.map(x => x.error);
     this.infosService.scheduleInfo = errors.join('\n');
   }
@@ -197,6 +201,7 @@ export class ScheduleTab {
     this.validator.validateWeekHourlyLimit(this.year, this.month, this.periodStartDate, this.employeeScheduleDays);
     this.setSummaryData(employeeId);
     this.setUpdatedBy(scheduleDay);
+    this.showErrors(scheduleDay);
   }
 
   setHour(scheduleDay: ScheduleDay, callback) {
