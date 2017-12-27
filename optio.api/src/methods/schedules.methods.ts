@@ -22,8 +22,11 @@ import { json } from 'body-parser';
 import { ShiftsMethods } from './shifts.methods';
 import { ShiftDuration } from '../objects/shift-duration';
 import { ScheduleDayError } from '../objects/schedule-day-error';
+import { ScheduleValidator } from '../validators/schedule.validator';
+import { config } from '../config';
 
 export class SchedulesMethods {
+  private scheduleValidator = new ScheduleValidator();
   private scheduleDayErrors = [
     { 'id': 1, 'error': '- naruszono dobę pracowniczą' },
     { 'id': 2, 'error': '- nie zaplanowano 35 godzinnej przerwy tygodniowej' },
@@ -196,8 +199,17 @@ export class SchedulesMethods {
         x.employeeId === schedule.employeeId &&
         new Date(x.day).getTime() >= scheduleFrom.getTime() &&
         new Date(x.day).getTime() <= scheduleTo.getTime());
+      const employeePlannedDays = plannedDays.filter((x: PlannedDay) => x.employeeId === schedule.employeeId);
       const employeeVacations = vacations.filter((x: Vacation) => x.employeeId === schedule.employeeId);
-      const scheduleDays = this.getScheduleDays(schedulePlannedDays, plannedDays, shifts, holidays, employeeVacations);
+      const scheduleDays = this.getScheduleDays(
+        year,
+        month,
+        schedulePlannedDays,
+        employeePlannedDays,
+        periodStartDate,
+        shifts,
+        holidays,
+        employeeVacations);
 
       // console.log('from: ' + scheduleFrom);
       // console.log('to: ' + scheduleTo);
@@ -308,8 +320,11 @@ export class SchedulesMethods {
   }
 
   getScheduleDays(
+    year: number,
+    month: number,
     schedulePlannedDays: PlannedDay[],
-    plannedDays: PlannedDay[],
+    employeePlannedDays: PlannedDay[],
+    periodStartDate: Date,
     shifts: Shift[],
     holidays: Holiday[],
     employeeVacations: Vacation[]): ScheduleDay[] {
@@ -320,7 +335,7 @@ export class SchedulesMethods {
       let holiday = false;
       if (!weekDay) holiday = holidays.find(h => new Date(h.dayOff).getTime() === day.getTime()) !== undefined;
       const vacation = this.hasVacation(day, employeeVacations);
-      const errors = this.hasErrors(plannedDay, plannedDays, shifts);
+      const errors = this.hasErrors(year, month, plannedDay, employeePlannedDays, periodStartDate, shifts);
       return new ScheduleDay(
         plannedDay.day,
         plannedDay.hours,
@@ -348,78 +363,40 @@ export class SchedulesMethods {
   }
 
   hasErrors(
+    year: number,
+    month: number,
     plannedDay: PlannedDay,
-    plannedDays: PlannedDay[],
+    employeePlannedDays: PlannedDay[],
+    periodStartDate: Date,
     shifts: Shift[]) {
     const errors: ScheduleDayError[] = [];
-    const dailyBreakError = this.validateScheduleDayDailyBreak(plannedDay, plannedDays, shifts);
+    const dailyBreakError = this.scheduleValidator.validateScheduleDayDailyBreak(plannedDay, employeePlannedDays, shifts);
     if (dailyBreakError) errors.push(this.scheduleDayErrors[0]);
+
+    const lastWeekDay = this.getLastWeekDay(plannedDay.day, periodStartDate);
+    const day = new Date(plannedDay.day);
+    day.setHours(0, 0, 0);
+
+    if (day.getTime() === lastWeekDay.getTime()) {
+      const hasWeekBreak = this.scheduleValidator.validateWeekBreak(lastWeekDay, employeePlannedDays, shifts);
+      if (!hasWeekBreak) errors.push(this.scheduleDayErrors[1]);
+      const hasWeekHourlyLimit = this.scheduleValidator.validateWeekHourlyLimit(lastWeekDay, employeePlannedDays);
+      if (!hasWeekHourlyLimit) errors.push(this.scheduleDayErrors[2]);
+    }
+
     return errors;
   }
 
-  validateScheduleDayDailyBreak(
-    plannedDay: PlannedDay,
-    plannedDays: PlannedDay[],
-    shifts: Shift[]): boolean {
-    const currentDay = new Date(plannedDay.day);
-    let previousWorkDayStartingTime;
-    let currentWorkDayStartingTime;
-
-    if (!plannedDay.shiftId) return false;
-
-    const previousDay = new Date(currentDay);
-    previousDay.setDate(previousDay.getDate() - 1);
-
-    const previousPlannedDay = plannedDays.find(x =>
-      x.employeeId === plannedDay.employeeId &&
-      new Date(x.day).getTime() === previousDay.getTime());
-
-    if (!previousPlannedDay) return false;
-    if (!previousPlannedDay.shiftId) return false;
-
-    const previousWorkDayShift = shifts.find(x => x.id === previousPlannedDay.shiftId);
-    if (previousWorkDayShift) {
-      if (previousWorkDayShift.durations) {
-        const previousWorkDayShiftDuration = this.getShiftDuration(previousDay, previousWorkDayShift.durations);
-        if (previousWorkDayShiftDuration) {
-          const previousStartHours = Number(previousWorkDayShiftDuration.start.substring(0, 2));
-          const previousStartMinutes = Number(previousWorkDayShiftDuration.start.substring(3, 5));
-          previousWorkDayStartingTime = new TimeSpan(0, previousStartHours, previousStartMinutes);
-        }
-      }
-    }
-
-    const currentWorkDayShift = shifts.find(x => x.id === plannedDay.shiftId);
-    if (currentWorkDayShift) {
-      if (currentWorkDayShift.durations) {
-        const currentWorkDayShiftDuration = this.getShiftDuration(currentDay, currentWorkDayShift.durations);
-        if (currentWorkDayShiftDuration) {
-          const currentStartHours = Number(currentWorkDayShiftDuration.start.substring(0, 2));
-          const currentStartMinutes = Number(currentWorkDayShiftDuration.start.substring(3, 5));
-          currentWorkDayStartingTime = new TimeSpan(0, currentStartHours, currentStartMinutes);
-        }
-      }
-    }
-
-    let minutesDifference = 0;
-
-    if (previousWorkDayStartingTime && currentWorkDayStartingTime)
-      minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
-
-    if (minutesDifference < 0) return true;
-    else return false;
-  }
-
-  getShiftDuration(day: Date, durations: ShiftDuration[]) {
-    const dayTime = new Date(day).getTime();
-    const duration = durations.find(x =>
-      dayTime >= new Date(x.validFrom).getTime() &&
-      dayTime <= this.getShiftValidToDate(x.validTo).getTime());
-    return duration;
-  }
-
-  getShiftValidToDate(validTo: Date): Date {
-    return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
+  getLastWeekDay(day: Date, periodStartDate: Date) {
+    const testedDay = new Date(day);
+    testedDay.setHours(0, 0, 0);
+    const timeDifference = testedDay.getTime() - periodStartDate.getTime();
+    const daysDifference = timeDifference / 86400000;
+    const remainder = daysDifference % 7;
+    const lastWeekDay = new Date(day);
+    lastWeekDay.setHours(0, 0, 0);
+    lastWeekDay.setDate(lastWeekDay.getDate() + 6 - remainder);
+    return lastWeekDay;
   }
 
   getTimeBackground(comment: string, weekDay: boolean, holiday: boolean): number {

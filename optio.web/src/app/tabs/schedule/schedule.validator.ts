@@ -119,9 +119,9 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateWeekBreak(year: number, month: number, employeeScheduleDays: ScheduleDay[], periodStartDate: Date) {
+  validateWeekBreak(year: number, month: number, periodStartDate: Date, employeeScheduleDays: ScheduleDay[]) {
     const firstMonthDay = new Date(year, month - 1, 1, 0, 0, 0);
-    const firstWeekDay = this.getfirstWeekDay(firstMonthDay, periodStartDate);
+    const firstWeekDay = this.getFirstWeekDay(firstMonthDay, periodStartDate);
 
     for (let i = 1; i <= 6; i++) {
       if (i !== 1 && firstWeekDay.getMonth() + 1 !== month) return;
@@ -130,9 +130,9 @@ export class ScheduleValidator {
     }
   }
 
-  validateWeekHourlyLimit(year: number, month: number, employeeScheduleDays: ScheduleDay[], periodStartDate: Date) {
+  validateWeekHourlyLimit(year: number, month: number, periodStartDate: Date, employeeScheduleDays: ScheduleDay[]) {
     const firstMonthDay = new Date(year, month - 1, 1, 0, 0, 0);
-    const firstWeekDay = this.getfirstWeekDay(firstMonthDay, periodStartDate);
+    const firstWeekDay = this.getFirstWeekDay(firstMonthDay, periodStartDate);
 
     for (let i = 1; i <= 6; i++) {
       if (i !== 1 && firstWeekDay.getMonth() + 1 !== month) return;
@@ -141,7 +141,7 @@ export class ScheduleValidator {
     }
   }
 
-  getfirstWeekDay(day: Date, periodStartDate: Date) {
+  getFirstWeekDay(day: Date, periodStartDate: Date) {
     const testedDay = new Date(day);
     testedDay.setHours(0, 0, 0);
     const timeDifference = testedDay.getTime() - periodStartDate.getTime();
