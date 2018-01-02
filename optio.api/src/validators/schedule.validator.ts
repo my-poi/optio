@@ -53,8 +53,7 @@ export class ScheduleValidator {
     if (previousWorkDayStartingTime && currentWorkDayStartingTime)
       minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
 
-    if (minutesDifference < 0) return true;
-    else return false;
+    return minutesDifference < 0;
   }
 
   getShiftDuration(day: Date, durations: ShiftDuration[]) {
@@ -150,8 +149,7 @@ export class ScheduleValidator {
       result.addMinutes(testedPlannedDay.minutes);
     });
 
-    if (result.totalMinutes() > 2880) return false;
-    return true;
+    return result.totalMinutes() <= 2880;
   }
 
   getTestedPlannedDays(firstWeekDay: Date, employeePlannedDays: PlannedDay[]) {
