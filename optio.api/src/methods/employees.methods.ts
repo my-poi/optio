@@ -1,4 +1,3 @@
-import { RowDataPacket } from 'mysql2/promise';
 import { OrganizationDatabase } from '../databases/organization.database';
 import { queries } from '../queries';
 import { Classification } from '../objects/classification';

@@ -1,13 +1,13 @@
 import * as express from 'express';
 import * as cors from 'cors';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { json, urlencoded } from 'body-parser';
 // Optio
-import { queries } from './queries';
-import { errors } from './errors';
+// import { queries } from './queries';
+// import { errors } from './errors';
 // Databases
 import { OrganizationDatabase } from './databases/organization.database';
-import { SystemDatabase } from './databases/system.database';
+// import { SystemDatabase } from './databases/system.database';
 import { WorkTimeDatabase } from './databases/work-time.database';
 // Methods
 import { ClassificationsMethods } from './methods/classifications.methods';
@@ -40,7 +40,7 @@ import { VacationsRouter } from './routers/vacations.router';
 const app = express();
 // Databases
 const organizationDatabase = new OrganizationDatabase();
-const systemDatabase = new SystemDatabase();
+// const systemDatabase = new SystemDatabase();
 const workTimeDatabase = new WorkTimeDatabase();
 // Methods
 const classificationsMethods = new ClassificationsMethods(organizationDatabase);
@@ -97,7 +97,7 @@ app.use('/api/data/schedules', schedulesRouter.router);
 app.use('/api/data/shifts', shiftsRouter.router);
 app.use('/api/data/vacations', vacationsRouter.router);
 
-app.get('/api', (request: Request, response: Response) => {
+app.get('/api', (response: Response) => {
   response.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
   response.end('Usługi sieciowe Optio');
 });

@@ -17,11 +17,11 @@ export class DroppableDirective implements OnInit {
       e.dataTransfer.dropEffect = 'move';
     });
 
-    element.addEventListener('dragenter', (e) => {
+    element.addEventListener('dragenter', () => {
       element.classList.add('over');
     });
 
-    element.addEventListener('dragleave', (e) => {
+    element.addEventListener('dragleave', () => {
       element.classList.remove('over');
     });
 

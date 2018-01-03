@@ -10,7 +10,6 @@ import { PeriodDefinition } from '../objects/period-definition';
 import { Period } from '../objects/period';
 import { Shift } from '../objects/shift';
 import { TimeSheet } from '../objects/time-sheet';
-import { Classification } from '../objects/classification';
 import { EmployeeSchedule } from '../objects/employee-schedule';
 
 @Injectable()

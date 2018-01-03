@@ -18,7 +18,7 @@ export class DraggableDirective implements OnInit {
       e.dataTransfer.setData('text', JSON.stringify(this.draggable));
     });
 
-    element.addEventListener('dragend', (e) => {
+    element.addEventListener('dragend', () => {
       element.classList.remove('drag');
     });
   }

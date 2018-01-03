@@ -1,4 +1,3 @@
-import { RowDataPacket } from 'mysql2/promise';
 import { Request } from 'express';
 import { OrganizationDatabase } from '../databases/organization.database';
 import { WorkTimeDatabase } from '../databases/work-time.database';
@@ -17,13 +16,9 @@ import { Holiday } from '../objects/holiday';
 import { Vacation } from '../objects/vacation';
 import { Period } from '../objects/period';
 import { TimeSpan } from '../objects/time-span';
-import { EmployeesMethods } from './employees.methods';
-import { json } from 'body-parser';
 import { ShiftsMethods } from './shifts.methods';
-import { ShiftDuration } from '../objects/shift-duration';
 import { ScheduleDayError } from '../objects/schedule-day-error';
 import { ScheduleValidator } from '../validators/schedule.validator';
-import { config } from '../config';
 
 export class SchedulesMethods {
   private scheduleValidator = new ScheduleValidator();
@@ -83,7 +78,7 @@ export class SchedulesMethods {
       sort((a: Employee, b: Employee) => tools.compare(a.lastName + a.firstName, b.lastName + b.firstName)).
       map(z => z.id);
 
-    const dayValues = this.getDayValues(employeeIdentifiers, year, month, userId);
+    const dayValues = this.getDayValues(employeeIdentifiers, year, month);
     const queryList = [
       {
         sql: queries['insert-planned-days'],
@@ -109,7 +104,7 @@ export class SchedulesMethods {
     return childIds;
   }
 
-  getDayValues(employeeIdentifiers: number[], year: number, month: number, userId: number) {
+  getDayValues(employeeIdentifiers: number[], year: number, month: number) {
     const values: any[] = [];
     const daysInMonth = new Date(year, month, 0).getDate();
 
@@ -202,8 +197,6 @@ export class SchedulesMethods {
       const employeePlannedDays = plannedDays.filter((x: PlannedDay) => x.employeeId === schedule.employeeId);
       const employeeVacations = vacations.filter((x: Vacation) => x.employeeId === schedule.employeeId);
       const scheduleDays = this.getScheduleDays(
-        year,
-        month,
         schedulePlannedDays,
         employeePlannedDays,
         periodStartDate,
@@ -320,8 +313,6 @@ export class SchedulesMethods {
   }
 
   getScheduleDays(
-    year: number,
-    month: number,
     schedulePlannedDays: PlannedDay[],
     employeePlannedDays: PlannedDay[],
     periodStartDate: Date,
@@ -335,7 +326,7 @@ export class SchedulesMethods {
       let holiday = false;
       if (!weekDay) holiday = holidays.find(h => new Date(h.dayOff).getTime() === day.getTime()) !== undefined;
       const vacation = this.hasVacation(day, employeeVacations);
-      const errors = this.hasErrors(year, month, plannedDay, employeePlannedDays, periodStartDate, shifts);
+      const errors = this.hasErrors(plannedDay, employeePlannedDays, periodStartDate, shifts);
       return new ScheduleDay(
         plannedDay.day,
         plannedDay.hours,
@@ -363,8 +354,6 @@ export class SchedulesMethods {
   }
 
   hasErrors(
-    year: number,
-    month: number,
     plannedDay: PlannedDay,
     employeePlannedDays: PlannedDay[],
     periodStartDate: Date,

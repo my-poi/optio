@@ -1,6 +1,4 @@
 import * as jwt from 'jsonwebtoken';
-import { Response } from 'express';
-import { VerifyCallback } from 'jsonwebtoken';
 import { config } from '../config';
 
 export class TokensMethods {

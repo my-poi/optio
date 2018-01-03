@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef, NgbModalOptions } from '../../modules/modal/modal.module';
 import { DataService } from '../../services/data.service';
 import { Shift } from '../../objects/shift';

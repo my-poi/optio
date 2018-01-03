@@ -15,12 +15,12 @@ export class OrganizationDatabase {
   }
 
   async execute(sql: string, values: any) {
-    const [rows, fields] = await this.pool.execute<mysql.RowDataPacket[]>(sql, values);
+    const [rows] = await this.pool.execute<mysql.RowDataPacket[]>(sql, values);
     return rows;
   }
 
   async query(sql: string, values: any) {
-    const [rows, fields] = await this.pool.query<mysql.RowDataPacket[]>(sql, values);
+    const [rows] = await this.pool.query<mysql.RowDataPacket[]>(sql, values);
     return rows;
   }
 

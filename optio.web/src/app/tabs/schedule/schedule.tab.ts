@@ -1,5 +1,4 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { Http } from '@angular/http';
 import { DataService } from '../../services/data.service';
 import { ButtonsService } from '../../services/buttons.service';
 import { GlobalService } from '../../services/global.service';
@@ -11,7 +10,6 @@ import { ScheduleDay } from '../../objects/schedule-day';
 import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { TimeSpan } from '../../objects/time-span';
 import { ShiftDuration } from '../../objects/shift-duration';
-import { TimeSheetEmployee } from '../../objects/time-sheet-employee';
 import { ScheduleValidator } from './schedule.validator';
 
 @Component({
@@ -38,8 +36,7 @@ export class ScheduleTab {
   employeeScheduleDays: ScheduleDay[];
   validator = new ScheduleValidator(this.dataService, this.infosService);
 
-  constructor(private http: Http,
-    private dataService: DataService,
+  constructor(private dataService: DataService,
     private buttonsService: ButtonsService,
     private globalService: GlobalService,
     private infosService: InfosService) { }
@@ -48,7 +45,7 @@ export class ScheduleTab {
     this.year = year;
     this.month = month;
     this.daysInMonth = new Date(this.year, this.month, 0).getDate();
-    this.dataService.loadSchedule(companyUnitId, year, month, (results) => {
+    this.dataService.loadSchedule(companyUnitId, year, month, (results: EmployeeSchedule[]) => {
       this.schedules = results;
       this.currentSchedule = this.schedules.
         filter(x => x.year === this.year && x.month === this.month).

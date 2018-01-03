@@ -5,7 +5,7 @@ import { errors } from '../../errors';
 export class UsersPublicRouter {
   router = Router();
 
-  constructor(private tokensMethods: TokensMethods) {
+  constructor(public tokensMethods: TokensMethods) {
     this.router.post('/login', async (request: Request, response: Response) => {
       const userName = request.body.userName;
       const password = request.body.password;
@@ -16,7 +16,7 @@ export class UsersPublicRouter {
       const userId = 2;
 
       const token = tokensMethods.issueToken(userId, 'm.tokarz', userIp);
-      response.json({token: token, userId: userId });
+      return response.json({token: token, userId: userId });
     });
   }
 }

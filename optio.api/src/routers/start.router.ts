@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { CompanyUnitsMethods } from '../methods/company-units.methods';
 import { EmployeesMethods } from '../methods/employees.methods';
 import { HolidayTypesMethods } from '../methods/holiday-types.methods';
@@ -19,7 +19,7 @@ export class StartRouter {
     private periodsMethods: PeriodsMethods,
     private shiftsMethods: ShiftsMethods
   ) {
-    this.router.get('/get-start-data', async (request: Request, response: Response) => {
+    this.router.get('/get-start-data', async (response: Response) => {
       const results = {
         companyUnits: await this.companyUnitsMethods.getCompanyUnits(),
         employees: await this.employeesMethods.getEmployees(),

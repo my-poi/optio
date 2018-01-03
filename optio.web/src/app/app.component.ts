@@ -1,4 +1,4 @@
-import { Component, Output, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { StructureTab } from './tabs/structure/structure.tab';
 import { CompanyUnitTab } from './tabs/company-unit/company-unit.tab';
 import { EmployeeTab } from './tabs/employee/employee.tab';
@@ -43,8 +43,7 @@ export class AppComponent implements AfterViewInit {
   constructor(private http: Http,
     private browserService: BrowserService,
     private loginService: LoginService,
-    private dataService: DataService,
-    private globalService: GlobalService) { }
+    private dataService: DataService) { }
 
   ngAfterViewInit() {
     this.browserService.detect();

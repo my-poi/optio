@@ -1,6 +1,5 @@
 import { DataService } from '../../services/data.service';
 import { InfosService } from '../../services/infos.service';
-import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { ScheduleDay } from '../../objects/schedule-day';
 import { ShiftDuration } from '../../objects/shift-duration';
 import { TimeSpan } from '../../objects/time-span';
@@ -194,7 +193,6 @@ export class ScheduleValidator {
   }
 
   validateWeekHourlyLimit(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]) {
-    const testedDay = new Date(firstWeekDay);
     const testedScheduleDays = this.getTestedScheduleDays(firstWeekDay, employeeScheduleDays);
 
     if (!testedScheduleDays) return;
