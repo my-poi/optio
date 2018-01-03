@@ -262,11 +262,9 @@ export class SchedulesMethods {
 
   getCurrentPeriodMonths(periodDefinitions: PeriodDefinition[], month: number): PeriodDefinition[] {
     const currentMonthPeriodDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
-    if (currentMonthPeriodDefinition) {
-      return periodDefinitions.
-        filter((x: PeriodDefinition) => x.period === currentMonthPeriodDefinition.period).
-        sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
-    } else return [];
+    return periodDefinitions.
+      filter((x: PeriodDefinition) => x.period === currentMonthPeriodDefinition.period).
+      sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
   }
 
   getPeriodMinutesLimit(currentPeriodMonths: PeriodDefinition[], periods: Period[], year: number, month: number): number {
@@ -290,11 +288,9 @@ export class SchedulesMethods {
 
   getMonthlyBackground(monthlyTime: TimeSpan, year: number, month: number, periods: Period[]): number {
     const monhtlyLimit = periods.find(x => x.year === year && x.month === month);
-    if (monhtlyLimit) {
-      const monthlyMinutesLimit = monhtlyLimit.hours * 60;
-      if (monthlyTime.totalMinutes() === monthlyMinutesLimit) return 2;
-      if (monthlyTime.totalMinutes() > monthlyMinutesLimit) return 4;
-    }
+    const monthlyMinutesLimit = monhtlyLimit.hours * 60;
+    if (monthlyTime.totalMinutes() === monthlyMinutesLimit) return 2;
+    if (monthlyTime.totalMinutes() > monthlyMinutesLimit) return 4;
     return 0;
   }
 
