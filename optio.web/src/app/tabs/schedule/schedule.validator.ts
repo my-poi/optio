@@ -28,9 +28,9 @@ export class ScheduleValidator {
   }
 
   clearDay(scheduleDay: ScheduleDay) {
-    scheduleDay.s = undefined;
     scheduleDay.h = undefined;
     scheduleDay.m = undefined;
+    scheduleDay.s = undefined;
     scheduleDay.x = undefined;
   }
 
