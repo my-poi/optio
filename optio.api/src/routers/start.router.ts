@@ -19,7 +19,7 @@ export class StartRouter {
     private periodsMethods: PeriodsMethods,
     private shiftsMethods: ShiftsMethods
   ) {
-    this.router.get('/get-start-data', async (response: Response) => {
+    this.router.get('/get-start-data', async ({}, response: Response) => {
       const results = {
         companyUnits: await this.companyUnitsMethods.getCompanyUnits(),
         employees: await this.employeesMethods.getEmployees(),

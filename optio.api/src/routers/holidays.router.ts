@@ -5,7 +5,7 @@ export class HolidaysRouter {
   router = Router();
 
   constructor(private holidaysMethods: HolidaysMethods) {
-    this.router.get('/get-holidays', async (response: Response) => {
+    this.router.get('/get-holidays', async ({}, response: Response) => {
       const results = await this.holidaysMethods.getHolidays();
       response.json(results);
     });

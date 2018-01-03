@@ -97,7 +97,7 @@ app.use('/api/data/schedules', schedulesRouter.router);
 app.use('/api/data/shifts', shiftsRouter.router);
 app.use('/api/data/vacations', vacationsRouter.router);
 
-app.get('/api', (response: Response) => {
+app.get('/api', ({}, response: Response) => {
   response.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
   response.end('Usługi sieciowe Optio');
 });
