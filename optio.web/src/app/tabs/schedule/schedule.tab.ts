@@ -197,8 +197,7 @@ export class ScheduleTab {
 
   validateAndSetRestData(employeeId: number, scheduleDay: ScheduleDay) {
     this.validator.validateDailyBreak(scheduleDay, this.employeeScheduleDays);
-    this.validator.validateWeekBreak(this.year, this.month, this.periodStartDate, this.employeeScheduleDays);
-    this.validator.validateWeekHourlyLimit(this.year, this.month, this.periodStartDate, this.employeeScheduleDays);
+    this.validator.validateWeekBreakAndHourlyLimit(this.year, this.month, this.periodStartDate, this.employeeScheduleDays);
     this.setSummaryData(employeeId);
     this.setUpdatedBy(scheduleDay);
     this.showErrors(scheduleDay);

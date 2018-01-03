@@ -119,23 +119,13 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateWeekBreak(year: number, month: number, periodStartDate: Date, employeeScheduleDays: ScheduleDay[]) {
+  validateWeekBreakAndHourlyLimit(year: number, month: number, periodStartDate: Date, employeeScheduleDays: ScheduleDay[]) {
     const firstMonthDay = new Date(year, month - 1, 1, 0, 0, 0);
     const firstWeekDay = this.getFirstWeekDay(firstMonthDay, periodStartDate);
 
     for (let i = 1; i <= 6; i++) {
       if (i !== 1 && firstWeekDay.getMonth() + 1 !== month) return;
       this.validateSevenDaysWeekBreak(firstWeekDay, employeeScheduleDays);
-      firstWeekDay.setDate(firstWeekDay.getDate() + 7);
-    }
-  }
-
-  validateWeekHourlyLimit(year: number, month: number, periodStartDate: Date, employeeScheduleDays: ScheduleDay[]) {
-    const firstMonthDay = new Date(year, month - 1, 1, 0, 0, 0);
-    const firstWeekDay = this.getFirstWeekDay(firstMonthDay, periodStartDate);
-
-    for (let i = 1; i <= 6; i++) {
-      if (i !== 1 && firstWeekDay.getMonth() + 1 !== month) return;
       this.validateSevenDaysWeekHourlyLimit(firstWeekDay, employeeScheduleDays);
       firstWeekDay.setDate(firstWeekDay.getDate() + 7);
     }
@@ -160,21 +150,21 @@ export class ScheduleValidator {
     if (!testedScheduleDays) return;
 
     let breakStart = this.getBreakStart(testedDay, employeeScheduleDays);
-    let result = false;
+    let isValid = false;
 
     testedScheduleDays.forEach(scheduleDay => {
       const validateDayWeekBreak = this.validateDayWeekBreak(scheduleDay, breakStart);
       if (validateDayWeekBreak.isValid) {
-        result = true;
+        isValid = true;
         return;
       }
       breakStart = validateDayWeekBreak.breakStart;
-     });
+    });
 
     const lastScheduleDay = testedScheduleDays.pop();
     this.clearDayError(lastScheduleDay, 2);
 
-    if (!result) {
+    if (!isValid) {
       lastScheduleDay.bx = 3;
       lastScheduleDay.e.push(this.scheduleDayErrors[1]);
     }
@@ -219,7 +209,7 @@ export class ScheduleValidator {
       if (resultInMinutes >= 2100) isValid = true;
     }
 
-    return {isValid: isValid, breakStart: breakStart};
+    return { isValid: isValid, breakStart: breakStart };
   }
 
   validateSevenDaysWeekHourlyLimit(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]) {
