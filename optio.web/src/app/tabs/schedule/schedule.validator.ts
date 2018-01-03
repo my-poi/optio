@@ -23,7 +23,6 @@ export class ScheduleValidator {
   }
 
   validateDailyLimit(scheduleDay: ScheduleDay) {
-    console.log('validateDailyLimit');
     const planned = new TimeSpan(0, scheduleDay.h || 0, scheduleDay.m || 0);
     if (planned.totalMinutes() <= 0 || planned.totalMinutes() > 720) this.clearDay(scheduleDay);
   }
