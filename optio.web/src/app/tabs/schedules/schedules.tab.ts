@@ -20,22 +20,22 @@ export class SchedulesTab {
   foundSchedules: CompanyUnitSchedule[];
   schedulesFilter = '';
   selectedCalendarItem: CalendarItem;
-  selectedSchedule: CompanyUnitSchedule;
+  selectedSchedule?: CompanyUnitSchedule;
 
   constructor(public calendarService: CalendarService,
     private dataService: DataService,
     private buttonsService: ButtonsService,
     private infosService: InfosService) {}
 
-  onInitialized(tree) {
+  onInitialized(tree: any) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
-    const currentRoot = tree.treeModel.roots.find(x => x.data.value === currentYear);
-    const currentChild = currentRoot.children.find(x => x.data.value === currentMonth + 1);
+    const currentRoot = tree.treeModel.roots.find((x: any) => x.data.value === currentYear);
+    const currentChild = currentRoot.children.find((x: any) => x.data.value === currentMonth + 1);
     currentChild.toggleActivated();
   }
 
-  onActivate(node) {
+  onActivate(node: any) {
     this.schedulesFilter = '';
     this.selectedCalendarItem = node.data;
     this.deselectSchedule();
@@ -50,7 +50,7 @@ export class SchedulesTab {
       this.dataService.loadSchedules(year, month, () => {
         this.foundSchedules = this.dataService.schedules;
         if (this.foundSchedules.length > 0) this.selectSchedule(this.foundSchedules[0]);
-        else this.selectedSchedule = null;
+        else this.selectedSchedule = undefined;
         this.buttonsService.schedulesAdd = false;
         this.buttonsService.schedulesEdit = !this.selectedSchedule;
         this.buttonsService.schedulesLock = !this.selectedSchedule;
@@ -72,12 +72,12 @@ export class SchedulesTab {
     this.foundSchedules = result.slice();
     this.deselectSchedule();
     if (this.foundSchedules.length > 0) this.selectSchedule(this.foundSchedules[0]);
-    else this.selectedSchedule = null;
+    else this.selectedSchedule = undefined;
     this.buttonsService.schedulesEdit = !this.selectedSchedule;
     this.buttonsService.schedulesLock = !this.selectedSchedule;
   }
 
-  selectSchedule(schedule) {
+  selectSchedule(schedule: CompanyUnitSchedule) {
     if (!this.selectedSchedule) this.selectedSchedule = new CompanyUnitSchedule();
     this.deselectSchedule();
     this.selectedSchedule = schedule;

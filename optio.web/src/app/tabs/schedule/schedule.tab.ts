@@ -102,7 +102,7 @@ export class ScheduleTab {
 
   saveScheduleIfChanged() {
     if (this.isChanged(this.selectedEmployeeSchedule))
-      this.dataService.updateSchedule(this.selectedEmployeeSchedule, (response) => console.log(response));
+      this.dataService.updateSchedule(this.selectedEmployeeSchedule, (response: any) => console.log(response));
   }
 
   isChanged(employeeSchedule: EmployeeSchedule) {
@@ -116,14 +116,14 @@ export class ScheduleTab {
   setPeriodData() {
     let minutesLimit = 0;
     const monthDefinition = this.dataService.periodDefinitions.find(x => x.month === this.month);
-    const periodMonths = this.dataService.periodDefinitions.filter(x => x.period === monthDefinition.period);
+    const periodMonths = this.dataService.periodDefinitions.filter(x => x.period === monthDefinition!.period);
 
-    this.monthlyMinutesLimit = this.dataService.periods.find(x =>
-      x.year === this.year && x.month === this.month).hours * 60;
+    this.monthlyMinutesLimit = this.dataService.periods.filter(x =>
+      x.year === this.year && x.month === this.month)[0].hours * 60;
 
     this.currentPeriodMonths = this.dataService.periodDefinitions.filter(x =>
-      x.period === monthDefinition.period &&
-      x.sortOrder <= monthDefinition.sortOrder).
+      x.period === monthDefinition!.period &&
+      x.sortOrder <= monthDefinition!.sortOrder).
       sort((a: PeriodDefinition, b: PeriodDefinition) =>
         this.globalService.compare(a.sortOrder, b.sortOrder));
 
@@ -131,7 +131,7 @@ export class ScheduleTab {
       const year = x.month > this.month ? this.year - 1 : this.year;
       const period = this.dataService.periods.find(y =>
         y.year === year && y.month === x.month);
-      minutesLimit += period.hours * 60;
+      minutesLimit += period!.hours * 60;
     });
 
     this.periodMinutesLimit = minutesLimit;
@@ -200,37 +200,37 @@ export class ScheduleTab {
     this.showErrors(scheduleDay);
   }
 
-  setHour(scheduleDay: ScheduleDay, callback) {
+  setHour(scheduleDay: ScheduleDay, callback: any) {
     setTimeout(() => {
-      scheduleDay.h = Number(scheduleDay.h.toString().replace(/\D/g, ''));
+      scheduleDay.h = Number(scheduleDay.h!.toString().replace(/\D/g, ''));
 
       if (!scheduleDay.s || scheduleDay.s >= 40) {
-        scheduleDay.h = null;
+        scheduleDay.h = undefined;
         callback();
         return;
       }
 
-      if (scheduleDay.h < 1 || scheduleDay.h > 12) scheduleDay.h = null;
+      if (scheduleDay.h < 1 || scheduleDay.h > 12) scheduleDay.h = undefined;
       callback();
     });
   }
 
-  setMinute(scheduleDay: ScheduleDay, callback) {
+  setMinute(scheduleDay: ScheduleDay, callback: any) {
     setTimeout(() => {
-      scheduleDay.m = Number(scheduleDay.m.toString().replace(/\D/g, ''));
+      scheduleDay.m = Number(scheduleDay.m!.toString().replace(/\D/g, ''));
 
       if (!scheduleDay.s || scheduleDay.s >= 40) {
-        scheduleDay.m = null;
+        scheduleDay.m = undefined;
         callback();
         return;
       }
 
-      if (scheduleDay.m < 1 || scheduleDay.m > 59) scheduleDay.m = null;
+      if (scheduleDay.m < 1 || scheduleDay.m > 59) scheduleDay.m = undefined;
       callback();
     });
   }
 
-  setShift(scheduleDay: ScheduleDay, callback) {
+  setShift(scheduleDay: ScheduleDay, callback: any) {
     setTimeout(() => {
       if (!scheduleDay.x) {
         this.clearDay(scheduleDay);
@@ -238,7 +238,7 @@ export class ScheduleTab {
         return;
       }
 
-      const shift = this.dataService.shifts.find(x => x.isValid && x.sign.startsWith(scheduleDay.x.toUpperCase()));
+      const shift = this.dataService.shifts.find(x => x.isValid && x.sign.startsWith(scheduleDay.x!.toUpperCase()));
 
       if (!shift) {
         this.clearDay(scheduleDay);
@@ -247,16 +247,16 @@ export class ScheduleTab {
       }
 
       if (shift.id >= 40) {
-        scheduleDay.h = null;
-        scheduleDay.m = null;
+        scheduleDay.h = undefined;
+        scheduleDay.m = undefined;
       }
 
       if (shift.id === 42) scheduleDay.x = 'D5';
 
       if (shift.id <= 20) {
         const shiftDuration: ShiftDuration = this.getShiftDuration(scheduleDay.d, shift.durations);
-        scheduleDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : null;
-        scheduleDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : null;
+        scheduleDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : undefined;
+        scheduleDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : undefined;
       }
 
       scheduleDay.s = shift.id;
@@ -271,30 +271,32 @@ export class ScheduleTab {
 
   getShiftDuration(day: Date, durations: ShiftDuration[]): ShiftDuration {
     const dayTime = new Date(day).getTime();
-    const duration = durations.find(x =>
+    const duration = durations.filter(x =>
       dayTime >= new Date(x.validFrom).getTime() &&
-      dayTime <= this.getShiftValidToDate(x.validTo).getTime());
+      dayTime <= this.getShiftValidToDate(x.validTo).getTime())[0];
     return duration;
   }
 
-  getShiftValidToDate(validTo): Date {
+  getShiftValidToDate(validTo: Date): Date {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
   clearDay(scheduleDay: ScheduleDay) {
-    scheduleDay.s = null;
-    scheduleDay.h = null;
-    scheduleDay.m = null;
-    scheduleDay.x = null;
+    scheduleDay.h = undefined;
+    scheduleDay.m = undefined;
+    scheduleDay.s = undefined;
+    scheduleDay.x = undefined;
   }
 
   setSummaryData(employeeId: number) {
     setTimeout(() => {
       const employeeSchedule = this.currentSchedule.find(x => x.employeeId === employeeId);
-      this.calculateMonth(employeeSchedule);
-      this.calculateTotal(employeeSchedule);
-      this.setMonthlyBackground(employeeSchedule);
-      this.setTotalBackground(employeeSchedule);
+      if (employeeSchedule) {
+        this.calculateMonth(employeeSchedule);
+        this.calculateTotal(employeeSchedule);
+        this.setMonthlyBackground(employeeSchedule);
+        this.setTotalBackground(employeeSchedule);
+      }
     });
   }
 
@@ -304,8 +306,8 @@ export class ScheduleTab {
     let days = 0;
 
     employeeSchedule.sd.forEach(x => {
-      hours += Number(x.h);
-      minutes += Number(x.m);
+      if (x.h) hours += Number(x.h);
+      if (x.m) minutes += Number(x.m);
       if (x.s && x.s >= 1 && x.s <= 20) days += 1;
     });
 
@@ -329,8 +331,8 @@ export class ScheduleTab {
 
       if (periodMonthSchedule) {
         periodMonthSchedule.sd.forEach(z => {
-          hours += Number(z.h);
-          minutes += Number(z.m);
+          if (z.h) hours += Number(z.h);
+          if (z.m) minutes += Number(z.m);
           if (z.s && z.s >= 1 && z.s <= 20) days += 1;
         });
       }
@@ -378,9 +380,9 @@ export class ScheduleTab {
     this.saveScheduleIfChanged();
     this.schedules = [];
     this.currentSchedule = [];
-    this.header = null;
-    this.selectedEmployeeSchedule = null;
-    this.originalEmployeeSchedule = null;
+    // this.header = null;
+    // this.selectedEmployeeSchedule = null;
+    // this.originalEmployeeSchedule = null;
     this.hideTabEvent.emit({ tabName: 'schedule' });
   }
 }
