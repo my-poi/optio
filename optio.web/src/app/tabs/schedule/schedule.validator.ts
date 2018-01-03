@@ -4,7 +4,6 @@ import { EmployeeSchedule } from '../../objects/employee-schedule';
 import { ScheduleDay } from '../../objects/schedule-day';
 import { ShiftDuration } from '../../objects/shift-duration';
 import { TimeSpan } from '../../objects/time-span';
-import * as moment from 'moment';
 
 export class ScheduleValidator {
   private scheduleDayErrors = [
@@ -181,12 +180,6 @@ export class ScheduleValidator {
       const difference = newStart.getTime() - breakStart.getTime();
       const resultInMinutes = Math.round(difference / 60000);
 
-      // console.log(
-      //   'Zaplanowano zmianę:' + '\n' +
-      //   'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm') + '\n' +
-      //   'testedScheduleDay: ' + scheduleDay.d + '\n' +
-      //   'resultInMinutes: ' + resultInMinutes);
-
       if (resultInMinutes >= 2100) isValid = true;
 
       breakStart = new Date(scheduleDay.d);
@@ -195,13 +188,6 @@ export class ScheduleValidator {
       newStart.setDate(newStart.getDate() + 1);
       const difference = newStart.getTime() - breakStart.getTime();
       const resultInMinutes = Math.round(difference / 60000);
-
-      // console.log(
-      //   'Dzień wolny: ' + '\n' +
-      //   'breakStart: ' + moment(breakStart).format('YYYY-MM-DD HH:mm') + '\n' +
-      //   'testedScheduleDay: ' + scheduleDay.d + '\n' +
-      //   'resultInMinutes: ' + resultInMinutes);
-
       if (resultInMinutes >= 2100) isValid = true;
     }
 
