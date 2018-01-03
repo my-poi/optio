@@ -175,6 +175,7 @@ export class ScheduleTab {
   hourChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setHour(scheduleDay, () => {
       this.validator.validateHasDayTimeValue(scheduleDay);
+      this.validator.validateDailyLimit(scheduleDay);
       this.validateAndSetRestData(employeeId, scheduleDay);
     });
   }
@@ -182,6 +183,7 @@ export class ScheduleTab {
   minuteChanged(employeeId: number, scheduleDay: ScheduleDay) {
     this.setMinute(scheduleDay, () => {
       this.validator.validateHasDayTimeValue(scheduleDay);
+      this.validator.validateDailyLimit(scheduleDay);
       this.validateAndSetRestData(employeeId, scheduleDay);
     });
   }
