@@ -26,7 +26,6 @@ export class ScheduleValidator {
     const previousStartMinutes = Number(previousWorkDayShiftDuration.start.substring(3, 5));
     const previousWorkDayStartingTime = new TimeSpan(0, previousStartHours, previousStartMinutes);
 
-
     const currentWorkDayShift = shifts.find(x => x.id === plannedDay.shiftId);
     const currentWorkDayShiftDuration = this.getShiftDuration(currentDay, currentWorkDayShift.durations);
     const currentStartHours = Number(currentWorkDayShiftDuration.start.substring(0, 2));
