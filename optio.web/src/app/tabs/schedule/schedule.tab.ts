@@ -21,7 +21,7 @@ import { ScheduleValidator } from './schedule.validator';
 })
 export class ScheduleTab {
   @Output() hideTabEvent = new EventEmitter<any>();
-  scheduleTableBodyHeight = window.innerHeight - 242;
+  scheduleTableBodyHeight = window.innerHeight - 245;
   year: number;
   month: number;
   daysInMonth: number;
