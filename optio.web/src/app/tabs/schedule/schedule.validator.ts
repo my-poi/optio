@@ -150,14 +150,20 @@ export class ScheduleValidator {
     if (!testedScheduleDays) return;
 
     let breakStart = this.getBreakStart(testedDay, employeeScheduleDays);
-    let isValid = false;
+    // let isValid = false;
 
-    testedScheduleDays.forEach(scheduleDay => {
+    // testedScheduleDays.forEach(scheduleDay => {
+    //   const validateDayWeekBreak = this.validateDayWeekBreak(scheduleDay, breakStart);
+    //   if (validateDayWeekBreak.isValid) {
+    //     isValid = true;
+    //     return;
+    //   }
+    //   breakStart = validateDayWeekBreak.breakStart;
+    // });
+
+    const isValid = testedScheduleDays.some(scheduleDay => {
       const validateDayWeekBreak = this.validateDayWeekBreak(scheduleDay, breakStart);
-      if (validateDayWeekBreak.isValid) {
-        isValid = true;
-        return;
-      }
+      if (validateDayWeekBreak.isValid) return true;
       breakStart = validateDayWeekBreak.breakStart;
     });
 
