@@ -143,17 +143,17 @@ export class ScheduleValidator {
   }
 
   validateWeekBreak(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]) {
-    const testedDay = new Date(firstWeekDay);
     const testedScheduleDays = this.getTestedScheduleDays(firstWeekDay, employeeScheduleDays);
 
     if (!testedScheduleDays) return;
 
-    let breakStart = this.getBreakStart(testedDay, employeeScheduleDays);
+    let breakStart = this.getBreakStart(firstWeekDay, employeeScheduleDays);
 
     const isValid = testedScheduleDays.some(scheduleDay => {
       const validateDayWeekBreak = this.validateDayWeekBreak(scheduleDay, breakStart);
       if (validateDayWeekBreak.isValid) return true;
       breakStart = validateDayWeekBreak.breakStart;
+      return false;
     });
 
     const lastScheduleDay = testedScheduleDays.pop();
@@ -179,7 +179,6 @@ export class ScheduleValidator {
       newStart.setHours(scheduleDayStartHours, scheduleDayStartMinutes, 0);
       const difference = newStart.getTime() - breakStart.getTime();
       const resultInMinutes = Math.round(difference / 60000);
-
       if (resultInMinutes >= 2100) isValid = true;
 
       breakStart = new Date(scheduleDay.d);

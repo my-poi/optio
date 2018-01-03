@@ -378,10 +378,9 @@ export class SchedulesMethods {
     day.setHours(0, 0, 0);
 
     if (day.getTime() === lastWeekDay.getTime()) {
-      const hasWeekBreak = this.scheduleValidator.validateWeekBreak(lastWeekDay, employeePlannedDays, shifts);
-      if (!hasWeekBreak) errors.push(this.scheduleDayErrors[1]);
-      const hasWeekHourlyLimit = this.scheduleValidator.validateWeekHourlyLimit(lastWeekDay, employeePlannedDays);
-      if (!hasWeekHourlyLimit) errors.push(this.scheduleDayErrors[2]);
+      const result = this.scheduleValidator.validateWeekBreakAndHourlyLimit(lastWeekDay, employeePlannedDays, shifts);
+      if (!result.hasWeekBreak) errors.push(this.scheduleDayErrors[1]);
+      if (!result.hasWeekHourlyLimit) errors.push(this.scheduleDayErrors[2]);
     }
 
     return errors;

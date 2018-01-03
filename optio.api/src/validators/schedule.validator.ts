@@ -68,75 +68,64 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
+  validateWeekBreakAndHourlyLimit(lastWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]) {
+    const firstWeekDay = new Date(lastWeekDay);
+    firstWeekDay.setDate(firstWeekDay.getDate() - 6);
+    const hasWeekBreak = this.validateWeekBreak(firstWeekDay, employeePlannedDays, shifts);
+    const hasWeekHourlyLimit = this.validateWeekHourlyLimit(firstWeekDay, employeePlannedDays);
+    return { hasWeekBreak: hasWeekBreak, hasWeekHourlyLimit: hasWeekHourlyLimit };
+  }
+
   validateWeekBreak(lastWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]) {
-    const firstWeekDay = new Date(lastWeekDay);
-    firstWeekDay.setDate(firstWeekDay.getDate() - 6);
-    const hasWeekBreak = this.validateSevenDaysWeekBreak(firstWeekDay, employeePlannedDays, shifts);
-    return hasWeekBreak;
-  }
-
-  validateWeekHourlyLimit(lastWeekDay: Date, employeePlannedDays: PlannedDay[]) {
-    const firstWeekDay = new Date(lastWeekDay);
-    firstWeekDay.setDate(firstWeekDay.getDate() - 6);
-    const hasWeekHourlyLimit = this.validateSevenDaysWeekHourlyLimit(firstWeekDay, employeePlannedDays);
-    return hasWeekHourlyLimit;
-  }
-
-  validateSevenDaysWeekBreak(firstWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]) {
-    const testedPlannedDays = this.getTestedPlannedDays(firstWeekDay, employeePlannedDays);
+    const testedPlannedDays = this.getTestedPlannedDays(lastWeekDay, employeePlannedDays);
 
     if (!testedPlannedDays) return true;
 
-    let breakStart = this.getBreakStart(new Date(firstWeekDay), employeePlannedDays, shifts);
-    let result = false;
+    let breakStart = this.getBreakStart(new Date(lastWeekDay), employeePlannedDays, shifts);
 
-    testedPlannedDays.forEach(testedPlannedDay => {
-      const newStart = new Date(testedPlannedDay.day);
-      newStart.setHours(0, 0, 0);
-
-      if (testedPlannedDay.shiftId) {
-        const plannedDayShift = shifts.find(x => x.id === testedPlannedDay.shiftId);
-        if (plannedDayShift && plannedDayShift.durations) {
-          const plannedDayShiftDuration = this.getShiftDuration(testedPlannedDay.day, plannedDayShift.durations);
-          if (plannedDayShiftDuration) {
-            const plannedDayStartHours = Number(plannedDayShiftDuration.start.substring(0, 2));
-            const plannedDayStartMinutes = Number(plannedDayShiftDuration.start.substring(3, 5));
-
-            newStart.setHours(plannedDayStartHours, plannedDayStartMinutes, 0);
-            const difference = newStart.getTime() - breakStart.getTime();
-            const resultInMinutes = Math.round(difference / 60000);
-
-            // console.log(
-            //   'Zaplanowano zmianę:' + '\n' +
-            //   'breakStart: ' + breakStart + '\n' +
-            //   'testedScheduleDay: ' + testedPlannedDay.day + '\n' +
-            //   'resultInMinutes: ' + resultInMinutes);
-
-            if (resultInMinutes >= 2100) result = true;
-
-            breakStart = new Date(testedPlannedDay.day);
-            breakStart.setHours(plannedDayStartHours + testedPlannedDay.hours, plannedDayStartMinutes + testedPlannedDay.minutes, 0);
-          }
-        }
-      } else {
-        newStart.setDate(newStart.getDate() + 1);
-        const difference = newStart.getTime() - breakStart.getTime();
-        const resultInMinutes = Math.round(difference / 60000);
-
-        // console.log(
-        //   'Dzień wolny: ' + '\n' +
-        //   'breakStart: ' + breakStart + '\n' +
-        //   'testedScheduleDay: ' + testedPlannedDay.day + '\n' +
-        //   'resultInMinutes: ' + resultInMinutes);
-
-        if (resultInMinutes >= 2100) result = true;
-      }
+    const isValid = testedPlannedDays.some(plannedDay => {
+      const validateDayWeekBreak = this.validateDayWeekBreak(plannedDay, breakStart, shifts);
+      if (validateDayWeekBreak.isValid) return true;
+      breakStart = validateDayWeekBreak.breakStart;
+      return false;
     });
 
-    return result;
+    return isValid;
   }
 
-  validateSevenDaysWeekHourlyLimit(firstWeekDay: Date, employeePlannedDays: PlannedDay[]) {
+  validateDayWeekBreak(plannedDay: PlannedDay, breakStart: Date, shifts: Shift[]) {
+    let isValid = false;
+    const newStart = new Date(plannedDay.day);
+    newStart.setHours(0, 0, 0);
+
+    if (plannedDay.shiftId) {
+      const plannedDayShift = shifts.find(x => x.id === plannedDay.shiftId);
+      if (plannedDayShift && plannedDayShift.durations) {
+        const plannedDayShiftDuration = this.getShiftDuration(plannedDay.day, plannedDayShift.durations);
+        if (plannedDayShiftDuration) {
+          const plannedDayStartHours = Number(plannedDayShiftDuration.start.substring(0, 2));
+          const plannedDayStartMinutes = Number(plannedDayShiftDuration.start.substring(3, 5));
+
+          newStart.setHours(plannedDayStartHours, plannedDayStartMinutes, 0);
+          const difference = newStart.getTime() - breakStart.getTime();
+          const resultInMinutes = Math.round(difference / 60000);
+          if (resultInMinutes >= 2100) isValid = true;
+
+          breakStart = new Date(plannedDay.day);
+          breakStart.setHours(plannedDayStartHours + plannedDay.hours, plannedDayStartMinutes + plannedDay.minutes, 0);
+        }
+      }
+    } else {
+      newStart.setDate(newStart.getDate() + 1);
+      const difference = newStart.getTime() - breakStart.getTime();
+      const resultInMinutes = Math.round(difference / 60000);
+      if (resultInMinutes >= 2100) isValid = true;
+    }
+
+    return { isValid: isValid, breakStart: breakStart };
+  }
+
+  validateWeekHourlyLimit(firstWeekDay: Date, employeePlannedDays: PlannedDay[]) {
     const testedDay = new Date(firstWeekDay);
     const testedPlannedDays = this.getTestedPlannedDays(firstWeekDay, employeePlannedDays);
 
