@@ -96,6 +96,7 @@ export class ScheduleValidator {
     const currentStartHours = Number(currentWorkDayShiftDuration.start.substring(0, 2));
     const currentStartMinutes = Number(currentWorkDayShiftDuration.start.substring(3, 5));
     const currentWorkDayStartingTime = new TimeSpan(0, currentStartHours, currentStartMinutes);
+
     const minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
 
     if (minutesDifference < 0) {
