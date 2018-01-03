@@ -12,7 +12,7 @@ export class DraggableDirective implements OnInit {
     const element = this.elementRef.nativeElement;
     element.draggable = 'true';
 
-    element.addEventListener('dragstart', (e) => {
+    element.addEventListener('dragstart', (e: any) => {
       element.classList.add('drag');
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text', JSON.stringify(this.draggable));

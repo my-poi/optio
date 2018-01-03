@@ -7,7 +7,7 @@ export class LoginService {
 
   constructor(private http: Http) { }
 
-  login(callback) {
+  login(callback: any) {
     const body = { userName: 'm.tokarz', password: 'password' };
     this.http.post(config.apiBaseUrl + 'public/users/login', body).subscribe(response => {
       const responseJson = response.json();

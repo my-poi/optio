@@ -62,50 +62,47 @@ export class AppComponent implements AfterViewInit {
     console.log(this.activeTabId);
   }
 
-  showTab(event) {
+  showTab(event: any) {
     this.tabs.forEach(x => { if (x.main) x.disabled = true; });
     const tab = this.tabs.find(x => x.name === event.tabName);
-    tab.hidden = false;
-    this.activeTabId = this.tabs.indexOf(tab) + 1;
+    tab!.hidden = false;
+    this.activeTabId = this.tabs.indexOf(tab!) + 1;
 
     if (event.tabName === 'companyUnit') {
       if (event.isNew) {
-        tab.title = 'Nowa komórka';
+        tab!.title = 'Nowa komórka';
         this.companyUnitTab.load(new CompanyUnit, true);
       } else {
-        tab.title = this.structureTab.selectedCompanyUnit.name;
-        this.companyUnitTab.load(this.structureTab.selectedCompanyUnit, false);
+        tab!.title = this.structureTab.selectedCompanyUnit!.name;
+        this.companyUnitTab.load(this.structureTab.selectedCompanyUnit!, false);
       }
     }
 
     if (event.tabName === 'employee') {
       if (event.isNew) {
-        tab.title = 'Nowy pracownik';
+        tab!.title = 'Nowy pracownik';
         this.employeeTab.load(new Employee, true);
       } else {
-        tab.title = this.structureTab.selectedEmployee.fullName;
-        this.employeeTab.load(this.structureTab.selectedEmployee, false);
+        tab!.title = this.structureTab.selectedEmployee!.fullName;
+        this.employeeTab.load(this.structureTab.selectedEmployee!, false);
       }
     }
 
     if (event.tabName === 'schedule') {
       const selectedSchedule = this.schedulesTab.selectedSchedule;
       const selectedCalendarItem = this.schedulesTab.selectedCalendarItem;
-      const year = selectedCalendarItem.parent.value;
+      const year = selectedCalendarItem.parent!.value;
       const month = selectedCalendarItem.value;
-      tab.title = String.format('{0} - grafik na {1} {2}',
-      selectedSchedule.path,
-      selectedCalendarItem.name,
-      year);
-      this.scheduleTab.load(selectedSchedule.companyUnitId, year, month);
+      tab!.title = `${selectedSchedule!.path} - grafik na ${selectedCalendarItem.name} ${year}`,
+      this.scheduleTab.load(selectedSchedule!.companyUnitId, year, month);
     }
   }
 
-  hideTab(event) {
+  hideTab(event: any) {
     this.tabs.forEach(x => { if (x.main) x.disabled = false; });
     const tab = this.tabs.find(x => x.name === event.tabName);
-    const parent = this.tabs.find(x => x.name === tab.parent);
-    tab.hidden = true;
-    this.activeTabId = parent.id;
+    const parent = this.tabs.find(x => x.name === tab!.parent);
+    tab!.hidden = true;
+    this.activeTabId = parent!.id;
   }
 }

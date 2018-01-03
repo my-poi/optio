@@ -9,15 +9,15 @@ import { Shift } from '../../objects/shift';
   styleUrls: ['./shifts.modal.css']
 })
 export class ShiftsModal implements OnInit {
-  @ViewChild('content') content;
-  modalReference: NgbModalRef;
+  @ViewChild('content') content: any;
+  modalReference?: NgbModalRef;
   modalOption: NgbModalOptions = {
     backdrop: 'static',
     keyboard: false,
     size: 'lg'
   };
-  shifts;
-  selectedShift: Shift;
+  shifts: any;
+  selectedShift?: Shift;
 
   constructor(private modalService: NgbModal,
     private dataService: DataService) { }
@@ -32,8 +32,8 @@ export class ShiftsModal implements OnInit {
     this.modalReference = this.modalService.open(this.content, this.modalOption);
   }
 
-  selectShift(shift) {
-    if (!this.selectedShift) this.selectedShift = null;
+  selectShift(shift: Shift) {
+    if (!this.selectedShift) this.selectedShift = undefined;
     this.deselectShift();
     this.selectedShift = shift;
     this.selectedShift.isSelected = true;
@@ -44,7 +44,7 @@ export class ShiftsModal implements OnInit {
   }
 
   close() {
-    this.modalReference.close();
-    this.modalReference = null;
+    this.modalReference!.close();
+    this.modalReference = undefined;
   }
 }

@@ -7,8 +7,8 @@ import { NgbModal, NgbModalRef, NgbModalOptions } from '../../modules/modal/moda
   styleUrls: ['./splash.modal.css']
 })
 export class SplashModal implements OnInit {
-  @ViewChild('content') content;
-  modalReference: NgbModalRef;
+  @ViewChild('content') content: any;
+  modalReference?: NgbModalRef;
   modalOption: NgbModalOptions = {
     backdrop: 'static',
     keyboard: false,
@@ -29,7 +29,7 @@ export class SplashModal implements OnInit {
   }
 
   close() {
-    this.modalReference.close();
-    this.modalReference = null;
+    this.modalReference!.close();
+    this.modalReference = undefined;
   }
 }

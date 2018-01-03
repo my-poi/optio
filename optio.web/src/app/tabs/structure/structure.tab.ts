@@ -21,8 +21,8 @@ export class StructureTab {
   foundEmployees: Employee[];
   employeesFilter = new EmployeesFilter();
   companyUnitsOptions = {allowDrop: false};
-  selectedCompanyUnit: CompanyUnit;
-  selectedEmployee: Employee;
+  selectedCompanyUnit?: CompanyUnit;
+  selectedEmployee?: Employee;
 
   constructor(private dataService: DataService,
     private buttonsService: ButtonsService,
@@ -41,33 +41,33 @@ export class StructureTab {
     this.foundEmployees = result.slice();
     this.deselectEmployee();
     if (this.foundEmployees.length > 0) this.selectEmployee(this.foundEmployees[0]);
-    else this.selectedEmployee = null;
+    else this.selectedEmployee = undefined;
     this.buttonsService.employeeEdit = !this.selectedEmployee;
   }
 
-  onInitialized(tree) {
+  onInitialized(tree: any) {
     setTimeout(() => {
       tree.treeModel.getFirstRoot().toggleActivated();
     }, 500);
   }
 
-  onActivate(event) {
+  onActivate(event: any) {
     this.employeesFilter.clear();
     this.selectedCompanyUnit = event.node.data;
     this.deselectEmployee();
-    if (this.selectedCompanyUnit.id === 1) this.selectAllClassifiedEmployees();
-    else if (this.selectedCompanyUnit.id === 0) this.selectAllEmployees();
-    else this.selectCompanyUnitEmployees(this.selectedCompanyUnit);
+    if (this.selectedCompanyUnit!.id === 1) this.selectAllClassifiedEmployees();
+    else if (this.selectedCompanyUnit!.id === 0) this.selectAllEmployees();
+    else this.selectCompanyUnitEmployees(this.selectedCompanyUnit!);
     if (this.allEmployees.length > 0) this.selectEmployee(this.allEmployees[0]);
-    else this.selectedEmployee = null;
+    else this.selectedEmployee = undefined;
     this.setRibbonButtons();
   }
 
-  selectEmployee(employee) {
+  selectEmployee(employee: Employee) {
     if (!this.selectedEmployee) this.selectedEmployee = new Employee();
     this.deselectEmployee();
     this.selectedEmployee = employee;
-    this.selectedEmployee.isSelected = true;
+    this.selectedEmployee!.isSelected = true;
   }
 
   deselectEmployee() {
@@ -84,7 +84,7 @@ export class StructureTab {
     this.copyToFoundEmployees();
   }
 
-  selectCompanyUnitEmployees(companyUnit) {
+  selectCompanyUnitEmployees(companyUnit: CompanyUnit) {
     const nodeIds = [companyUnit.id];
     this.getAllCompanyUnitChildIds(companyUnit, nodeIds);
     this.allEmployees = this.dataService.employees.filter(x =>
@@ -92,7 +92,7 @@ export class StructureTab {
     this.copyToFoundEmployees();
   }
 
-  getAllCompanyUnitChildIds(companyUnit, nodeIds) {
+  getAllCompanyUnitChildIds(companyUnit: CompanyUnit, nodeIds: number[]) {
     const childIds = companyUnit.children.map(x => x.id);
     childIds.forEach(x => nodeIds.push(x));
     companyUnit.children.forEach(x =>
@@ -104,19 +104,19 @@ export class StructureTab {
   }
 
   setRibbonButtons() {
-    const disabled = this.selectedCompanyUnit.id === 0;
+    const disabled = this.selectedCompanyUnit!.id === 0;
     this.buttonsService.companyUnitAdd = disabled;
     this.buttonsService.companyUnitEdit = disabled;
     this.buttonsService.companyUnitHide = disabled;
     this.buttonsService.companyUnitUnhide = disabled;
     this.buttonsService.companyUnitMoveUp = disabled;
     this.buttonsService.companyUnitMoveDown = disabled;
-    this.buttonsService.employeeAdd = !this.selectedCompanyUnit.isClassified;
+    this.buttonsService.employeeAdd = !this.selectedCompanyUnit!.isClassified;
     this.buttonsService.employeeEdit = !this.selectedEmployee;
   }
 
   droppedEmployee(employeeId: number, nodeId: number) {
-    const info = 'id przeciąganego pracownika: ' + employeeId + '\n' + 'id komórki: ' + nodeId;
+    const info = `id przeciąganego pracownika: ${employeeId}\nid komórki: ${nodeId}`;
     this.infosService.structureInfo = info;
   }
 }

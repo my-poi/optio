@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class GlobalService {
-  equals(x, y) {
+  equals(x: any, y: any) {
     return JSON.stringify(x) === JSON.stringify(y);
   }
 
-  isNullOrWhiteSpace(input) {
+  isNullOrWhiteSpace(input: any) {
     return !input || !input.trim();
   }
 

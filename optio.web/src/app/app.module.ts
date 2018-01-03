@@ -9,10 +9,6 @@ import { NgxDnDModule } from '@swimlane/ngx-dnd';
 import { AppComponent } from './app.component';
 import { OptioErrorHandler } from './error-handler';
 
-// Extensions
-import './extensions/array';
-import './extensions/string';
-
 // Directives
 import { DraggableDirective } from './directives/draggable.directive';
 import { DroppableDirective } from './directives/droppable.directive';

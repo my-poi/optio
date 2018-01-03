@@ -11,7 +11,7 @@ export class DroppableDirective implements OnInit {
   ngOnInit() {
     const element = this.elementRef.nativeElement;
 
-    element.addEventListener('dragover', (e) => {
+    element.addEventListener('dragover', (e: any) => {
       if (e.preventDefault) e.preventDefault();
       element.classList.add('over');
       e.dataTransfer.dropEffect = 'move';
@@ -25,7 +25,7 @@ export class DroppableDirective implements OnInit {
       element.classList.remove('over');
     });
 
-    element.addEventListener('drop', (e) => {
+    element.addEventListener('drop', (e: any) => {
       if (e.preventDefault) e.preventDefault();
       if (e.stopPropagation) e.stopPropagation();
       element.classList.remove('over');

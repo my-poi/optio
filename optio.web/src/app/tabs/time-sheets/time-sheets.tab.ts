@@ -52,10 +52,10 @@ export class TimeSheetsTab {
   }
 
   dropTimeSheetEmployees(source: string, employeeId: number) {
-    console.log(String.format('dropTimeSheet source: {0}, employee {1}', source, employeeId));
+    console.log(`dropTimeSheet source: ${source}, employee ${employeeId}`);
   }
 
   dropOtherEmployees(source: string, employeeId: number) {
-    console.log(String.format('dropOther source: {0}, employee {1}', source, employeeId));
+    console.log(`dropOther source: ${source}, employee ${employeeId}`);
   }
 }

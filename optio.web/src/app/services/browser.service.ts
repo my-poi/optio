@@ -13,7 +13,7 @@ export class BrowserService {
     const browsers = this.getRules();
     if (!userAgentString) return null;
 
-    const detected = browsers.map(browser => {
+    const detected = browsers.map((browser: any) => {
       const match = browser.rule.exec(userAgentString);
       let version = match && match[1].split(/[._]/).slice(0, 3);
 
@@ -53,8 +53,8 @@ export class BrowserService {
     ]);
   }
 
-  private buildRules(ruleTuples) {
-    return ruleTuples.map(function(tuple) {
+  private buildRules(ruleTuples: any) {
+    return ruleTuples.map((tuple: any) => {
       return {
         name: tuple[0],
         rule: tuple[1]

@@ -380,9 +380,6 @@ export class ScheduleTab {
     this.saveScheduleIfChanged();
     this.schedules = [];
     this.currentSchedule = [];
-    // this.header = null;
-    // this.selectedEmployeeSchedule = null;
-    // this.originalEmployeeSchedule = null;
     this.hideTabEvent.emit({ tabName: 'schedule' });
   }
 }

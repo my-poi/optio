@@ -20,5 +20,8 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
-  }
+  },
+  "exclude": [
+    "src/app/modules/tabset/tabset.ts"
+  ]
 }
