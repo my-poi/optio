@@ -56,12 +56,12 @@ export class ScheduleValidator {
     return { hasWeekBreak: hasWeekBreak, hasWeekHourlyLimit: hasWeekHourlyLimit };
   }
 
-  validateWeekBreak(lastWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]) {
-    const testedPlannedDays = this.getTestedPlannedDays(lastWeekDay, employeePlannedDays);
+  validateWeekBreak(firstWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]) {
+    const testedPlannedDays = this.getTestedPlannedDays(firstWeekDay, employeePlannedDays);
 
     if (!testedPlannedDays) return true;
 
-    let breakStart = this.getBreakStart(new Date(lastWeekDay), employeePlannedDays, shifts);
+    let breakStart = this.getBreakStart(new Date(firstWeekDay), employeePlannedDays, shifts);
 
     const isValid = testedPlannedDays.some(plannedDay => {
       const validateDayWeekBreak = this.validateDayWeekBreak(plannedDay, breakStart, shifts);
@@ -90,9 +90,9 @@ export class ScheduleValidator {
       if (resultInMinutes >= 2100) isValid = true;
 
       breakStart = new Date(plannedDay.day);
-      const h = plannedDay.hours || 0;
-      const m = plannedDay.minutes || 0;
-      breakStart.setHours(plannedDayStartHours + h, plannedDayStartMinutes + m, 0);
+      const hours = plannedDay.hours || 0;
+      const minutes = plannedDay.minutes || 0;
+      breakStart.setHours(plannedDayStartHours + hours, plannedDayStartMinutes + minutes, 0);
     } else {
       newStart.setDate(newStart.getDate() + 1);
       const difference = newStart.getTime() - breakStart.getTime();
@@ -154,7 +154,7 @@ export class ScheduleValidator {
     if (beforePlannedDay) {
       const shiftId = beforePlannedDay.shiftId || 0;
       if (shiftId >= 1 && shiftId <= 20) {
-        const beforePlannedDayShift = shifts.find(x => x.id === beforePlannedDay.shiftId);
+        const beforePlannedDayShift = shifts.find(x => x.id === shiftId);
         const beforePlannedDayShiftDuration = this.getShiftDuration(beforePlannedDay.day, beforePlannedDayShift!.durations);
         const beforePlannedDayStartHours = Number(beforePlannedDayShiftDuration!.start.substring(0, 2));
         const beforePlannedDayStartMinutes = Number(beforePlannedDayShiftDuration!.start.substring(3, 5));

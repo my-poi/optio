@@ -124,12 +124,13 @@ export class ScheduleValidator {
 
     for (let i = 1; i <= 6; i++) {
       if (i !== 1 && firstWeekDay.getMonth() + 1 !== month) return;
-      let scheduleDays = this.getScheduleDays(firstWeekDay, employeeScheduleDays);
+      const scheduleDays = this.getScheduleDays(firstWeekDay, employeeScheduleDays);
       if (!scheduleDays) return;
+      console.log(scheduleDays.length);
       this.validateWeekBreak(firstWeekDay, scheduleDays);
-      scheduleDays = this.getScheduleDays(firstWeekDay, employeeScheduleDays);
-      if (!scheduleDays) return;
+      console.log(scheduleDays.length);
       this.validateWeekHourlyLimit(scheduleDays);
+      console.log('------------------');
       firstWeekDay.setDate(firstWeekDay.getDate() + 7);
     }
   }
@@ -176,7 +177,7 @@ export class ScheduleValidator {
       return false;
     });
 
-    const lastScheduleDay = scheduleDays.pop();
+    const lastScheduleDay = scheduleDays[scheduleDays.length - 1];
 
     if (lastScheduleDay) {
       this.clearDayError(lastScheduleDay, 2);
@@ -226,7 +227,7 @@ export class ScheduleValidator {
       result.addMinutes(scheduleDay.m || 0);
     });
 
-    const lastScheduleDay = scheduleDays.pop();
+    const lastScheduleDay = scheduleDays[scheduleDays.length - 1];
 
     if (lastScheduleDay) {
       this.clearDayError(lastScheduleDay, 3);
