@@ -51,19 +51,17 @@ export class ScheduleValidator {
   validateWeekBreakAndHourlyLimit(lastWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]) {
     const firstWeekDay = new Date(lastWeekDay);
     firstWeekDay.setDate(firstWeekDay.getDate() - 6);
-    const hasWeekBreak = this.validateWeekBreak(firstWeekDay, employeePlannedDays, shifts);
-    const hasWeekHourlyLimit = this.validateWeekHourlyLimit(firstWeekDay, employeePlannedDays);
+    const weekPlannedDays = this.getWeekPlannedDays(firstWeekDay, employeePlannedDays);
+    if (!weekPlannedDays) return;
+    const hasWeekBreak = this.validateWeekBreak(firstWeekDay, weekPlannedDays, employeePlannedDays, shifts);
+    const hasWeekHourlyLimit = this.validateWeekHourlyLimit(weekPlannedDays);
     return { hasWeekBreak: hasWeekBreak, hasWeekHourlyLimit: hasWeekHourlyLimit };
   }
 
-  validateWeekBreak(firstWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]) {
-    const testedPlannedDays = this.getTestedPlannedDays(firstWeekDay, employeePlannedDays);
+  validateWeekBreak(firstWeekDay: Date, weekPlannedDays: PlannedDay[], employeePlannedDays: PlannedDay[], shifts: Shift[]) {
+    let breakStart = this.getBreakStart(firstWeekDay, employeePlannedDays, shifts);
 
-    if (!testedPlannedDays) return true;
-
-    let breakStart = this.getBreakStart(new Date(firstWeekDay), employeePlannedDays, shifts);
-
-    const isValid = testedPlannedDays.some(plannedDay => {
+    const isValid = weekPlannedDays.some(plannedDay => {
       const validateDayWeekBreak = this.validateDayWeekBreak(plannedDay, breakStart, shifts);
       if (validateDayWeekBreak.isValid) return true;
       breakStart = validateDayWeekBreak.breakStart;
@@ -103,22 +101,18 @@ export class ScheduleValidator {
     return { isValid: isValid, breakStart: breakStart };
   }
 
-  validateWeekHourlyLimit(firstWeekDay: Date, employeePlannedDays: PlannedDay[]) {
-    const testedPlannedDays = this.getTestedPlannedDays(firstWeekDay, employeePlannedDays);
-
-    if (!testedPlannedDays) return true;
-
+  validateWeekHourlyLimit(weekPlannedDays: PlannedDay[]) {
     const result = new TimeSpan();
 
-    testedPlannedDays.forEach((testedPlannedDay: PlannedDay) => {
-      result.addHours(testedPlannedDay.hours || 0);
-      result.addMinutes(testedPlannedDay.minutes || 0);
+    weekPlannedDays.forEach((plannedDay: PlannedDay) => {
+      result.addHours(plannedDay.hours || 0);
+      result.addMinutes(plannedDay.minutes || 0);
     });
 
     return result.totalMinutes() <= 2880;
   }
 
-  getTestedPlannedDays(firstWeekDay: Date, employeePlannedDays: PlannedDay[]) {
+  getWeekPlannedDays(firstWeekDay: Date, employeePlannedDays: PlannedDay[]) {
     const testedPlannedDays: PlannedDay[] = [];
     const testedDay = new Date(firstWeekDay);
 
@@ -138,10 +132,10 @@ export class ScheduleValidator {
     return testedPlannedDays;
   }
 
-  getBreakStart(day: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]): Date {
-    const breakStart = new Date(day);
+  getBreakStart(firstWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]): Date {
+    const breakStart = new Date(firstWeekDay);
     breakStart.setHours(0, 0, 0);
-    const beforeDay = new Date(day);
+    const beforeDay = new Date(firstWeekDay);
     beforeDay.setDate(beforeDay.getDate() - 1);
 
     const beforePlannedDay = employeePlannedDays.find(x => {
@@ -170,9 +164,9 @@ export class ScheduleValidator {
     }
 
     const plannedDay = employeePlannedDays.find(x => {
-      const y = day.getFullYear();
-      const m = String(day.getMonth() + 1);
-      const d = String(day.getDate());
+      const y = firstWeekDay.getFullYear();
+      const m = String(firstWeekDay.getMonth() + 1);
+      const d = String(firstWeekDay.getDate());
       return x.day.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
     });
 
