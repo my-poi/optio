@@ -102,7 +102,6 @@ export class ScheduleTab {
 
   saveScheduleIfChanged() {
     if (this.isChanged(this.selectedEmployeeSchedule))
-      console.log(this.selectedEmployeeSchedule);
       this.dataService.updateSchedule(this.selectedEmployeeSchedule, (response: any) => console.log(response));
   }
 
