@@ -17,23 +17,22 @@ export class ScheduleValidator {
     if (!previousPlannedDay) return false;
     if (!previousPlannedDay.shiftId) return false;
 
-    const previousWorkDayShift = shifts.find(x => x.id === previousPlannedDay.shiftId);
-    const previousWorkDayShiftDuration = this.getShiftDuration(previousDay, previousWorkDayShift!.durations);
-    const previousStartHours = Number(previousWorkDayShiftDuration!.start.substring(0, 2));
-    const previousStartMinutes = Number(previousWorkDayShiftDuration!.start.substring(3, 5));
-    const previousWorkDayStartingTime = new TimeSpan(0, previousStartHours, previousStartMinutes);
-
-    const currentWorkDayShift = shifts.find(x => x.id === plannedDay.shiftId);
-    const currentWorkDayShiftDuration = this.getShiftDuration(currentDay, currentWorkDayShift!.durations);
-    const currentStartHours = Number(currentWorkDayShiftDuration!.start.substring(0, 2));
-    const currentStartMinutes = Number(currentWorkDayShiftDuration!.start.substring(3, 5));
-    const currentWorkDayStartingTime = new TimeSpan(0, currentStartHours, currentStartMinutes);
-
+    const previousWorkDayStartingTime = this.getWorkDayStartingTime(previousPlannedDay, previousDay, shifts);
+    const currentWorkDayStartingTime = this.getWorkDayStartingTime(plannedDay, currentDay, shifts);
     const minutesDifference = currentWorkDayStartingTime.totalMinutes() - previousWorkDayStartingTime.totalMinutes();
+
     return minutesDifference < 0;
   }
 
-  getShiftDuration(day: Date, durations: ShiftDuration[]): ShiftDuration {
+  private getWorkDayStartingTime(plannedDay: PlannedDay, day: Date, shifts: Shift[]) {
+    const shift = shifts.find(x => x.id === plannedDay.shiftId);
+    const duration = this.getShiftDuration(day, shift!.durations);
+    const startHours = Number(duration.start.substring(0, 2));
+    const startMinutes = Number(duration.start.substring(3, 5));
+    return new TimeSpan(0, startHours, startMinutes);
+  }
+
+  private getShiftDuration(day: Date, durations: ShiftDuration[]): ShiftDuration {
     const dayTime = new Date(day).getTime();
     const duration = durations.filter(x =>
       dayTime >= new Date(x.validFrom).getTime() &&
@@ -41,7 +40,7 @@ export class ScheduleValidator {
     return duration;
   }
 
-  getShiftValidToDate(validTo: Date): Date {
+  private getShiftValidToDate(validTo: Date): Date {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
@@ -55,7 +54,7 @@ export class ScheduleValidator {
     return { hasWeekBreak: hasWeekBreak, hasWeekHourlyLimit: hasWeekHourlyLimit };
   }
 
-  validateWeekBreak(firstWeekDay: Date, weekPlannedDays: PlannedDay[], plannedDays: PlannedDay[], shifts: Shift[]) {
+  private validateWeekBreak(firstWeekDay: Date, weekPlannedDays: PlannedDay[], plannedDays: PlannedDay[], shifts: Shift[]) {
     let breakStart = this.getBreakStart(firstWeekDay, plannedDays, shifts);
 
     const isValid = weekPlannedDays.some(plannedDay => {
@@ -68,7 +67,7 @@ export class ScheduleValidator {
     return isValid;
   }
 
-  validateDayWeekBreak(plannedDay: PlannedDay, breakStart: Date, shifts: Shift[]) {
+  private validateDayWeekBreak(plannedDay: PlannedDay, breakStart: Date, shifts: Shift[]) {
     let isValid = false;
     const newStart = new Date(plannedDay.day);
     newStart.setHours(0, 0, 0);
@@ -98,7 +97,7 @@ export class ScheduleValidator {
     return { isValid: isValid, breakStart: breakStart };
   }
 
-  validateWeekHourlyLimit(weekPlannedDays: PlannedDay[]) {
+  private validateWeekHourlyLimit(weekPlannedDays: PlannedDay[]) {
     const result = new TimeSpan();
 
     weekPlannedDays.forEach((plannedDay: PlannedDay) => {
@@ -123,7 +122,7 @@ export class ScheduleValidator {
     return weekPlannedDays;
   }
 
-  getBreakStart(firstWeekDay: Date, plannedDays: PlannedDay[], shifts: Shift[]): Date {
+  private getBreakStart(firstWeekDay: Date, plannedDays: PlannedDay[], shifts: Shift[]): Date {
     const breakStart = new Date(firstWeekDay);
     breakStart.setHours(0, 0, 0);
     const beforeDay = new Date(firstWeekDay);
@@ -169,9 +168,9 @@ export class ScheduleValidator {
     const duration = this.getShiftDuration(plannedDay.day, shift!.durations);
     const startHours = Number(duration.start.substring(0, 2));
     const startMinutes = Number(duration.start.substring(3, 5));
-    const shiftStart = new TimeSpan(0, startHours, startMinutes);
-    shiftStart.addHours(plannedDay.hours || 0);
-    shiftStart.addMinutes(plannedDay.minutes || 0);
-    return shiftStart.totalMinutes();
+    const result = new TimeSpan(0, startHours, startMinutes);
+    result.addHours(plannedDay.hours || 0);
+    result.addMinutes(plannedDay.minutes || 0);
+    return result.totalMinutes();
   }
 }
