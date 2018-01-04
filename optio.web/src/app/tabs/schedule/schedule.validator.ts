@@ -72,14 +72,14 @@ export class ScheduleValidator {
     }
   }
 
-  private validateScheduleDayDailyBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
+  private validateScheduleDayDailyBreak(scheduleDay: ScheduleDay, scheduleDays: ScheduleDay[]) {
     if (!scheduleDay.s || scheduleDay.s >= 40) return;
 
     const currentDay = new Date(scheduleDay.d);
     const previousDay = new Date(currentDay);
     previousDay.setDate(previousDay.getDate() - 1);
 
-    const previousScheduleDay = employeeScheduleDays.find(x =>
+    const previousScheduleDay = scheduleDays.find(x =>
       new Date(x.d).getTime() === previousDay.getTime());
 
     if (!previousScheduleDay) return;
@@ -118,15 +118,15 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateWeekBreakAndHourlyLimit(year: number, month: number, periodStartDate: Date, employeeScheduleDays: ScheduleDay[]) {
+  validateWeekBreakAndHourlyLimit(year: number, month: number, periodStartDate: Date, scheduleDays: ScheduleDay[]) {
     const firstMonthDay = new Date(year, month - 1, 1, 0, 0, 0);
     const firstWeekDay = this.getFirstWeekDay(firstMonthDay, periodStartDate);
 
     for (let i = 1; i <= 6; i++) {
       if (i !== 1 && firstWeekDay.getMonth() + 1 !== month) return;
-      const weekScheduleDays = this.getWeekScheduleDays(firstWeekDay, employeeScheduleDays);
+      const weekScheduleDays = this.getWeekScheduleDays(firstWeekDay, scheduleDays);
       if (!weekScheduleDays) return;
-      this.validateWeekBreak(firstWeekDay, weekScheduleDays, employeeScheduleDays);
+      this.validateWeekBreak(firstWeekDay, weekScheduleDays, scheduleDays);
       this.validateWeekHourlyLimit(weekScheduleDays);
       firstWeekDay.setDate(firstWeekDay.getDate() + 7);
     }
@@ -144,18 +144,12 @@ export class ScheduleValidator {
     return firstWeekDay;
   }
 
-  private getWeekScheduleDays(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]) {
+  private getWeekScheduleDays(firstWeekDay: Date, scheduleDays: ScheduleDay[]) {
     const weekScheduleDays: ScheduleDay[] = [];
     const day = new Date(firstWeekDay);
 
     for (let i = 1; i <= 7; i++) {
-      const scheduleDay = employeeScheduleDays.find(x => {
-        const y = day.getFullYear();
-        const m = String(day.getMonth() + 1);
-        const d = String(day.getDate());
-        return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
-      });
-
+      const scheduleDay = this.getScheduleDay(day, scheduleDays);
       if (!scheduleDay) return null;
       weekScheduleDays.push(scheduleDay);
       day.setDate(day.getDate() + 1);
@@ -164,8 +158,8 @@ export class ScheduleValidator {
     return weekScheduleDays;
   }
 
-  private validateWeekBreak(firstWeekDay: Date, weekScheduleDays: ScheduleDay[], employeeScheduleDays: ScheduleDay[]) {
-    let breakStart = this.getBreakStart(firstWeekDay, employeeScheduleDays);
+  private validateWeekBreak(firstWeekDay: Date, weekScheduleDays: ScheduleDay[], scheduleDays: ScheduleDay[]) {
+    let breakStart = this.getBreakStart(firstWeekDay, scheduleDays);
 
     const isValid = weekScheduleDays.some(scheduleDay => {
       const validateDayWeekBreak = this.validateDayWeekBreak(scheduleDay, breakStart);
@@ -236,59 +230,55 @@ export class ScheduleValidator {
     }
   }
 
-  private getBreakStart(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]): Date {
+  private getBreakStart(firstWeekDay: Date, scheduleDays: ScheduleDay[]): Date {
     const breakStart = new Date(firstWeekDay);
     breakStart.setHours(0, 0, 0);
     const beforeDay = new Date(firstWeekDay);
     beforeDay.setDate(beforeDay.getDate() - 1);
 
-    const beforeScheduleDay = employeeScheduleDays.find(x => {
-      const y = beforeDay.getFullYear();
-      const m = String(beforeDay.getMonth() + 1);
-      const d = String(beforeDay.getDate());
-      return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
-    });
+    const beforeScheduleDay = this.getScheduleDay(beforeDay, scheduleDays);
 
     if (beforeScheduleDay) {
-      const s = beforeScheduleDay.s || 0;
-      if (s >= 1 && s <= 20) {
-        const beforeScheduleDayShift = this.dataService.shifts.find(x => x.id === s);
-        const beforeScheduleDayShiftDuration = this.getShiftDuration(beforeScheduleDay.d, beforeScheduleDayShift!.durations);
-        const beforeScheduleDayStartHours = Number(beforeScheduleDayShiftDuration.start.substring(0, 2));
-        const beforeScheduleDayStartMinutes = Number(beforeScheduleDayShiftDuration.start.substring(3, 5));
-        const beforeScheduleDayShiftStart = new TimeSpan(0, beforeScheduleDayStartHours, beforeScheduleDayStartMinutes);
-        beforeScheduleDayShiftStart.addHours(beforeScheduleDay.h || 0);
-        beforeScheduleDayShiftStart.addMinutes(beforeScheduleDay.m || 0);
-        let beforeScheduleDayShiftEndMinutes = beforeScheduleDayShiftStart.totalMinutes();
-        if (beforeScheduleDayShiftEndMinutes > 1440) {
-          beforeScheduleDayShiftEndMinutes -= 1440;
-          breakStart.setMinutes(beforeScheduleDayShiftEndMinutes);
+      const shiftId = beforeScheduleDay.s || 0;
+      if (shiftId >= 1 && shiftId <= 20) {
+        let shiftEndMinutes = this.getShiftEndMinutes(shiftId, beforeScheduleDay);
+        if (shiftEndMinutes > 1440) {
+          shiftEndMinutes -= 1440;
+          breakStart.setMinutes(shiftEndMinutes);
         }
       }
     }
 
-    const scheduleDay = employeeScheduleDays.find(x => {
-      const y = firstWeekDay.getFullYear();
-      const m = String(firstWeekDay.getMonth() + 1);
-      const d = String(firstWeekDay.getDate());
-      return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
-    });
+    const scheduleDay = this.getScheduleDay(firstWeekDay, scheduleDays);
 
     if (scheduleDay) {
-      const s = scheduleDay.s || 0;
-      if (s >= 1 && s <= 20) {
-        const scheduleDayShift = this.dataService.shifts.find(x => x.id === s);
-        const scheduleDayShiftDuration = this.getShiftDuration(scheduleDay.d, scheduleDayShift!.durations);
-        const scheduleDayStartHours = Number(scheduleDayShiftDuration.start.substring(0, 2));
-        const scheduleDayStartMinutes = Number(scheduleDayShiftDuration.start.substring(3, 5));
-        const scheduleDayShiftStart = new TimeSpan(0, scheduleDayStartHours, scheduleDayStartMinutes);
-        scheduleDayShiftStart.addHours(scheduleDay.h || 0);
-        scheduleDayShiftStart.addMinutes(scheduleDay.m || 0);
-        const scheduleDayShiftEndMinutes = scheduleDayShiftStart.totalMinutes();
-        breakStart.setMinutes(scheduleDayShiftEndMinutes);
+      const shiftId = scheduleDay.s || 0;
+      if (shiftId >= 1 && shiftId <= 20) {
+        const shiftEndMinutes = this.getShiftEndMinutes(shiftId, beforeScheduleDay);
+        breakStart.setMinutes(shiftEndMinutes);
       }
     }
 
     return breakStart;
+  }
+
+  private getScheduleDay(day: Date, scheduleDays: ScheduleDay[]) {
+    return scheduleDays.find(x => {
+      const y = day.getFullYear();
+      const m = String(day.getMonth() + 1);
+      const d = String(day.getDate());
+      return x.d.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+    });
+  }
+
+  private getShiftEndMinutes(shiftId: number, scheduleDay: ScheduleDay) {
+    const shift = this.dataService.shifts.find(x => x.id === shiftId);
+    const duration = this.getShiftDuration(scheduleDay.d, shift!.durations);
+    const startHours = Number(duration.start.substring(0, 2));
+    const startMinutes = Number(duration.start.substring(3, 5));
+    const shiftStart = new TimeSpan(0, startHours, startMinutes);
+    shiftStart.addHours(scheduleDay.h || 0);
+    shiftStart.addMinutes(scheduleDay.m || 0);
+    return shiftStart.totalMinutes();
   }
 }

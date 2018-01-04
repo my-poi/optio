@@ -355,7 +355,7 @@ export class SchedulesMethods {
     periodStartDate: Date,
     shifts: Shift[]) {
     const errors: ScheduleDayError[] = [];
-    const dailyBreakError = this.scheduleValidator.validateScheduleDayDailyBreak(plannedDay, employeePlannedDays, shifts);
+    const dailyBreakError = this.scheduleValidator.validatePlannedDayDailyBreak(plannedDay, employeePlannedDays, shifts);
     if (dailyBreakError) errors.push(this.scheduleDayErrors[0]);
 
     const lastWeekDay = this.getLastWeekDay(plannedDay.day, periodStartDate);

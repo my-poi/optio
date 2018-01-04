@@ -4,17 +4,14 @@ import { TimeSpan } from '../objects/time-span';
 import { ShiftDuration } from '../objects/shift-duration';
 
 export class ScheduleValidator {
-  validateScheduleDayDailyBreak(
-    plannedDay: PlannedDay,
-    employeePlannedDays: PlannedDay[],
-    shifts: Shift[]): boolean {
+  validatePlannedDayDailyBreak(plannedDay: PlannedDay, plannedDays: PlannedDay[], shifts: Shift[]): boolean {
     if (!plannedDay.shiftId || plannedDay.shiftId >= 40) return false;
 
     const currentDay = new Date(plannedDay.day);
     const previousDay = new Date(currentDay);
     previousDay.setDate(previousDay.getDate() - 1);
 
-    const previousPlannedDay = employeePlannedDays.find(x =>
+    const previousPlannedDay = plannedDays.find(x =>
       new Date(x.day).getTime() === previousDay.getTime());
 
     if (!previousPlannedDay) return false;
@@ -48,18 +45,18 @@ export class ScheduleValidator {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
-  validateWeekBreakAndHourlyLimit(lastWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]) {
+  validateWeekBreakAndHourlyLimit(lastWeekDay: Date, plannedDays: PlannedDay[], shifts: Shift[]) {
     const firstWeekDay = new Date(lastWeekDay);
     firstWeekDay.setDate(firstWeekDay.getDate() - 6);
-    const weekPlannedDays = this.getWeekPlannedDays(firstWeekDay, employeePlannedDays);
+    const weekPlannedDays = this.getWeekPlannedDays(firstWeekDay, plannedDays);
     if (!weekPlannedDays) return;
-    const hasWeekBreak = this.validateWeekBreak(firstWeekDay, weekPlannedDays, employeePlannedDays, shifts);
+    const hasWeekBreak = this.validateWeekBreak(firstWeekDay, weekPlannedDays, plannedDays, shifts);
     const hasWeekHourlyLimit = this.validateWeekHourlyLimit(weekPlannedDays);
     return { hasWeekBreak: hasWeekBreak, hasWeekHourlyLimit: hasWeekHourlyLimit };
   }
 
-  validateWeekBreak(firstWeekDay: Date, weekPlannedDays: PlannedDay[], employeePlannedDays: PlannedDay[], shifts: Shift[]) {
-    let breakStart = this.getBreakStart(firstWeekDay, employeePlannedDays, shifts);
+  validateWeekBreak(firstWeekDay: Date, weekPlannedDays: PlannedDay[], plannedDays: PlannedDay[], shifts: Shift[]) {
+    let breakStart = this.getBreakStart(firstWeekDay, plannedDays, shifts);
 
     const isValid = weekPlannedDays.some(plannedDay => {
       const validateDayWeekBreak = this.validateDayWeekBreak(plannedDay, breakStart, shifts);
@@ -112,79 +109,69 @@ export class ScheduleValidator {
     return result.totalMinutes() <= 2880;
   }
 
-  getWeekPlannedDays(firstWeekDay: Date, employeePlannedDays: PlannedDay[]) {
-    const testedPlannedDays: PlannedDay[] = [];
-    const testedDay = new Date(firstWeekDay);
+  private getWeekPlannedDays(firstWeekDay: Date, plannedDays: PlannedDay[]) {
+    const weekPlannedDays: PlannedDay[] = [];
+    const day = new Date(firstWeekDay);
 
     for (let i = 1; i <= 7; i++) {
-      const testedPlannedDay = employeePlannedDays.find(plannedDay => {
-        const y = testedDay.getFullYear();
-        const m = String(testedDay.getMonth() + 1);
-        const d = String(testedDay.getDate());
-        return plannedDay.day.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
-      });
-
+      const testedPlannedDay = this.getPlannedDay(day, plannedDays);
       if (!testedPlannedDay) return null;
-      testedPlannedDays.push(testedPlannedDay);
-      testedDay.setDate(testedDay.getDate() + 1);
+      weekPlannedDays.push(testedPlannedDay);
+      day.setDate(day.getDate() + 1);
     }
 
-    return testedPlannedDays;
+    return weekPlannedDays;
   }
 
-  getBreakStart(firstWeekDay: Date, employeePlannedDays: PlannedDay[], shifts: Shift[]): Date {
+  getBreakStart(firstWeekDay: Date, plannedDays: PlannedDay[], shifts: Shift[]): Date {
     const breakStart = new Date(firstWeekDay);
     breakStart.setHours(0, 0, 0);
     const beforeDay = new Date(firstWeekDay);
     beforeDay.setDate(beforeDay.getDate() - 1);
 
-    const beforePlannedDay = employeePlannedDays.find(x => {
-      const y = beforeDay.getFullYear();
-      const m = String(beforeDay.getMonth() + 1);
-      const d = String(beforeDay.getDate());
-      return x.day.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
-    });
+    const beforePlannedDay = this.getPlannedDay(beforeDay, plannedDays);
 
     if (beforePlannedDay) {
       const shiftId = beforePlannedDay.shiftId || 0;
       if (shiftId >= 1 && shiftId <= 20) {
-        const beforePlannedDayShift = shifts.find(x => x.id === shiftId);
-        const beforePlannedDayShiftDuration = this.getShiftDuration(beforePlannedDay.day, beforePlannedDayShift!.durations);
-        const beforePlannedDayStartHours = Number(beforePlannedDayShiftDuration!.start.substring(0, 2));
-        const beforePlannedDayStartMinutes = Number(beforePlannedDayShiftDuration!.start.substring(3, 5));
-        const beforePlannedDayShiftStart = new TimeSpan(0, beforePlannedDayStartHours, beforePlannedDayStartMinutes);
-        beforePlannedDayShiftStart.addHours(beforePlannedDay.hours || 0);
-        beforePlannedDayShiftStart.addMinutes(beforePlannedDay.minutes || 0);
-        let beforePlannedDayShiftEndMinutes = beforePlannedDayShiftStart.totalMinutes();
-        if (beforePlannedDayShiftEndMinutes > 1440) {
-          beforePlannedDayShiftEndMinutes -= 1440;
-          breakStart.setMinutes(beforePlannedDayShiftEndMinutes);
+        let shiftEndMinutes = this.getShiftEndMinutes(shiftId, beforePlannedDay, shifts);
+        if (shiftEndMinutes > 1440) {
+          shiftEndMinutes -= 1440;
+          breakStart.setMinutes(shiftEndMinutes);
         }
       }
     }
 
-    const plannedDay = employeePlannedDays.find(x => {
-      const y = firstWeekDay.getFullYear();
-      const m = String(firstWeekDay.getMonth() + 1);
-      const d = String(firstWeekDay.getDate());
-      return x.day.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
-    });
+    const plannedDay = this.getPlannedDay(firstWeekDay, plannedDays);
 
     if (plannedDay) {
       const shiftId = plannedDay.shiftId || 0;
       if (shiftId >= 1 && shiftId <= 20) {
-        const plannedDayShift = shifts.find(x => x.id === plannedDay.shiftId);
-        const plannedDayShiftDuration = this.getShiftDuration(plannedDay.day, plannedDayShift!.durations);
-        const plannedDayStartHours = Number(plannedDayShiftDuration!.start.substring(0, 2));
-        const plannedDayStartMinutes = Number(plannedDayShiftDuration!.start.substring(3, 5));
-        const plannedDayShiftStart = new TimeSpan(0, plannedDayStartHours, plannedDayStartMinutes);
-        plannedDayShiftStart.addHours(plannedDay.hours || 0);
-        plannedDayShiftStart.addMinutes(plannedDay.minutes || 0);
-        const plannedDayShiftEndMinutes = plannedDayShiftStart.totalMinutes();
-        breakStart.setMinutes(plannedDayShiftEndMinutes);
+        const shiftEndMinutes = this.getShiftEndMinutes(shiftId, plannedDay, shifts);
+        breakStart.setMinutes(shiftEndMinutes);
       }
     }
 
     return breakStart;
+  }
+
+  private getPlannedDay(day: Date, plannedDays: PlannedDay[]) {
+    return plannedDays.find(x => {
+      const y = day.getFullYear();
+      const m = String(day.getMonth() + 1);
+      const d = String(day.getDate());
+      return x.day.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+    });
+  }
+
+  private getShiftEndMinutes(shiftId: number, plannedDay: PlannedDay, shifts: Shift[]) {
+    const shift = shifts.find(x => x.id === shiftId);
+    const duration = this.getShiftDuration(plannedDay.day, shift!.durations);
+    const startHours = Number(duration.start.substring(0, 2));
+    const startMinutes = Number(duration.start.substring(3, 5));
+    const shiftStart = new TimeSpan(0, startHours, startMinutes);
+    shiftStart.addHours(plannedDay.hours || 0);
+    shiftStart.addMinutes(plannedDay.minutes || 0);
+    return shiftStart.totalMinutes();
   }
 }
