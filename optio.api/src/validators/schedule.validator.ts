@@ -90,7 +90,9 @@ export class ScheduleValidator {
       if (resultInMinutes >= 2100) isValid = true;
 
       breakStart = new Date(plannedDay.day);
-      breakStart.setHours(plannedDayStartHours + plannedDay.hours, plannedDayStartMinutes + plannedDay.minutes, 0);
+      const h = plannedDay.hours || 0;
+      const m = plannedDay.minutes || 0;
+      breakStart.setHours(plannedDayStartHours + h, plannedDayStartMinutes + m, 0);
     } else {
       newStart.setDate(newStart.getDate() + 1);
       const difference = newStart.getTime() - breakStart.getTime();
@@ -109,8 +111,8 @@ export class ScheduleValidator {
     const result = new TimeSpan();
 
     testedPlannedDays.forEach((testedPlannedDay: PlannedDay) => {
-      result.addHours(testedPlannedDay.hours);
-      result.addMinutes(testedPlannedDay.minutes);
+      result.addHours(testedPlannedDay.hours || 0);
+      result.addMinutes(testedPlannedDay.minutes || 0);
     });
 
     return result.totalMinutes() <= 2880;
@@ -149,18 +151,21 @@ export class ScheduleValidator {
       return x.day.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
     });
 
-    if (beforePlannedDay && beforePlannedDay.shiftId >= 1 && beforePlannedDay.shiftId <= 20) {
-      const beforePlannedDayShift = shifts.find(x => x.id === beforePlannedDay.shiftId);
-      const beforePlannedDayShiftDuration = this.getShiftDuration(beforePlannedDay.day, beforePlannedDayShift!.durations);
-      const beforePlannedDayStartHours = Number(beforePlannedDayShiftDuration!.start.substring(0, 2));
-      const beforePlannedDayStartMinutes = Number(beforePlannedDayShiftDuration!.start.substring(3, 5));
-      const beforePlannedDayShiftStart = new TimeSpan(0, beforePlannedDayStartHours, beforePlannedDayStartMinutes);
-      beforePlannedDayShiftStart.addHours(beforePlannedDay.hours);
-      beforePlannedDayShiftStart.addMinutes(beforePlannedDay.minutes);
-      let beforePlannedDayShiftEndMinutes = beforePlannedDayShiftStart.totalMinutes();
-      if (beforePlannedDayShiftEndMinutes > 1440) {
-        beforePlannedDayShiftEndMinutes -= 1440;
-        breakStart.setMinutes(beforePlannedDayShiftEndMinutes);
+    if (beforePlannedDay) {
+      const shiftId = beforePlannedDay.shiftId || 0;
+      if (shiftId >= 1 && shiftId <= 20) {
+        const beforePlannedDayShift = shifts.find(x => x.id === beforePlannedDay.shiftId);
+        const beforePlannedDayShiftDuration = this.getShiftDuration(beforePlannedDay.day, beforePlannedDayShift!.durations);
+        const beforePlannedDayStartHours = Number(beforePlannedDayShiftDuration!.start.substring(0, 2));
+        const beforePlannedDayStartMinutes = Number(beforePlannedDayShiftDuration!.start.substring(3, 5));
+        const beforePlannedDayShiftStart = new TimeSpan(0, beforePlannedDayStartHours, beforePlannedDayStartMinutes);
+        beforePlannedDayShiftStart.addHours(beforePlannedDay.hours || 0);
+        beforePlannedDayShiftStart.addMinutes(beforePlannedDay.minutes || 0);
+        let beforePlannedDayShiftEndMinutes = beforePlannedDayShiftStart.totalMinutes();
+        if (beforePlannedDayShiftEndMinutes > 1440) {
+          beforePlannedDayShiftEndMinutes -= 1440;
+          breakStart.setMinutes(beforePlannedDayShiftEndMinutes);
+        }
       }
     }
 
@@ -171,16 +176,19 @@ export class ScheduleValidator {
       return x.day.toString() === `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
     });
 
-    if (plannedDay && plannedDay.shiftId >= 1 && plannedDay.shiftId <= 20) {
-      const plannedDayShift = shifts.find(x => x.id === plannedDay.shiftId);
-      const plannedDayShiftDuration = this.getShiftDuration(plannedDay.day, plannedDayShift!.durations);
-      const plannedDayStartHours = Number(plannedDayShiftDuration!.start.substring(0, 2));
-      const plannedDayStartMinutes = Number(plannedDayShiftDuration!.start.substring(3, 5));
-      const plannedDayShiftStart = new TimeSpan(0, plannedDayStartHours, plannedDayStartMinutes);
-      plannedDayShiftStart.addHours(plannedDay.hours);
-      plannedDayShiftStart.addMinutes(plannedDay.minutes);
-      const plannedDayShiftEndMinutes = plannedDayShiftStart.totalMinutes();
-      breakStart.setMinutes(plannedDayShiftEndMinutes);
+    if (plannedDay) {
+      const shiftId = plannedDay.shiftId || 0;
+      if (shiftId >= 1 && shiftId <= 20) {
+        const plannedDayShift = shifts.find(x => x.id === plannedDay.shiftId);
+        const plannedDayShiftDuration = this.getShiftDuration(plannedDay.day, plannedDayShift!.durations);
+        const plannedDayStartHours = Number(plannedDayShiftDuration!.start.substring(0, 2));
+        const plannedDayStartMinutes = Number(plannedDayShiftDuration!.start.substring(3, 5));
+        const plannedDayShiftStart = new TimeSpan(0, plannedDayStartHours, plannedDayStartMinutes);
+        plannedDayShiftStart.addHours(plannedDay.hours || 0);
+        plannedDayShiftStart.addMinutes(plannedDay.minutes || 0);
+        const plannedDayShiftEndMinutes = plannedDayShiftStart.totalMinutes();
+        breakStart.setMinutes(plannedDayShiftEndMinutes);
+      }
     }
 
     return breakStart;

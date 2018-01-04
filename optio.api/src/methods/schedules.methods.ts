@@ -211,12 +211,12 @@ export class SchedulesMethods {
         plannedDay.employeeId === schedule.employeeId &&
         new Date(plannedDay.day).getTime() >= periodStartDate.getTime());
 
-      const monthlyHours = schedulePlannedDays.map(x => x.hours).reduce((a, b) => a + b, 0);
-      const monthlyMinutes = schedulePlannedDays.map(x => x.minutes).reduce((a, b) => a + b, 0);
+      const monthlyHours = schedulePlannedDays.map(x => x.hours || 0).reduce((a, b) => a + b, 0);
+      const monthlyMinutes = schedulePlannedDays.map(x => x.minutes || 0).reduce((a, b) => a + b, 0);
       const monthlyTime = new TimeSpan(0, monthlyHours, monthlyMinutes);
 
-      const totalHours = employeePeriodPlannedDays.map((x: PlannedDay) => x.hours).reduce((a: number, b: number) => a + b, 0);
-      const totalMinutes = employeePeriodPlannedDays.map((x: PlannedDay) => x.minutes).reduce((a: number, b: number) => a + b, 0);
+      const totalHours = employeePeriodPlannedDays.map((x: PlannedDay) => x.hours || 0).reduce((a, b) => a + b, 0);
+      const totalMinutes = employeePeriodPlannedDays.map((x: PlannedDay) => x.minutes || 0).reduce((a, b) => a + b, 0);
       const totalTime = new TimeSpan(0, totalHours, totalMinutes);
 
       return new EmployeeSchedule(
@@ -330,9 +330,9 @@ export class SchedulesMethods {
         plannedDay.shiftId,
         shift ? shift.sign : null,
         vacation,
-        plannedDay.comment,
+        plannedDay.comment!,
         errors,
-        this.getTimeBackground(plannedDay.comment, weekDay, holiday),
+        this.getTimeBackground(plannedDay.comment!, weekDay, holiday),
         this.getShiftBackground(errors, vacation, weekDay, holiday),
         plannedDay.updatedBy,
         plannedDay.updated);
@@ -383,7 +383,7 @@ export class SchedulesMethods {
     return lastWeekDay;
   }
 
-  getTimeBackground(comment: string, weekDay: boolean, holiday: boolean): number {
+  getTimeBackground(comment: string | null, weekDay: boolean, holiday: boolean): number {
     if (comment) return 2;
     if (weekDay) return 1;
     if (holiday) return 1;

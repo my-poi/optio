@@ -7,7 +7,7 @@ export class ScheduleDay {
   s: number | null;        // identyfikator zmiany
   x: string | null;        // symbol zmiany
   v: boolean;              // urlop
-  c: string;               // komentarz do dnia grafiku
+  c: string | null;        // komentarz do dnia grafiku
   e: ScheduleDayError[];   // błędy
   bt: number;              // tło pól czasu (godzin i minut)
   bx: number;              // tło pola zmiany

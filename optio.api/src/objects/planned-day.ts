@@ -1,20 +1,20 @@
 export class PlannedDay {
   employeeId: number;
   day: Date;
-  hours: number;
-  minutes: number;
-  shiftId: number;
-  comment: string;
+  hours: number | null;
+  minutes: number | null;
+  shiftId: number | null;
+  comment: string | null;
   updatedBy: number;
   updated: Date;
 
   constructor(
     employeeId: number,
     day: Date,
-    hours: number,
-    minutes: number,
-    shiftId: number,
-    comment: string,
+    hours: number | null,
+    minutes: number | null,
+    shiftId: number | null,
+    comment: string | null,
     updatedBy: number,
     updated: Date) {
       this.employeeId = employeeId;
