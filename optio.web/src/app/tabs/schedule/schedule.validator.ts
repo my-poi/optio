@@ -126,11 +126,8 @@ export class ScheduleValidator {
       if (i !== 1 && firstWeekDay.getMonth() + 1 !== month) return;
       const scheduleDays = this.getScheduleDays(firstWeekDay, employeeScheduleDays);
       if (!scheduleDays) return;
-      console.log(scheduleDays.length);
-      this.validateWeekBreak(firstWeekDay, scheduleDays);
-      console.log(scheduleDays.length);
+      this.validateWeekBreak(firstWeekDay, scheduleDays, employeeScheduleDays);
       this.validateWeekHourlyLimit(scheduleDays);
-      console.log('------------------');
       firstWeekDay.setDate(firstWeekDay.getDate() + 7);
     }
   }
@@ -167,8 +164,8 @@ export class ScheduleValidator {
     return scheduleDays;
   }
 
-  validateWeekBreak(firstWeekDay: Date, scheduleDays: ScheduleDay[]) {
-    let breakStart = this.getBreakStart(firstWeekDay, scheduleDays);
+  validateWeekBreak(firstWeekDay: Date, scheduleDays: ScheduleDay[], employeeScheduleDays: ScheduleDay[]) {
+    let breakStart = this.getBreakStart(firstWeekDay, scheduleDays, employeeScheduleDays);
 
     const isValid = scheduleDays.some(scheduleDay => {
       const validateDayWeekBreak = this.validateDayWeekBreak(scheduleDay, breakStart);
@@ -239,13 +236,13 @@ export class ScheduleValidator {
     }
   }
 
-  getBreakStart(day: Date, scheduleDays: ScheduleDay[]): Date {
+  getBreakStart(day: Date, scheduleDays: ScheduleDay[], employeeScheduleDays: ScheduleDay[]): Date {
     const breakStart = new Date(day);
     breakStart.setHours(0, 0, 0);
     const beforeDay = new Date(day);
     beforeDay.setDate(beforeDay.getDate() - 1);
 
-    const beforeScheduleDay = scheduleDays.find(x => {
+    const beforeScheduleDay = employeeScheduleDays.find(x => {
       const y = beforeDay.getFullYear();
       const m = String(beforeDay.getMonth() + 1);
       const d = String(beforeDay.getDate());
