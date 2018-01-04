@@ -28,10 +28,10 @@ export class ScheduleValidator {
   }
 
   clearDay(scheduleDay: ScheduleDay) {
-    scheduleDay.h = undefined;
-    scheduleDay.m = undefined;
-    scheduleDay.s = undefined;
-    scheduleDay.x = undefined;
+    scheduleDay.h = null;
+    scheduleDay.m = null;
+    scheduleDay.s = null;
+    scheduleDay.x = null;
   }
 
   validateDailyBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {

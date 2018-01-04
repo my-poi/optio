@@ -102,6 +102,7 @@ export class ScheduleTab {
 
   saveScheduleIfChanged() {
     if (this.isChanged(this.selectedEmployeeSchedule))
+      console.log(this.selectedEmployeeSchedule);
       this.dataService.updateSchedule(this.selectedEmployeeSchedule, (response: any) => console.log(response));
   }
 
@@ -207,12 +208,12 @@ export class ScheduleTab {
       scheduleDay.h = Number(scheduleDay.h!.toString().replace(/\D/g, ''));
 
       if (!scheduleDay.s || scheduleDay.s >= 40) {
-        scheduleDay.h = undefined;
+        scheduleDay.h = null;
         callback();
         return;
       }
 
-      if (scheduleDay.h < 1 || scheduleDay.h > 12) scheduleDay.h = undefined;
+      if (scheduleDay.h < 1 || scheduleDay.h > 12) scheduleDay.h = null;
       callback();
     });
   }
@@ -222,12 +223,12 @@ export class ScheduleTab {
       scheduleDay.m = Number(scheduleDay.m!.toString().replace(/\D/g, ''));
 
       if (!scheduleDay.s || scheduleDay.s >= 40) {
-        scheduleDay.m = undefined;
+        scheduleDay.m = null;
         callback();
         return;
       }
 
-      if (scheduleDay.m < 1 || scheduleDay.m > 59) scheduleDay.m = undefined;
+      if (scheduleDay.m < 1 || scheduleDay.m > 59) scheduleDay.m = null;
       callback();
     });
   }
@@ -249,16 +250,16 @@ export class ScheduleTab {
       }
 
       if (shift.id >= 40) {
-        scheduleDay.h = undefined;
-        scheduleDay.m = undefined;
+        scheduleDay.h = null;
+        scheduleDay.m = null;
       }
 
       if (shift.id === 42) scheduleDay.x = 'D5';
 
       if (shift.id <= 20) {
         const shiftDuration: ShiftDuration = this.getShiftDuration(scheduleDay.d, shift.durations);
-        scheduleDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : undefined;
-        scheduleDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : undefined;
+        scheduleDay.h = shiftDuration.hours > 0 ? shiftDuration.hours : null;
+        scheduleDay.m = shiftDuration.minutes > 0 ? shiftDuration.minutes : null;
       }
 
       scheduleDay.s = shift.id;
@@ -284,10 +285,10 @@ export class ScheduleTab {
   }
 
   clearDay(scheduleDay: ScheduleDay) {
-    scheduleDay.h = undefined;
-    scheduleDay.m = undefined;
-    scheduleDay.s = undefined;
-    scheduleDay.x = undefined;
+    scheduleDay.h = null;
+    scheduleDay.m = null;
+    scheduleDay.s = null;
+    scheduleDay.x = null;
   }
 
   setSummaryData(employeeId: number) {
@@ -380,8 +381,10 @@ export class ScheduleTab {
 
   close() {
     this.saveScheduleIfChanged();
+    this.currentPeriodMonths = [];
     this.schedules = [];
     this.currentSchedule = [];
+    this.employeeScheduleDays = [];
     this.hideTabEvent.emit({ tabName: 'schedule' });
   }
 }

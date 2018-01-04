@@ -261,7 +261,7 @@ export class SchedulesMethods {
   }
 
   getCurrentPeriodMonths(periodDefinitions: PeriodDefinition[], month: number): PeriodDefinition[] {
-    const currentMonthPeriodDefinition = periodDefinitions.find((x: PeriodDefinition) => x.month === month);
+    const currentMonthPeriodDefinition = periodDefinitions.filter((x: PeriodDefinition) => x.month === month)[0];
     return periodDefinitions.
       filter((x: PeriodDefinition) => x.period === currentMonthPeriodDefinition.period).
       sort((a: PeriodDefinition, b: PeriodDefinition) => tools.compare(a.sortOrder, b.sortOrder));
@@ -287,7 +287,7 @@ export class SchedulesMethods {
   }
 
   getMonthlyBackground(monthlyTime: TimeSpan, year: number, month: number, periods: Period[]): number {
-    const monhtlyLimit = periods.find(x => x.year === year && x.month === month);
+    const monhtlyLimit = periods.filter(x => x.year === year && x.month === month)[0];
     const monthlyMinutesLimit = monhtlyLimit.hours * 60;
     if (monthlyTime.totalMinutes() === monthlyMinutesLimit) return 2;
     if (monthlyTime.totalMinutes() > monthlyMinutesLimit) return 4;
@@ -328,7 +328,7 @@ export class SchedulesMethods {
         plannedDay.hours,
         plannedDay.minutes,
         plannedDay.shiftId,
-        shift ? shift.sign : '',
+        shift ? shift.sign : null,
         vacation,
         plannedDay.comment,
         errors,
