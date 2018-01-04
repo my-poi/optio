@@ -13,7 +13,7 @@ export class ScheduleValidator {
 
   constructor(private dataService: DataService, private infosService: InfosService) { }
 
-  showErrors(scheduleDay: ScheduleDay) {
+  private showErrors(scheduleDay: ScheduleDay) {
     const errors = scheduleDay.e.map(x => x.error);
     this.infosService.scheduleInfo = errors.join('\n');
   }
@@ -27,7 +27,7 @@ export class ScheduleValidator {
     if (planned.totalMinutes() <= 0 || planned.totalMinutes() > 720) this.clearDay(scheduleDay);
   }
 
-  clearDay(scheduleDay: ScheduleDay) {
+  private clearDay(scheduleDay: ScheduleDay) {
     scheduleDay.h = null;
     scheduleDay.m = null;
     scheduleDay.s = null;
@@ -51,7 +51,7 @@ export class ScheduleValidator {
     this.showErrors(scheduleDay);
   }
 
-  clearDayError(scheduleDay: ScheduleDay, errorId: number) {
+  private clearDayError(scheduleDay: ScheduleDay, errorId: number) {
     const error = scheduleDay.e.find(x => x.id === errorId);
     if (error) {
       const day = new Date(scheduleDay.d);
@@ -72,7 +72,7 @@ export class ScheduleValidator {
     }
   }
 
-  validateScheduleDayDailyBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
+  private validateScheduleDayDailyBreak(scheduleDay: ScheduleDay, employeeScheduleDays: ScheduleDay[]) {
     if (!scheduleDay.s || scheduleDay.s >= 40) return;
 
     const currentDay = new Date(scheduleDay.d);
@@ -106,7 +106,7 @@ export class ScheduleValidator {
     }
   }
 
-  getShiftDuration(day: Date, durations: ShiftDuration[]): ShiftDuration {
+  private getShiftDuration(day: Date, durations: ShiftDuration[]): ShiftDuration {
     const dayTime = new Date(day).getTime();
     const duration = durations.filter(x =>
       dayTime >= new Date(x.validFrom).getTime() &&
@@ -114,7 +114,7 @@ export class ScheduleValidator {
     return duration;
   }
 
-  getShiftValidToDate(validTo: Date): Date {
+  private getShiftValidToDate(validTo: Date): Date {
     return validTo === null ? new Date(9999, 12, 31) : new Date(validTo);
   }
 
@@ -132,7 +132,7 @@ export class ScheduleValidator {
     }
   }
 
-  getFirstWeekDay(day: Date, periodStartDate: Date) {
+  private getFirstWeekDay(day: Date, periodStartDate: Date) {
     const testedDay = new Date(day);
     testedDay.setHours(0, 0, 0);
     const timeDifference = testedDay.getTime() - periodStartDate.getTime();
@@ -144,7 +144,7 @@ export class ScheduleValidator {
     return firstWeekDay;
   }
 
-  getWeekScheduleDays(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]) {
+  private getWeekScheduleDays(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]) {
     const weekScheduleDays: ScheduleDay[] = [];
     const day = new Date(firstWeekDay);
 
@@ -164,7 +164,7 @@ export class ScheduleValidator {
     return weekScheduleDays;
   }
 
-  validateWeekBreak(firstWeekDay: Date, weekScheduleDays: ScheduleDay[], employeeScheduleDays: ScheduleDay[]) {
+  private validateWeekBreak(firstWeekDay: Date, weekScheduleDays: ScheduleDay[], employeeScheduleDays: ScheduleDay[]) {
     let breakStart = this.getBreakStart(firstWeekDay, employeeScheduleDays);
 
     const isValid = weekScheduleDays.some(scheduleDay => {
@@ -186,7 +186,7 @@ export class ScheduleValidator {
     }
   }
 
-  validateDayWeekBreak(scheduleDay: ScheduleDay, breakStart: Date) {
+  private validateDayWeekBreak(scheduleDay: ScheduleDay, breakStart: Date) {
     let isValid = false;
     const newStart = new Date(scheduleDay.d);
     newStart.setHours(0, 0, 0);
@@ -216,7 +216,7 @@ export class ScheduleValidator {
     return { isValid: isValid, breakStart: breakStart };
   }
 
-  validateWeekHourlyLimit(weekScheduleDays: ScheduleDay[]) {
+  private validateWeekHourlyLimit(weekScheduleDays: ScheduleDay[]) {
     const result = new TimeSpan();
 
     weekScheduleDays.forEach((scheduleDay: ScheduleDay) => {
@@ -236,7 +236,7 @@ export class ScheduleValidator {
     }
   }
 
-  getBreakStart(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]): Date {
+  private getBreakStart(firstWeekDay: Date, employeeScheduleDays: ScheduleDay[]): Date {
     const breakStart = new Date(firstWeekDay);
     breakStart.setHours(0, 0, 0);
     const beforeDay = new Date(firstWeekDay);

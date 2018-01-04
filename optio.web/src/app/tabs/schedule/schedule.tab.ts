@@ -20,21 +20,21 @@ import { ScheduleValidator } from './schedule.validator';
 export class ScheduleTab {
   @Output() hideTabEvent = new EventEmitter<any>();
   scheduleTableBodyHeight = window.innerHeight - 245;
-  year: number;
-  month: number;
+  private year: number;
+  private month: number;
   daysInMonth: number;
-  currentPeriodMonths: PeriodDefinition[];
-  periodStartDate: Date;
-  monthlyMinutesLimit: number;
-  periodMinutesLimit: number;
-  schedules: EmployeeSchedule[];
+  private currentPeriodMonths: PeriodDefinition[];
+  private periodStartDate: Date;
+  private monthlyMinutesLimit: number;
+  private periodMinutesLimit: number;
+  private schedules: EmployeeSchedule[];
   currentSchedule: EmployeeSchedule[];
   header: ScheduleHeader;
-  selectedEmployeeSchedule: EmployeeSchedule;
-  originalEmployeeSchedule: EmployeeSchedule;
+  private selectedEmployeeSchedule: EmployeeSchedule;
+  private originalEmployeeSchedule: EmployeeSchedule;
   selectedScheduleDay: ScheduleDay;
-  employeeScheduleDays: ScheduleDay[];
-  validator = new ScheduleValidator(this.dataService, this.infosService);
+  private employeeScheduleDays: ScheduleDay[];
+  private validator = new ScheduleValidator(this.dataService, this.infosService);
 
   constructor(private dataService: DataService,
     private buttonsService: ButtonsService,
@@ -49,7 +49,7 @@ export class ScheduleTab {
       this.schedules = results;
       this.currentSchedule = this.schedules.
         filter(x => x.year === this.year && x.month === this.month).
-        sort((a: EmployeeSchedule, b: EmployeeSchedule) => this.globalService.compare(a.sortOrder, b.sortOrder));
+        sort((a, b) => this.globalService.compare(a.sortOrder, b.sortOrder));
       const firstSchedule = this.currentSchedule[0];
       this.selectFirstSchedule(firstSchedule);
       this.setPeriodData();
@@ -76,6 +76,7 @@ export class ScheduleTab {
   }
 
   selectDay(scheduleDay: ScheduleDay) {
+    this.selectedScheduleDay = scheduleDay;
     this.showErrors(scheduleDay);
   }
 
