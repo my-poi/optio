@@ -1,4 +1,4 @@
-npm i @swimlane/ngx-dnd --save
+npm install @swimlane/ngx-dnd --save
 npm install angular-tree-component --save 
 npm install moment --save
 npm install bootstrap --save
