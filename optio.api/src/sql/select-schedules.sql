@@ -1,15 +1,12 @@
 SELECT DISTINCT
-S.companyUnitId,
-S.companyUnitName,
-S.companyUnitPath,
-CU.path,
-MIN(S.created) AS created,
-MAX(S.updated) AS updated
-FROM Schedules AS S
-INNER JOIN OptioOrganization.CompanyUnits AS CU
-ON CU.id = S.companyUnitId
+companyUnitId,
+companyUnitName,
+companyUnitPath,
+MIN(created) AS created,
+MAX(updated) AS updated
+FROM Schedules
 WHERE year = ?
 AND month = ?
-GROUP BY S.companyUnitId,
-S.companyUnitName,
-S.companyUnitPath;
+GROUP BY companyUnitId,
+companyUnitName,
+companyUnitPath;

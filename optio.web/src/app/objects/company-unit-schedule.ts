@@ -1,7 +1,7 @@
 export class CompanyUnitSchedule {
   companyUnitId: number;
-  name: string;
-  path: string;
+  companyUnitName: string;
+  companyUnitPath: string;
   created: Date;
   updated: Date;
   isLocked: boolean;
