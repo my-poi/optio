@@ -65,7 +65,7 @@ export class SchedulesTab {
 
   filterSchedules() {
     const result = this.dataService.schedules.filter(x => {
-      if (x.path.toLowerCase().indexOf(this.schedulesFilter.toLocaleLowerCase()) >= 0) return true;
+      if (x.companyUnitPath.toLowerCase().indexOf(this.schedulesFilter.toLocaleLowerCase()) >= 0) return true;
       return false;
     });
 

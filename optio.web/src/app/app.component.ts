@@ -93,7 +93,7 @@ export class AppComponent implements AfterViewInit {
       const selectedCalendarItem = this.schedulesTab.selectedCalendarItem;
       const year = selectedCalendarItem.parent!.value;
       const month = selectedCalendarItem.value;
-      tab!.title = `${selectedSchedule!.path} - grafik na ${selectedCalendarItem.name} ${year}`,
+      tab!.title = `${selectedSchedule!.companyUnitPath} - grafik na ${selectedCalendarItem.name} ${year}`,
       this.scheduleTab.load(selectedSchedule!.companyUnitId, year, month);
     }
   }
