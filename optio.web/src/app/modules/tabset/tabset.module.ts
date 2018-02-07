@@ -1,7 +1,7 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NgbTabChangeEvent} from './tabset';
+import {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle} from './tabset';
 import {NgbTabsetConfig} from './tabset-config';
 
 export {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NgbTabChangeEvent} from './tabset';

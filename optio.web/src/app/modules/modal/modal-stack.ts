@@ -23,7 +23,7 @@ export class NgbModalStack {
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector,
-      private _componentFactoryResolver: ComponentFactoryResolver) {
+      public _componentFactoryResolver: ComponentFactoryResolver) {
     this._backdropFactory = _componentFactoryResolver.resolveComponentFactory(NgbModalBackdrop);
     this._windowFactory = _componentFactoryResolver.resolveComponentFactory(NgbModalWindow);
   }

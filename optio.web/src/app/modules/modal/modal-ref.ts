@@ -13,12 +13,12 @@ export class NgbActiveModal {
   /**
    * Can be used to close a modal, passing an optional result.
    */
-  close(result?: any): void {}
+  close(result?: any): void { result = result; }
 
   /**
    * Can be used to dismiss a modal, passing an optional reason.
    */
-  dismiss(reason?: any): void {}
+  dismiss(reason?: any): void { reason = reason; }
 }
 
 /**
@@ -39,7 +39,7 @@ export class NgbModalRef {
   }
 
   // only needed to keep TS1.8 compatibility
-  set componentInstance(instance: any) {}
+  set componentInstance(instance: any) { instance = instance; }
 
   /**
    * A promise that is resolved when a modal is closed and rejected when a modal is dismissed.
