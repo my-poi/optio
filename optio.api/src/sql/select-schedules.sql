@@ -1,5 +1,7 @@
 SELECT DISTINCT
 S.companyUnitId,
+S.companyUnitName,
+S.companyUnitPath,
 CU.path,
 MIN(S.created) AS created,
 MAX(S.updated) AS updated
@@ -8,4 +10,6 @@ INNER JOIN OptioOrganization.CompanyUnits AS CU
 ON CU.id = S.companyUnitId
 WHERE year = ?
 AND month = ?
-GROUP BY S.companyUnitId;
+GROUP BY S.companyUnitId,
+S.companyUnitName,
+S.companyUnitPath;

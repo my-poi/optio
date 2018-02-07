@@ -1,5 +1,7 @@
 INSERT IGNORE INTO Schedules
 (companyUnitId,
+companyUnitName,
+companyUnitPath,
 employeeId,
 year,
 month,

@@ -60,6 +60,8 @@ CREATE TABLE ShiftDurations (
 
 CREATE TABLE Schedules (
   companyUnitId INT NOT NULL,
+  companyUnitName VARCHAR(50) NOT NULL,
+  companyUnitPath VARCHAR(200) NOT NULL,
   employeeId INT NOT NULL,
   year SMALLINT NOT NULL,
   month TINYINT NOT NULL,
@@ -192,10 +194,3 @@ CREATE TABLE Vacations (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
-
--- CREATE TABLE ScheduleDayErrors (
---   id TINYINT NOT NULL,
---   error VARCHAR(100) NOT NULL
---   PRIMARY KEY (id),
---   UNIQUE KEY Name (error)
--- );

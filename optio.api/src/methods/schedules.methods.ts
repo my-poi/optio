@@ -41,7 +41,8 @@ export class SchedulesMethods {
 
     const companyUnitRows = await this.organizationDatabase.execute(queries['select-company-units'], []);
     let companyUnitIdentifiers: number[] = [];
-    const companyUnits = JSON.parse(JSON.stringify(companyUnitRows));
+    const companyUnits: CompanyUnit[] = JSON.parse(JSON.stringify(companyUnitRows));
+    const scheduleCompanyUnit = companyUnits.filter(x => x.id === companyUnitId)[0];
 
     const classificationsRows = await this.organizationDatabase.
       execute(queries['select-classifications'], []);
@@ -90,7 +91,7 @@ export class SchedulesMethods {
       },
       {
         sql: queries['insert-schedules'],
-        values: [this.getScheduleValues(companyUnitId, employeeIdentifiers, year, month, userId)]
+        values: [this.getScheduleValues(scheduleCompanyUnit, employeeIdentifiers, year, month, userId)]
       }
     ];
 
@@ -117,13 +118,24 @@ export class SchedulesMethods {
     return values;
   }
 
-  getScheduleValues(companyUnitId: number, employeeIdentifiers: number[], year: number, month: number, userId: number) {
+  getScheduleValues(scheduleCompanyUnit: CompanyUnit, employeeIdentifiers: number[], year: number, month: number, userId: number) {
     const values: any[] = [];
     let sortOrder = 1;
     const operationDateTime = new Date();
 
     employeeIdentifiers.forEach(employeeId => {
-      values.push([companyUnitId, employeeId, year, month, sortOrder, 0, 0, userId, operationDateTime]);
+      values.push([
+        scheduleCompanyUnit.id,
+        scheduleCompanyUnit.name,
+        scheduleCompanyUnit.path,
+        employeeId,
+        year,
+        month,
+        sortOrder,
+        0,
+        0,
+        userId,
+        operationDateTime]);
       sortOrder += 1;
     });
 

@@ -1,5 +1,7 @@
 export class Schedule {
   companyUnitId: number;
+  companyUnitName: string;
+  companyUnitPath: string;
   employeeId: number;
   year: number;
   month: number;
@@ -14,6 +16,8 @@ export class Schedule {
 
   constructor(
     companyUnitId: number,
+    companyUnitName: string,
+    companyUnitPath: string,
     employeeId: number,
     year: number,
     month: number,
@@ -26,6 +30,8 @@ export class Schedule {
     updatedBy: number,
     updated: Date) {
     this.companyUnitId = companyUnitId;
+    this.companyUnitName = companyUnitName;
+    this.companyUnitPath = companyUnitPath;
     this.employeeId = employeeId;
     this.year = year;
     this.month = month;

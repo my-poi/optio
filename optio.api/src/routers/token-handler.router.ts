@@ -26,8 +26,10 @@ export class TokenHandlerRouter {
     if (token) {
       jwt.verify(token, config.secretKey, (error: any, decoded: any) => {
         if (error) response.status(401).send(errors[3]);
-        request.body.decoded = decoded;
-        next();
+        else {
+          request.body.decoded = decoded;
+          next();
+        }
       });
     } else response.status(401).send(errors[2]);
   }

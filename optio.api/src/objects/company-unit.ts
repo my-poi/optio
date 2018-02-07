@@ -3,6 +3,7 @@ export interface CompanyUnit {
   parentId: number;
   sortOrder: number;
   name: string;
+  path: string;
   sign: string;
   phone1: string;
   phone2: string;
