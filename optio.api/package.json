@@ -5,7 +5,8 @@
   "license": "© My-Poi!",
   "description": "usługi sieciowe Optio",
   "scripts": {
-    "build": "tsc",
+    "build": "rmdir /s /q dist && tsc && npm run sqlCopy",
+    "sqlCopy": "copyfiles -f src/sql/*.sql dist/sql/",
     "start": "npm run build:live",
     "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
   },

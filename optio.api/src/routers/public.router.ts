@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
-import { TokensMethods } from '../../methods/tokens.methods';
-import { errors } from '../../errors';
+import { TokensMethods } from '../methods/tokens.methods';
+import { errors } from '../errors';
 
-export class UsersPublicRouter {
+export class PublicRouter {
   router = Router();
 
   constructor(public tokensMethods: TokensMethods) {

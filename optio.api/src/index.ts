@@ -21,8 +21,6 @@ import { SchedulesMethods } from './methods/schedules.methods';
 import { ShiftsMethods } from './methods/shifts.methods';
 import { TokensMethods } from './methods/tokens.methods';
 import { VacationsMethods } from './methods/vacations.methods';
-// Public routers
-import { UsersPublicRouter } from './routers/public/users.public-router';
 // Routers
 import { StartRouter } from './routers/start.router';
 import { ClassificationsRouter } from './routers/classifications.router';
@@ -32,6 +30,7 @@ import { HolidayTypesRouter } from './routers/holiday-types.router';
 import { HolidaysRouter } from './routers/holidays.router';
 import { PeriodDefinitionsRouter } from './routers/period-definitions.router';
 import { PeriodsRouter } from './routers/periods.router';
+import { PublicRouter } from './routers/public.router';
 import { SchedulesRouter } from './routers/schedules.router';
 import { ShiftsRouter } from './routers/shifts.router';
 import { TokenHandlerRouter } from './routers/token-handler.router';
@@ -54,8 +53,6 @@ const shiftsMethods = new ShiftsMethods(workTimeDatabase);
 const schedulesMethods = new SchedulesMethods(organizationDatabase, workTimeDatabase, shiftsMethods);
 const tokensMethods = new TokensMethods();
 const vacationsMethods = new VacationsMethods(workTimeDatabase);
-// Public routers
-const usersPublicRouter = new UsersPublicRouter(tokensMethods);
 // Routers
 const startRouter = new StartRouter(
   companyUnitsMethods,
@@ -73,6 +70,7 @@ const holidayTypesRouter = new HolidayTypesRouter(holidayTypesMethods);
 const holidaysRouter = new HolidaysRouter(holidaysMethods);
 const periodDefinitionsRouter = new PeriodDefinitionsRouter(periodDefinitionsMethods);
 const periodsRouter = new PeriodsRouter(periodsMethods);
+const publicRouter = new PublicRouter(tokensMethods);
 const schedulesRouter = new SchedulesRouter(schedulesMethods);
 const shiftsRouter = new ShiftsRouter(shiftsMethods);
 const tokenHandlerRouter = new TokenHandlerRouter();
@@ -83,7 +81,7 @@ app.use(json({ limit: '1mb' }));
 app.use(urlencoded({ limit: '1mb', extended: true }));
 app.disable('x-powered-by');
 
-app.use('/api/public/users', usersPublicRouter.router);
+app.use('/api/public/', publicRouter.router);
 app.use('/api/data/', tokenHandlerRouter.router);
 app.use('/api/data/start', startRouter.router);
 app.use('/api/data/classifications', classificationsRouter.router);

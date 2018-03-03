@@ -69,7 +69,7 @@ server {
     }
 	
     # access_log /logs/optio_web.access;
-	# access_log /logs/optio_api.access;
+    # access_log /logs/optio_api.access;
 }
 
 Restart

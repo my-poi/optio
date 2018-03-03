@@ -9,7 +9,7 @@ export class LoginService {
 
   login(callback: any) {
     const body = { userName: 'm.tokarz', password: 'password' };
-    this.http.post(config.apiBaseUrl + 'public/users/login', body).subscribe(response => {
+    this.http.post(config.apiBaseUrl + 'public/login', body).subscribe(response => {
       const responseJson = response.json();
       sessionStorage.token = responseJson.token;
       sessionStorage.userId = responseJson.userId;
